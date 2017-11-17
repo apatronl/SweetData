@@ -111,7 +111,10 @@ d3.csv('./data/candy.csv', function(error, dataset) {
 
     dataByState = d3.nest()
         .key(function(d) {
-            return d[keys.state]
+            var country = d[keys.country];
+            var state = d[keys.state];
+            if (country != "United States" || country == "" || state == "") return undefined;
+            return d[keys.state];
         })
         // .rollup(function(e) {
         //     return {
