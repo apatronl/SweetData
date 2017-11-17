@@ -9,6 +9,8 @@ var candyMapSVG = d3.select("div#candyMapContainer")
    //class to make it responsive
    .classed("svg-content-responsive", true);
 
+var keys = {country: 'Q4_COUNTRY', state: 'Q5_STATE_PROVINCE_COUNTY_ETC'};
+
 var candyDataToCandyName = {
     Q6_Butterfinger: "Butterfinger",
     Q6_Candy_Corn: "Candy Corn",
@@ -37,6 +39,36 @@ var candyDataToCandyName = {
     Q6_Mint_Kisses: "Mint Kisses",
     Q6_Mr_Goodbar: "Mr. Goodbar",
     Q6_Nerds: "Nerds"
+};
+
+var candyDataToColor = {
+    Q6_Butterfinger: "#fce032",
+    Q6_Candy_Corn: "#e6401b",
+    Q6_Chiclets: "#fbed53",
+    Q6_Dots: "#f9e233",
+    Q6_Fuzzy_Peaches: "Fuzzy Peaches",
+    Q6_Good_N_Plenty: "Good & Plenty",
+    Q6_Gummy_Bears_straight_up: "Gummy Bears",
+    Q6_Healthy_Fruit: "Healthy Fruit",
+    Q6_Heath_Bar: "Heath Bar",
+    Q6_Hershey_s_Dark_Chocolate: "Hershey's Dark Chocolate",
+    Q6_Hershey_s_Kisses: "Hershey's Kisses",
+    Q6_Hershey_s_Milk_Chocolate: "Hershey's Milk Chocolate",
+    Q6_Jolly_Rancher_bad_flavor: "Jolly Rancher (Bad Flavor)",
+    Q6_Jolly_Ranchers_good_flavor: "Jolly Rancher (Good Flavor)",
+    Q6_Junior_Mints: "Junior Mints",
+    Q6_Kit_Kat: "#e92630",
+    Q6_LaffyTaffy: "Laffy Taffy",
+    Q6_LemonHeads: "LemonHeads",
+    Q6_Licorice_not_black: "Licorice (not black)",
+    Q6_Licorice_yes_black: "Licorice (black)",
+    Q6_Lollipops: "Lollipops",
+    Q6_Mike_and_Ike: "Mike and Ike",
+    Q6_Milk_Duds: "Milk Duds",
+    Q6_Milky_Way: "#1d6b20",
+    Q6_Mint_Kisses: "Mint Kisses",
+    Q6_Mr_Goodbar: "Mr. Goodbar",
+    Q6_Nerds: "#8975b0"
 };
 
 // var drag = d3.behavior.drag()
@@ -75,7 +107,60 @@ d3.csv('./data/candy.csv', function(error, dataset) {
         });
         dataByCandy[i] = candyData;
     });
-    console.log(candyMagnetSVG);
+    console.log(dataset);
+
+    dataByState = d3.nest()
+        .key(function(d) {
+            return d[keys.state]
+        })
+        // .rollup(function(e) {
+        //     return {
+        //         Q6_Butterfinger: "#fce032",
+        //         Q6_Candy_Corn: "#e6401b",
+        //         Q6_Chiclets: "#fbed53",
+        //         Q6_Dots: "#f9e233",
+        //         Q6_Fuzzy_Peaches: "Fuzzy Peaches",
+        //         Q6_Good_N_Plenty: "Good & Plenty",
+        //         Q6_Gummy_Bears_straight_up: "Gummy Bears",
+        //         Q6_Healthy_Fruit: "Healthy Fruit",
+        //         Q6_Heath_Bar: "Heath Bar",
+        //         Q6_Hershey_s_Dark_Chocolate: "Hershey's Dark Chocolate",
+        //         Q6_Hershey_s_Kisses: "Hershey's Kisses",
+        //         Q6_Hershey_s_Milk_Chocolate: "Hershey's Milk Chocolate",
+        //         Q6_Jolly_Rancher_bad_flavor: "Jolly Rancher (Bad Flavor)",
+        //         Q6_Jolly_Ranchers_good_flavor: "Jolly Rancher (Good Flavor)",
+        //         Q6_Junior_Mints: "Junior Mints",
+        //         Q6_Kit_Kat: "#e92630",
+        //         Q6_LaffyTaffy: "Laffy Taffy",
+        //         Q6_LemonHeads: "LemonHeads",
+        //         Q6_Licorice_not_black: "Licorice (not black)",
+        //         Q6_Licorice_yes_black: "Licorice (black)",
+        //         Q6_Lollipops: "Lollipops",
+        //         Q6_Mike_and_Ike: "Mike and Ike",
+        //         Q6_Milk_Duds: "Milk Duds",
+        //         Q6_Milky_Way: "#1d6b20",
+        //         Q6_Mint_Kisses: "Mint Kisses",
+        //         Q6_Mr_Goodbar: "Mr. Goodbar",
+        //         Q6_Nerds: "#8975b0"
+        //     };
+        // })
+        .entries(dataset);
+        console.log(dataByState);
+
+    // dataByState = [];
+    // states = {};
+    // dataset.forEach(function(d, i) {
+    //     var country = d[keys.country];
+    //     var state = d[keys.state];
+    //     if (country == "United States" && state != undefined) {
+    //         if (state in states) {
+    //
+    //         } else {
+    //
+    //         }
+    //     }
+    // })
+    //console.log(dataset);
 
     var drag = d3.drag()
         .on('drag', function(d, i) {
