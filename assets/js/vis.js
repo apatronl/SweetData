@@ -125,6 +125,7 @@ d3.csv('./data/candy.csv', function(error, dataset) {
         });
         dataByCandy[i] = candyData;
     });
+    console.log(dataByCandy);
 
     dataByState = d3.nest()
         .key(function(d) {
@@ -214,7 +215,11 @@ function drawMap(data) {
             "rgb(0,90,50)"]);
 
     d3.json('./data/us-states.json', function(error, json) {
-
+        if (error) {
+            console.error('Error while loading ./data/us-states.json dataset.');
+            console.error(error);
+            return;
+        }
 
         for (var i = 0; i < data.length; i++) {
             // Grab State Name
@@ -223,7 +228,7 @@ function drawMap(data) {
            var joyValue = data[i].value['JOY'][0];
            var despairValue = data[i].value['DESPAIR'][0];
            var mehValue = data[i].value['MEH'][0];
-        // Find the corresponding state inside the GeoJSON
+
            for (var j = 0; j < json.features.length; j++)  {
                var jsonState = json.features[j].properties.name;
                if (dataState == jsonState) {
@@ -235,40 +240,120 @@ function drawMap(data) {
            }
         }
 
-        candyMapSVG.selectAll("path")
-       .data(json.features)
-       .enter()
-       .append("path")
-       .attr("class", "state-boundary")
-       .attr("d", path)
-       .style("fill", function(d) {
-           var stateName = d.properties.name;
-           var topJoy = d.properties.top_joy;
-           if (!topJoy) return '#fff';
-           var color = candyToColor[topJoy.candy];
-           if (!color.startsWith('#')) return '#888';
-           return color != undefined ? color : '#fff';
-       })
-       .on("mouseover", function(d) {
-           d3.select(this).style('fill', '#000');
-        //    console.log(d.properties.name)
-       })
-       .on('mouseout', function(d) {
-           var topJoy = d.properties.top_joy;
-           if (!topJoy) {
-               d3.select(this).style('fill', '#fff');
-               return;
-           }
-           var color = candyToColor[topJoy.candy];
-           if (!color) {
-               d3.select(this).style('fill', '#000');
-           } else {
-               if (!color.startsWith('#')) {
-                   d3.select(this).style('fill', '#888');
-               } else {
-                   d3.select(this).style('fill', color);
-               }
-           }
-       });
-    });
+        // var states = candyMapSVG.selectAll('path')
+        //     .data(json.features)
+        //     .enter()
+        //     .append('path')
+        //     .attr("class", "state-boundary")
+        //     .attr("d", path);
+        //
+        //
+        // states.append('svg:image')
+        //     .attr("xlink:href", "/img/candy/kitkat.jpg");
+
+
+
+        var defs= candyMapSVG.append('defs')
+        defs.append('pattern')
+            .attr('id', 'kitkat')
+            .attr('patternUnits', 'userSpaceOnUse')
+            .attr('width', 95.5)
+            .attr('height', 100)
+            .append('svg:image')
+            .attr('xlink:href', '/img/candy/kitkat.jpg')
+            .attr('width', 100)
+            .attr('height', 100)
+            .attr('x', 0)
+            .attr('y', 0);
+
+        defs.append('pattern')
+            .attr('id', 'milkyway')
+            .attr('patternUnits', 'userSpaceOnUse')
+            .attr('width', 95.5)
+            .attr('height', 100)
+            .append('svg:image')
+            .attr('xlink:href', '/img/candy/milkyway.jpg')
+            .attr('width', 100)
+            .attr('height', 100)
+            .attr('x', 0)
+            .attr('y', -10);
+
+        defs.append('pattern')
+            .attr('id', 'butterfinger')
+            .attr('patternUnits', 'userSpaceOnUse')
+            .attr('width', 95.5)
+            .attr('height', 100)
+            .append('svg:image')
+            .attr('xlink:href', '/img/candy/butterfinger.png')
+            .attr('width', 100)
+            .attr('height', 100)
+            .attr('x', 0)
+            .attr('y', 0);
+
+        var state = candyMapSVG.selectAll('g.state')
+            .data(json.features);
+        var stateEnter = state.enter()
+            .append('g')
+            .attr('class', 'stateG');
+
+        stateEnter.append('path')
+            .attr('class', 'state-boundary')
+            .attr('d', path)
+            .attr('stroke', 'white')
+            .attr('stroke-width', 0.8)
+            .style('fill', function(d) {
+                var stateName = d.properties.name;
+                var topJoy = d.properties.top_joy;
+                if (!topJoy) return '#888';
+                if (topJoy.candy == 'Q6_Kit_Kat') return 'url(#kitkat)';
+                if (topJoy.candy == 'Q6_Milky_Way') return 'url(#milkyway)';
+                if (topJoy.candy == 'Q6_Butterfinger') return 'url(#butterfinger)';
+                var color = candyToColor[topJoy.candy];
+                if (!color.startsWith('#')) return '#888';
+                return color != undefined ? color : '#fff';
+                // return "url(#pic1)";
+            })
+            .on("mouseover", function(d) {
+                d3.select(this).style('opacity', '0.5');
+            })
+            .on('mouseout', function(d) {
+                d3.select(this).style('opacity', '1');
+            });
+
+        // path.append('svg:image')
+        //     .attr("xlink:href", "/img/candy/kitkat.jpg");
+            // .attr('d', path)
+            // .attr('width', 20)
+            // .attr('height', 20);
+
+        // stateEnter.append('svg:image')
+        //     .attr("xlink:href", "/img/candy/kitkat.jpg")
+        //     .attr('d', path)
+        //     .attr('width', 20)
+        //     .attr('height', 20);
+
+
+    //         var images = nodeEnter.append("svg:image")
+    //    .attr("xlink:href",  function(d) { return d.img;})
+    //    .attr("x", function(d) { return -25;})
+    //    .attr("y", function(d) { return -25;})
+    //    .attr("height", 50)
+    //    .attr("width", 50);
+
+        // console.log(states);
+            // .style("fill", function(d) {
+            //     var stateName = d.properties.name;
+            //     var topJoy = d.properties.top_joy;
+            //     if (!topJoy) return '#fff';
+            //     var color = candyToColor[topJoy.candy];
+            //     if (!color.startsWith('#')) return '#888';
+            //     return color != undefined ? color : '#fff';
+            // })
+            // .on("mouseover", function(d) {
+            //     d3.select(this).style('opacity', '0.5');
+            // })
+            // .on('mouseout', function(d) {
+            //     d3.select(this).style('opacity', '1');
+            // });
+        });
 }
