@@ -56,7 +56,27 @@ var candyDataToCandyName = {
     Q6_Milky_Way: "Milky Way",
     Q6_Mint_Kisses: "Mint Kisses",
     Q6_Mr_Goodbar: "Mr. Goodbar",
-    Q6_Nerds: "Nerds"
+    Q6_Nerds: "Nerds",
+    Q6_Nestle_Crunsh: "Crunch",
+    Q6_Peanut_M_M_s: "Peanut M&M's",
+    Q6_Peeps: "Peeps",
+    Q6_Pixy_Stix: "Pixy Stix",
+    Q6_Reese_s_Peanut_Butter_Cups: "Reese's",
+    Q6_Reese_s_Pieces: "Reese's Pieces",
+    Q6_Regular_M_Ms: "Milk Chocolate M&M's",
+    Q6_Rolos: "Rolos",
+    Q6_Skittles: "Skittles",
+    Q6_Snickers: "Snickers",
+    Q6_Sourpatch_Kids_i_e_abominations_of_nature: "Sourpatch Kids",
+    Q6_Starburst: "Starburst",
+    Q6_Swedish_Fish: "Swedish Fish",
+    Q6_Three_Musketeers: "3 Musketeers",
+    Q6_Tic_Tacs: "Tic Tacs",
+    Q6_Tolberone_something_or_other: "Toblerone",
+    Q6_Trail_Mix: "Trail Mix",
+    Q6_Twix: "Twix",
+    Q6_Whatchamacallit_Bars: "Whatchamacallit Bars",
+    Q6_York_Peppermint_Patties: "York"
 };
 
 var candyToColor = {
@@ -114,14 +134,14 @@ d3.csv('./data/candy.csv', function(error, dataset) {
         console.error(error);
         return;
     }
-
+    console.log(dataset);
     dataByCandy = [];
     Object.keys(candyDataToCandyName).forEach(function(candy, i) {
         candyData = {};
         candyData[candy] = {joy: 0, meh: 0, despair: 0};
         dataset.forEach(function(d, j) {
-            feeling = d[candy].toLowerCase();
-            if (feeling) candyData[candy][feeling] += 1;
+            feeling = d[candy];
+            if (feeling) candyData[candy][feeling.toLowerCase()] += 1;
         });
         dataByCandy[i] = candyData;
     });
@@ -240,27 +260,14 @@ function drawMap(data) {
            }
         }
 
-        // var states = candyMapSVG.selectAll('path')
-        //     .data(json.features)
-        //     .enter()
-        //     .append('path')
-        //     .attr("class", "state-boundary")
-        //     .attr("d", path);
-        //
-        //
-        // states.append('svg:image')
-        //     .attr("xlink:href", "/img/candy/kitkat.jpg");
-
-
-
-        var defs= candyMapSVG.append('defs')
+        var defs = candyMapSVG.append('defs')
         defs.append('pattern')
             .attr('id', 'kitkat')
             .attr('patternUnits', 'userSpaceOnUse')
             .attr('width', 95.5)
             .attr('height', 100)
             .append('svg:image')
-            .attr('xlink:href', '/img/candy/kitkat.jpg')
+            .attr('xlink:href', 'img/kitkat.jpg')
             .attr('width', 100)
             .attr('height', 100)
             .attr('x', 0)
@@ -272,11 +279,11 @@ function drawMap(data) {
             .attr('width', 95.5)
             .attr('height', 100)
             .append('svg:image')
-            .attr('xlink:href', '/img/candy/milkyway.jpg')
-            .attr('width', 100)
-            .attr('height', 100)
+            .attr('xlink:href', 'img/milkyway.jpg')
+            .attr('width', 180)
+            .attr('height', 180)
             .attr('x', 0)
-            .attr('y', -10);
+            .attr('y', 0);
 
         defs.append('pattern')
             .attr('id', 'butterfinger')
@@ -284,7 +291,19 @@ function drawMap(data) {
             .attr('width', 95.5)
             .attr('height', 100)
             .append('svg:image')
-            .attr('xlink:href', '/img/candy/butterfinger.png')
+            .attr('xlink:href', 'img/butterfinger.png')
+            .attr('width', 100)
+            .attr('height', 100)
+            .attr('x', 0)
+            .attr('y', 0);
+
+        defs.append('pattern')
+            .attr('id', 'reeses')
+            .attr('patternUnits', 'userSpaceOnUse')
+            .attr('width', 95.5)
+            .attr('height', 100)
+            .append('svg:image')
+            .attr('xlink:href', 'img/reeses.jpg')
             .attr('width', 100)
             .attr('height', 100)
             .attr('x', 0)
@@ -308,9 +327,11 @@ function drawMap(data) {
                 if (topJoy.candy == 'Q6_Kit_Kat') return 'url(#kitkat)';
                 if (topJoy.candy == 'Q6_Milky_Way') return 'url(#milkyway)';
                 if (topJoy.candy == 'Q6_Butterfinger') return 'url(#butterfinger)';
+                if (topJoy.candy == 'Q6_Reese_s_Peanut_Butter_Cups') return 'url(#reeses)';
                 var color = candyToColor[topJoy.candy];
+                if (!color) return '#888';
                 if (!color.startsWith('#')) return '#888';
-                return color != undefined ? color : '#fff';
+                return color != undefined ? color : '#888';
                 // return "url(#pic1)";
             })
             .on("mouseover", function(d) {
@@ -319,41 +340,5 @@ function drawMap(data) {
             .on('mouseout', function(d) {
                 d3.select(this).style('opacity', '1');
             });
-
-        // path.append('svg:image')
-        //     .attr("xlink:href", "/img/candy/kitkat.jpg");
-            // .attr('d', path)
-            // .attr('width', 20)
-            // .attr('height', 20);
-
-        // stateEnter.append('svg:image')
-        //     .attr("xlink:href", "/img/candy/kitkat.jpg")
-        //     .attr('d', path)
-        //     .attr('width', 20)
-        //     .attr('height', 20);
-
-
-    //         var images = nodeEnter.append("svg:image")
-    //    .attr("xlink:href",  function(d) { return d.img;})
-    //    .attr("x", function(d) { return -25;})
-    //    .attr("y", function(d) { return -25;})
-    //    .attr("height", 50)
-    //    .attr("width", 50);
-
-        // console.log(states);
-            // .style("fill", function(d) {
-            //     var stateName = d.properties.name;
-            //     var topJoy = d.properties.top_joy;
-            //     if (!topJoy) return '#fff';
-            //     var color = candyToColor[topJoy.candy];
-            //     if (!color.startsWith('#')) return '#888';
-            //     return color != undefined ? color : '#fff';
-            // })
-            // .on("mouseover", function(d) {
-            //     d3.select(this).style('opacity', '0.5');
-            // })
-            // .on('mouseout', function(d) {
-            //     d3.select(this).style('opacity', '1');
-            // });
         });
 }
