@@ -17,6 +17,27 @@
     vertical-align: top;
     overflow: hidden;
 }
+
+.svg-container-left {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%; /* aspect ratio */
+	/*padding-right: 3.5%;*/
+    vertical-align: top;
+    overflow: hidden;
+}
+
+.svg-container-right {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+	height: 100%;*/
+    padding-bottom: 100%; /* aspect ratio */
+	/*padding-right: 3.5%;*/
+    vertical-align: top;
+    overflow: hidden;
+}
 .svg-content-responsive {
     display: inline-block;
     position: absolute;
