@@ -68,7 +68,9 @@ var candyData = {
     },
     Q6_Hershey_s_Dark_Chocolate: {
         key: "Q6_Hershey_s_Dark_Chocolate",
-        name: "Hershey's Dark Chocolate"
+        name: "Hershey's Dark Chocolate",
+        img: "hersheys.jpg",
+        id: "hersheys"
     },
     Q6_Hershey_s_Kisses: {
         key: "Q6_Hershey_s_Kisses",
@@ -76,7 +78,9 @@ var candyData = {
     },
     Q6_Hershey_s_Milk_Chocolate: {
         key: "Q6_Hershey_s_Milk_Chocolate",
-        name: "Hershey's Milk Chocolate"
+        name: "Hershey's Milk Chocolate",
+        img: "hersheys.jpg",
+        id: "hersheys"
     },
     Q6_Jolly_Rancher_bad_flavor: {
         key: "Q6_Jolly_Rancher_bad_flavor",
@@ -148,7 +152,9 @@ var candyData = {
     },
     Q6_Peanut_M_M_s: {
         key: "Q6_Peanut_M_M_s",
-        name: "Peanut M&M's"
+        name: "Peanut M&M's",
+        img: "peanut-mm.jpg",
+        id: "peanutmm"
     },
     Q6_Peeps: {
         key: "Q6_Peeps",
@@ -171,7 +177,9 @@ var candyData = {
         name: "Milk Chocolate M&M's"
     },
     Q6_Rolos: {
-        name: "Rolos"
+        name: "Rolos",
+        img: "rolo.png".
+        id: "rolo"
     },
     Q6_Skittles: {
         name: "Skittles"
@@ -185,7 +193,9 @@ var candyData = {
         name: "Sourpatch Kids"
     },
     Q6_Starburst: {
-        name: "Starburst"
+        name: "Starburst",
+        img: "starburst.jpg",
+        id: "starburst"
     },
     Q6_Swedish_Fish: {
         name: "Swedish Fish"
