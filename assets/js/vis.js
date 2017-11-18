@@ -195,7 +195,9 @@ var candyData = {
         id: "reesespieces"
     },
     Q6_Regular_M_Ms: {
-        name: "Milk Chocolate M&M's"
+        name: "Milk Chocolate M&M's",
+        img: "mm.jpg",
+        id: "mm"
     },
     Q6_Rolos: {
         name: "Rolos",
@@ -203,7 +205,9 @@ var candyData = {
         id: "rolo"
     },
     Q6_Skittles: {
-        name: "Skittles"
+        name: "Skittles",
+        img: "skittles.jpg",
+        id: "skittles"
     },
     Q6_Snickers: {
         name: "Snickers",
@@ -222,7 +226,9 @@ var candyData = {
         name: "Swedish Fish"
     },
     Q6_Three_Musketeers: {
-        name: "3 Musketeers"
+        name: "3 Musketeers",
+        img: "threemusketeers.jpg",
+        id: "threemusketeers"
     },
     Q6_Tic_Tacs: {
         name: "Tic Tacs"
