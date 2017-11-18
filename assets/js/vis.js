@@ -34,29 +34,41 @@ var candyData = {
         key: "Q6_Butterfinger",
         name: "Butterfinger",
         img: "butterfinger.png",
-        id: "butterfinger"
+        id: "butterfinger",
+        color: "#fce032"
     },
     Q6_Candy_Corn: {
         key: "Q6_Candy_Corn",
-        name:"Candy Corn"
+        name:"Candy Corn",
+        img: "candycorn.jpg",
+        id: "candycorn",
+        color: "#e6401b"
     },
     Q6_Chiclets: {
         key: "Q6_Chiclets",
-        name: "Chiclets"
+        name: "Chiclets",
+        img: "chiclets.jpg",
+        id: "chiclets",
+        color: "#fbed53"
     },
     Q6_Dots: {
         key: "Q6_Dots",
         name: "Dots",
         img: "dots.jpg",
-        id: "dots"
+        id: "dots",
+        color: "#f9e233"
     },
     Q6_Fuzzy_Peaches: {
         key: "Q6_Fuzzy_Peaches",
-        name: "Fuzzy Peaches"
+        name: "Fuzzy Peaches",
+        img: "fuzzypeaches.jpg",
+        id: "fuzzypeaches"
     },
     Q6_Good_N_Plenty: {
         key: "Q6_Good_N_Plenty",
-        name: "Good & Plenty"
+        name: "Good & Plenty",
+        img: "goodnplenty.jpg",
+        id: "goodnplenty"
     },
     Q6_Gummy_Bears_straight_up: {
         key: "Q6_Gummy_Bears_straight_up",
@@ -84,7 +96,9 @@ var candyData = {
     },
     Q6_Jolly_Rancher_bad_flavor: {
         key: "Q6_Jolly_Rancher_bad_flavor",
-        name: "Jolly Rancher (Bad Flavor)"
+        name: "Jolly Rancher (Bad Flavor)",
+        img: "jollyrancher.jpg",
+        id: "jollyrancher"
     },
     Q6_Jolly_Ranchers_good_flavor: {
         key: "Q6_Jolly_Ranchers_good_flavor",
@@ -98,7 +112,8 @@ var candyData = {
         key: "Q6_Kit_Kat",
         name: "Kit Kat",
         img: "kitkat.jpg",
-        id: "kitkat"
+        id: "kitkat",
+        color: "#e92630"
     },
     Q6_LaffyTaffy: {
         key: "Q6_LaffyTaffy",
@@ -114,7 +129,9 @@ var candyData = {
     },
     Q6_Licorice_yes_black: {
         key: "Q6_Licorice_yes_black",
-        name: "Licorice (black)"
+        name: "Licorice (black)",
+        img: "blacklicorice.jpg",
+        id: "blacklicorice"
     },
     Q6_Lollipops: {
         key: "Q6_Lollipops",
@@ -132,7 +149,8 @@ var candyData = {
         key: "Q6_Milky_Way",
         name: "Milky Way",
         img: "milkyway.jpg",
-        id: "milkyway"
+        id: "milkyway",
+        color: "#1d6b20"
     },
     Q6_Mint_Kisses: {
         key: "Q6_Mint_Kisses",
@@ -144,7 +162,8 @@ var candyData = {
     },
     Q6_Nerds: {
         key: "Q6_Nerds",
-        name: "Nerds"
+        name: "Nerds",
+        color: "#8975b0"
     },
     Q6_Nestle_Crunsh: {
         key: "Q6_Nestle_Crunsh",
@@ -158,7 +177,9 @@ var candyData = {
     },
     Q6_Peeps: {
         key: "Q6_Peeps",
-        name: "Peeps"
+        name: "Peeps",
+        img: "peeps.jpg",
+        id: "peeps"
     },
     Q6_Pixy_Stix: {
         name: "Pixy Stix"
@@ -213,7 +234,9 @@ var candyData = {
     },
     Q6_Trail_Mix: {
         key: "Q6_Trail_Mix",
-        name: "Trail Mix"
+        name: "Trail Mix",
+        img: "trailmix.jpg",
+        id: "trailmix"
     },
     Q6_Twix: {
         key: "Q6_Twix",
@@ -231,36 +254,6 @@ var candyData = {
         img: "york-peppermint-patties.jpg",
         id: "york"
     }
-};
-
-var candyToColor = {
-    Q6_Butterfinger: "#fce032",
-    Q6_Candy_Corn: "#e6401b",
-    Q6_Chiclets: "#fbed53",
-    Q6_Dots: "#f9e233",
-    Q6_Fuzzy_Peaches: "Fuzzy Peaches",
-    Q6_Good_N_Plenty: "Good & Plenty",
-    Q6_Gummy_Bears_straight_up: "Gummy Bears",
-    Q6_Healthy_Fruit: "Healthy Fruit",
-    Q6_Heath_Bar: "Heath Bar",
-    Q6_Hershey_s_Dark_Chocolate: "Hershey's Dark Chocolate",
-    Q6_Hershey_s_Kisses: "Hershey's Kisses",
-    Q6_Hershey_s_Milk_Chocolate: "Hershey's Milk Chocolate",
-    Q6_Jolly_Rancher_bad_flavor: "Jolly Rancher (Bad Flavor)",
-    Q6_Jolly_Ranchers_good_flavor: "Jolly Rancher (Good Flavor)",
-    Q6_Junior_Mints: "Junior Mints",
-    Q6_Kit_Kat: "#e92630",
-    Q6_LaffyTaffy: "Laffy Taffy",
-    Q6_LemonHeads: "LemonHeads",
-    Q6_Licorice_not_black: "Licorice (not black)",
-    Q6_Licorice_yes_black: "Licorice (black)",
-    Q6_Lollipops: "Lollipops",
-    Q6_Mike_and_Ike: "Mike and Ike",
-    Q6_Milk_Duds: "Milk Duds",
-    Q6_Milky_Way: "#1d6b20",
-    Q6_Mint_Kisses: "Mint Kisses",
-    Q6_Mr_Goodbar: "Mr. Goodbar",
-    Q6_Nerds: "#8975b0"
 };
 
 d3.csv('./data/candy.csv', function(error, dataset) {
@@ -361,13 +354,6 @@ function drawMap(data) {
     // Define Path
     var path = d3.geoPath().projection(projection);
 
-    // Define color scale. A range of color to represent different shade of the color
-    // In this example, we will represent the color Blue in different shades.
-    var color = d3.scaleQuantize()
-        .range(["rgb(161,217,155)","rgb(116,196,118)",
-            "rgb(65,171,93)","rgb(35,139,69)",
-            "rgb(0,90,50)"]);
-
     d3.json('./data/us-states.json', function(error, json) {
         if (error) {
             console.error('Error while loading ./data/us-states.json dataset.');
@@ -420,7 +406,7 @@ function drawMap(data) {
         stateEnter.append('path')
             .attr('class', 'state-boundary')
             .attr('d', path)
-            .attr('stroke', 'white')
+            .attr('stroke', '#888')
             .attr('stroke-width', 0.8)
             .style('fill', function(d) {
                 var stateName = d.properties.name;
