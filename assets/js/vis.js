@@ -457,6 +457,6 @@ function onMapCategoryChanged() {
     var select = d3.select('#categorySelect').node();
     // Get current value of select element
     var category = select.options[select.selectedIndex].value;
-    // Update chart with the selected category of letters
+    // Update map with the selected feeling category
     updateMap(category);
 }
