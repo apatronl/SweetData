@@ -436,3 +436,27 @@ function drawMap(data) {
             });
         });
 }
+
+function updateMap(category) {
+    candyMapSVG.selectAll('path')
+        .style('fill', function(d) {
+            var stateName = d.properties.name;
+            var top = d.properties[category];
+            if (!top) return '#888';
+            var candy = top.candy;
+            if (candyData[candy].img) {
+                return 'url(#' + candyData[candy].id + ')';
+            }
+            return '#888';
+        })
+}
+
+// Global helper functions
+
+function onMapCategoryChanged() {
+    var select = d3.select('#categorySelect').node();
+    // Get current value of select element
+    var category = select.options[select.selectedIndex].value;
+    // Update chart with the selected category of letters
+    updateMap(category);
+}

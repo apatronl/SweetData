@@ -22,7 +22,8 @@
     display: inline-block;
     position: relative;
     width: 100%;
-    padding-bottom: 100%; /* aspect ratio */
+    /*height: 80%;*/
+    padding-bottom: 80%; /* aspect ratio */
 	/*padding-right: 3.5%;*/
     vertical-align: top;
     overflow: hidden;
@@ -43,6 +44,17 @@
     position: absolute;
     top: 0;
     left: 0;
+}
+
+.custom-select {
+    /*margin-right: auto; margin-left: auto;*/
+    width: 50%;
+    padding-bottom: 30;
+}
+
+.selector {
+    width:50%;
+    display:inline-block;
 }
 
 /* Reset */
