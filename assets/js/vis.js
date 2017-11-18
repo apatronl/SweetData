@@ -178,7 +178,7 @@ var candyData = {
     },
     Q6_Rolos: {
         name: "Rolos",
-        img: "rolo.png".
+        img: "rolo.png",
         id: "rolo"
     },
     Q6_Skittles: {
