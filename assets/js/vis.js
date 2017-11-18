@@ -106,7 +106,9 @@ var candyData = {
     },
     Q6_Junior_Mints: {
         key: "Q6_Junior_Mints",
-        name: "Junior Mints"
+        name: "Junior Mints",
+        img: "juniormints.jpg",
+        id: "juniormints"
     },
     Q6_Kit_Kat: {
         key: "Q6_Kit_Kat",
@@ -117,7 +119,9 @@ var candyData = {
     },
     Q6_LaffyTaffy: {
         key: "Q6_LaffyTaffy",
-        name: "Laffy Taffy"
+        name: "Laffy Taffy",
+        img: "laffytaffy.png",
+        id: "laffytaffy"
     },
     Q6_LemonHeads: {
         key: "Q6_LemonHeads",
