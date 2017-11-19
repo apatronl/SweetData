@@ -1,30 +1,28 @@
 var candyMagnetSVG = d3.select('svg.candymagnet');
+
 var candyMapSVG = d3.select("div#candyMapContainer")
-   .append("div")
+   .append('div')
    .classed("svg-container-left", true) //container class to make it responsive
    .append("svg")
    //responsive SVG needs these 2 attributes and no width and height attr
    .attr("preserveAspectRatio", "xMinYMin meet")
-   .attr("viewBox", "0 0 600 450")
+   .attr("viewBox", "0 0 600 430")
    //class to make it responsive
    .classed("svg-content-responsive", true);
 
-  // candyMapSVG.append("rect")
-  //       .attr("width", "100%")
-  //       .attr("height", "100%")
-  //       .attr("fill", "white");
+// var candyDetailsSVG = d3.select("div#candyDetailsContainer")
+//     .append('div')
+//     .classed("svg-container-right", true)
+//     .append("svg")
+//     .attr("preserveAspectRatio", "xMinYMin meet")
+//     .attr("viewBox", "0 0 600 450")
+//     // .attr('width', '100%')
+//     // .attr('height', '600')
+//     .classed("svg-content-responsive", true);
 
-   var candyDetailsSVG = d3.select("div#candyDetailsContainer")
-      .append("div")
-      .classed("svg-container-right", true) //container class to make it responsive
-      .append("svg")
-      //responsive SVG needs these 2 attributes and no width and height attr
-      .attr("preserveAspectRatio", "xMinYMin meet")
-    //   .attr("viewBox", "0 0 600 200")
-        .attr('width', '100%')
-        .attr('height', '100%')
-      //class to make it responsive
-      .classed("svg-content-responsive", true);
+// candyDetailsSVG.append('rect')
+//     .attr('width', '100%')
+//     .attr('height', '100%');
 
 var keys = {country: 'Q4_COUNTRY', state: 'Q5_STATE_PROVINCE_COUNTY_ETC'};
 var feelings = {joy: 'JOY', meh: 'MEH', despair: 'DESPAIR'};
@@ -352,7 +350,7 @@ d3.csv('./data/candy.csv', function(error, dataset) {
         .attr("cy", function(d) { return d.y; })
         .call(drag);
 
-    drawMap(dataByState);
+        drawMap(dataByState);
 });
 
 function drawMap(data) {
@@ -428,11 +426,19 @@ function drawMap(data) {
                 }
                 return '#888';
             })
-            .on("mouseover", function(d) {
-                d3.select(this).style('opacity', '0.5');
+            .on('mouseover', function(d) {
+                // console.log(d.properties.top_joy.candy);
+                d3.selectAll('.state-boundary')
+                    .attr('opacity', function(e) {
+                        return d.properties.name == e.properties.name ? 1 : 0.3;
+                    });
             })
             .on('mouseout', function(d) {
-                d3.select(this).style('opacity', '1');
+                d3.selectAll('.state-boundary')
+                    .attr('opacity', 1);
+            })
+            .on('click', function(d) {
+                console.log(d.properties.name);
             });
         });
 }
