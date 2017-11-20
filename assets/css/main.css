@@ -108,8 +108,8 @@
     fill: none;
 }
 
-.text {
-    fill: black;
+#selectorTitle {
+    text-align: left;
 }
 
 /*

@@ -1,3 +1,4 @@
+// Global variables
 var candyMagnetSVG = d3.select('svg.candymagnet');
 
 var candyMapSVG = d3.select('div#candyMapContainer')
@@ -17,20 +18,6 @@ var candyBubbleSVG = d3.select('div#candyDetailsContainer')
    .attr('preserveAspectRatio', 'xMinYMin meet')
    .attr('viewBox', '0 0 600 600')
    .classed('svg-content-responsive', true);
-
-// var candyDetailsSVG = d3.select("div#candyDetailsContainer")
-//     .append('div')
-//     .classed("svg-container-right", true)
-//     .append("svg")
-//     .attr("preserveAspectRatio", "xMinYMin meet")
-//     .attr("viewBox", "0 0 600 450")
-//     // .attr('width', '100%')
-//     // .attr('height', '600')
-//     .classed("svg-content-responsive", true);
-
-// candyDetailsSVG.append('rect')
-//     .attr('width', '100%')
-//     .attr('height', '100%');
 
 var keys = {country: 'Q4_COUNTRY', state: 'Q5_STATE_PROVINCE_COUNTY_ETC'};
 var feelings = {top_joy: 'JOY', meh: 'MEH', top_despair: 'DESPAIR'};
@@ -112,16 +99,12 @@ var candyData = {
         imgcircle: "hersheys-circle.png",
         id: "hersheys"
     },
-    Q6_Jolly_Rancher_bad_flavor: {
-        key: "Q6_Jolly_Rancher_bad_flavor",
-        name: "Jolly Rancher (Bad Flavor)",
+    Q6_Jolly_Ranchers_good_flavor: {
+        key: "Q6_Jolly_Ranchers_good_flavor",
+        name: "Jolly Rancher (Good Flavor)",
         img: "jollyrancher.jpg",
         imgcircle: "jollyrancher-circle.png",
         id: "jollyrancher"
-    },
-    Q6_Jolly_Ranchers_good_flavor: {
-        key: "Q6_Jolly_Ranchers_good_flavor",
-        name: "Jolly Rancher (Good Flavor)"
     },
     Q6_Junior_Mints: {
         key: "Q6_Junior_Mints",
@@ -337,7 +320,9 @@ d3.csv('./data/candy.csv', function(error, dataset) {
         });
         dataByCandy[i] = candyDataDict;
     });
+
     console.log(dataByCandy);
+
     dataByState = d3.nest()
         .key(function(d) {
             var country = d[keys.country];
@@ -383,6 +368,7 @@ d3.csv('./data/candy.csv', function(error, dataset) {
         dataByState.sort(function(a,b) {
             return (a.key > b.key) ? 1 : ((b.key > a.key) ? -1 : 0);
         });
+
         console.log(dataByState);
 
 
@@ -496,7 +482,6 @@ function drawMap(data) {
                 return '#888';
             })
             .on('mouseover', function(d) {
-                // console.log(d.properties.top_joy.candy);
                 d3.selectAll('.state-boundary')
                     .attr('opacity', function(e) {
                         return d.properties.name == e.properties.name ? 1 : 0.3;
@@ -507,7 +492,6 @@ function drawMap(data) {
                     .attr('opacity', 1);
             })
             .on('click', function(d, i) {
-                console.log(d.properties.name);
                 var stateName = d.properties.name;
                 bubbleChartTitle.text('Top ' + selectedFeeling + ' for ' + d.properties.name);
                 drawBubbleChart(data[i].value[selectedFeeling]);
@@ -556,6 +540,8 @@ function drawBubbleChart(data) {
 
     bubble(root);
 
+    console.log(root.children);
+
     var maxR = d3.max(root.children, function(d) {
         return d.r;
     });
@@ -574,9 +560,6 @@ function drawBubbleChart(data) {
         .attr('r', function(d){ return d.r; })
         .style("fill", function(d) {
             return '#fff';
-            // var candy = d.data.candy;
-            // if (candyData[candy].color) return candyData[candy].color;
-            // return '#fff';
         });
 
     var tip = d3.tip()
