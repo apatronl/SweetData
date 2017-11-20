@@ -15,7 +15,6 @@ var candyBubbleSVG = d3.select('div#candyDetailsContainer')
    .classed('svg-container-bubble', true)
    .append('svg')
    .attr('preserveAspectRatio', 'xMinYMin meet')
-   .style('border', '1px solid #e0e1e2')
    .attr('viewBox', '0 0 600 600')
    .classed('svg-content-responsive', true);
 
