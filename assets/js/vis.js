@@ -1,27 +1,22 @@
 var candyMagnetSVG = d3.select('svg.candymagnet');
 
-var candyMapSVG = d3.select("div#candyMapContainer")
+var candyMapSVG = d3.select('div#candyMapContainer')
    .append('div')
-   .classed("svg-container-left", true) //container class to make it responsive
-   .append("svg")
-   //responsive SVG needs these 2 attributes and no width and height attr
-   .attr("preserveAspectRatio", "xMinYMin meet")
-   .attr("viewBox", "0 0 600 430")
-   //class to make it responsive
-   .classed("svg-content-responsive", true);
+   .classed('svg-container-left', true)
+   .append('svg')
+   .attr('preserveAspectRatio', 'xMinYMin meet')
+   .attr('viewBox', "0 0 600 430")
+   .classed('svg-content-responsive', true);
 
 var candyBubbleSVG = d3.select('svg.candybubble');
 
-var candyBubbleSVG = d3.select("div#candyDetailsContainer")
+var candyBubbleSVG = d3.select('div#candyDetailsContainer')
    .append('div')
-   .classed("svg-container-left", true) //container class to make it responsive
-   .append("svg")
-   //responsive SVG needs these 2 attributes and no width and height attr
-   .attr("preserveAspectRatio", "xMinYMin meet")
-   .attr("viewBox", "0 0 600 430")
-   //class to make it responsive
-   .classed("svg-content-responsive", true);
-// console.log(candyBubbleSVG);
+   .classed('svg-container-left', true)
+   .append('svg')
+   .attr('preserveAspectRatio', 'xMinYMin meet')
+   .attr('viewBox', '0 0 600 430')
+   .classed('svg-content-responsive', true);
 
 // var candyDetailsSVG = d3.select("div#candyDetailsContainer")
 //     .append('div')
@@ -45,6 +40,7 @@ var candyData = {
         key: "Q6_Butterfinger",
         name: "Butterfinger",
         img: "butterfinger.png",
+        imgcircle: "butterfinger-circle.png",
         id: "butterfinger",
         color: "#fce032"
     },
@@ -52,6 +48,7 @@ var candyData = {
         key: "Q6_Candy_Corn",
         name:"Candy Corn",
         img: "candycorn.jpg",
+        imgcircle: "candycorn-circle.png",
         id: "candycorn",
         color: "#e6401b"
     },
@@ -59,6 +56,7 @@ var candyData = {
         key: "Q6_Chiclets",
         name: "Chiclets",
         img: "chiclets.jpg",
+        imgcircle: "chiclets-circle.png",
         id: "chiclets",
         color: "#fbed53"
     },
@@ -66,6 +64,7 @@ var candyData = {
         key: "Q6_Dots",
         name: "Dots",
         img: "dots.jpg",
+        imgcircle: "dots-circle.png",
         id: "dots",
         color: "#f9e233"
     },
@@ -182,6 +181,8 @@ var candyData = {
     Q6_Nerds: {
         key: "Q6_Nerds",
         name: "Nerds",
+        img: "nerds.jpg",
+        imgcircle: "nerds-circle.png",
         color: "#8975b0"
     },
     Q6_Nestle_Crunsh: {
@@ -218,6 +219,7 @@ var candyData = {
     Q6_Regular_M_Ms: {
         name: "Milk Chocolate M&M's",
         img: "mm.jpg",
+        imgcircle: "mm-circle.png",
         id: "mm"
     },
     Q6_Rolos: {
@@ -244,6 +246,7 @@ var candyData = {
     Q6_Starburst: {
         name: "Starburst",
         img: "starburst.jpg",
+        imgcircle: "starburst-circle.png",
         id: "starburst"
     },
     Q6_Swedish_Fish: {
@@ -252,6 +255,7 @@ var candyData = {
     Q6_Three_Musketeers: {
         name: "3 Musketeers",
         img: "threemusketeers.jpg",
+        imgcircle: "threemusketeers-circle.png",
         id: "threemusketeers"
     },
     Q6_Tic_Tacs: {
@@ -260,6 +264,7 @@ var candyData = {
     Q6_Tolberone_something_or_other: {
         name: "Toblerone",
         img: "toblerone.png",
+        imgcircle: "toblerone-circle.png",
         id: "toblerone"
     },
     Q6_Trail_Mix: {
@@ -272,6 +277,7 @@ var candyData = {
         key: "Q6_Twix",
         name: "Twix",
         img: "twix.jpg",
+        imgcircle: "twix-circle.png",
         id: "twix"
     },
     Q6_Whatchamacallit_Bars: {
@@ -282,6 +288,7 @@ var candyData = {
         key: "Q6_York_Peppermint_Patties",
         name: "York Peppermint Patties",
         img: "york-peppermint-patties.jpg",
+        imgcircle: "york-peppermint-patties-circle.png",
         id: "york"
     }
 };
@@ -532,7 +539,9 @@ function drawBubbleChart(data) {
     node.append('image')
         .attr('xlink:href', function(d) {
             var candy = d.data.candy;
-            return 'img/' + candyData[candy].imgcircle;
+            var imgCircle = candyData[candy].imgcircle;
+            if (!imgCircle) return null;
+            return 'img/' + imgCircle;
         })
         .attr("x", function(d) { return -d.r;})
         .attr("y", function(d) { return -d.r;})
