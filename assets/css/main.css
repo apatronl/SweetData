@@ -30,7 +30,7 @@
     position: relative;
     width: 100%;
     /*height: 80%;*/
-    padding-bottom: 70%; /* aspect ratio */
+    padding-bottom: 100%; /* aspect ratio */
 	/*padding-right: 3.5%;*/
     vertical-align: top;
     overflow: hidden;
@@ -52,7 +52,7 @@
     position: relative;
     width: 65%;
     /*height: 600px;*/
-    padding-bottom: 80%; /* aspect ratio */
+    padding-bottom: 100%; /* aspect ratio */
 	/*padding-right: 3.5%;*/
     vertical-align: top;
     overflow: hidden;
@@ -106,6 +106,10 @@
     stroke: black;
     stroke-width: 0.5px;
     fill: none;
+}
+
+.text {
+    fill: black;
 }
 
 /*
@@ -166,7 +170,7 @@
 	.container {
 		margin-left: auto;
 		margin-right: auto;
-		width: 80%;
+		width: 70%;
 	}
 
 	/*.container.\31 25\25 {
@@ -196,7 +200,7 @@
 		.container {
 			margin-left: auto;
 			margin-right: auto;
-			width: 80%;
+			width: 70%;
 		}
 
 		/*.container.\31 25\25 {
@@ -228,7 +232,7 @@
 		.container {
 			margin-left: auto;
 			margin-right: auto;
-			width: 80%;
+			width: 70%;
 		}
 
 		/*.container.\31 25\25 {

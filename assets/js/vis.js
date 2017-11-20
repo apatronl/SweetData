@@ -12,10 +12,11 @@ var candyBubbleSVG = d3.select('svg.candybubble');
 
 var candyBubbleSVG = d3.select('div#candyDetailsContainer')
    .append('div')
-   .classed('svg-container-left', true)
+   .classed('svg-container-bubble', true)
    .append('svg')
    .attr('preserveAspectRatio', 'xMinYMin meet')
-   .attr('viewBox', '0 0 600 430')
+   .style('border', '1px solid #e0e1e2')
+   .attr('viewBox', '0 0 600 600')
    .classed('svg-content-responsive', true);
 
 // var candyDetailsSVG = d3.select("div#candyDetailsContainer")
@@ -33,7 +34,7 @@ var candyBubbleSVG = d3.select('div#candyDetailsContainer')
 //     .attr('height', '100%');
 
 var keys = {country: 'Q4_COUNTRY', state: 'Q5_STATE_PROVINCE_COUNTY_ETC'};
-var feelings = {joy: 'JOY', meh: 'MEH', despair: 'DESPAIR'};
+var feelings = {top_joy: 'JOY', meh: 'MEH', top_despair: 'DESPAIR'};
 
 var candyData = {
     Q6_Butterfinger: {
@@ -377,28 +378,39 @@ d3.csv('./data/candy.csv', function(error, dataset) {
         console.log(dataByState);
 
 
-    var drag = d3.drag()
-        .on('drag', function(d, i) {
-            var currMagnet = d3.select(this);
-        //    d.x = currMagnet.x
-            d.x += d3.event.dx;
-            d.y += d3.event.dy;
-            currMagnet.attr('cx', d.x)
-                .attr('cy', d.y);
-        });
-    var magnet = candyMagnetSVG.append('g')
-        .attr('class', 'magnet')
-        .selectAll('circle')
-        .data([{x: 700, y: 400}])
-        .enter()
-        .append('circle')
-        .attr('r', 40)
-        .attr("cx", function(d) { return d.x; })
-        .attr("cy", function(d) { return d.y; })
-        .call(drag);
+    // var drag = d3.drag()
+    //     .on('drag', function(d, i) {
+    //         var currMagnet = d3.select(this);
+    //     //    d.x = currMagnet.x
+    //         d.x += d3.event.dx;
+    //         d.y += d3.event.dy;
+    //         currMagnet.attr('cx', d.x)
+    //             .attr('cy', d.y);
+    //     });
+    // var magnet = candyMagnetSVG.append('g')
+    //     .attr('class', 'magnet')
+    //     .selectAll('circle')
+    //     .data([{x: 700, y: 400}])
+    //     .enter()
+    //     .append('circle')
+    //     .attr('r', 40)
+    //     .attr("cx", function(d) { return d.x; })
+    //     .attr("cy", function(d) { return d.y; })
+    //     .call(drag);
+    var bubbleChartW = parseInt(d3.select('div#candyDetailsContainer').style('width'), 10);
+    bubbleChartTitle = candyBubbleSVG.append("g")
+        .append("text")
+        .attr("id", "keywordTitle")
+        .attr("transform", 'translate(20, 35)')
+        .attr("text-anchor", "left")
+        .style("font-size", (bubbleChartW / 30) + "px")
+        .style("font-weight", "bold")
+        .text('Click on a state to learn more about it');
 
-        drawMap(dataByState);
+    drawMap(dataByState);
 });
+
+var selectedFeeling = 'JOY';
 
 // Map
 
@@ -489,7 +501,8 @@ function drawMap(data) {
             .on('click', function(d, i) {
                 console.log(d.properties.name);
                 var stateName = d.properties.name;
-                drawBubbleChart(data[i].value['JOY']);
+                bubbleChartTitle.text('Top ' + selectedFeeling + ' for ' + d.properties.name);
+                drawBubbleChart(data[i].value[selectedFeeling]);
             });
         });
 }
@@ -512,6 +525,7 @@ function onMapCategoryChanged() {
     var select = d3.select('#categorySelect').node();
     // Get current value of select element
     var category = select.options[select.selectedIndex].value;
+    selectedFeeling = feelings[category];
     // Update map with the selected feeling category
     updateMap(category);
 }
@@ -521,11 +535,11 @@ function onMapCategoryChanged() {
 function drawBubbleChart(data) {
     candyBubbleSVG.selectAll('.node').remove();
 
-    var w = parseInt(d3.select('div#candyDetailsContainer').style('width'), 10)*0.6;
+    var w = parseInt(d3.select('div#candyDetailsContainer').style('width'), 10);
     var h = parseInt(d3.select('div#candyDetailsContainer').style('height'), 10);
 
     var bubble = d3.pack()
-        .size([w, w])
+        .size([w, h - 35])
         .padding(1.5);
 
     var root = d3.hierarchy({children: data})
@@ -544,7 +558,8 @@ function drawBubbleChart(data) {
         .append('g')
         .attr('class', 'node')
         .attr('transform', function(d) {
-            return 'translate(' + (d.x + (w / 2.2) - (maxR * 2)) + ',' + d.y + ')';
+            return 'translate(' + d.x + ',' + (d.y + 35) + ')';
+            return 'translate(' + (d.x + (w / 2.5) - (maxR * 2)) + ',' + d.y + ')';
         });
 
     node.append('circle')
@@ -598,4 +613,5 @@ function drawBubbleChart(data) {
     .duration(550)
         .attr('r', function(d){ return d.r; })
         .attr('class', 'framed');
+
 }
