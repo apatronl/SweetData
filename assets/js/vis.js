@@ -72,12 +72,14 @@ var candyData = {
         key: "Q6_Fuzzy_Peaches",
         name: "Fuzzy Peaches",
         img: "fuzzypeaches.jpg",
+        imgcircle: "fuzzypeaches-circle.png",
         id: "fuzzypeaches"
     },
     Q6_Good_N_Plenty: {
         key: "Q6_Good_N_Plenty",
         name: "Good & Plenty",
         img: "goodnplenty.jpg",
+        imgcircle: "goodnplenty-circle.png",
         id: "goodnplenty"
     },
     Q6_Gummy_Bears_straight_up: {
@@ -110,6 +112,7 @@ var candyData = {
         key: "Q6_Jolly_Rancher_bad_flavor",
         name: "Jolly Rancher (Bad Flavor)",
         img: "jollyrancher.jpg",
+        imgcircle: "jollyrancher-circle.png",
         id: "jollyrancher"
     },
     Q6_Jolly_Ranchers_good_flavor: {
@@ -120,6 +123,7 @@ var candyData = {
         key: "Q6_Junior_Mints",
         name: "Junior Mints",
         img: "juniormints.jpg",
+        imgcircle: "juniormints-circle.png",
         id: "juniormints"
     },
     Q6_Kit_Kat: {
@@ -134,6 +138,7 @@ var candyData = {
         key: "Q6_LaffyTaffy",
         name: "Laffy Taffy",
         img: "laffytaffy.png",
+        imgcircle: "laffytaffy-circle.png",
         id: "laffytaffy"
     },
     Q6_LemonHeads: {
@@ -148,6 +153,7 @@ var candyData = {
         key: "Q6_Licorice_yes_black",
         name: "Licorice (black)",
         img: "blacklicorice.jpg",
+        imgcircle: "blacklicorice-circle.png",
         id: "blacklicorice"
     },
     Q6_Lollipops: {
@@ -185,9 +191,11 @@ var candyData = {
         imgcircle: "nerds-circle.png",
         color: "#8975b0"
     },
-    Q6_Nestle_Crunsh: {
-        key: "Q6_Nestle_Crunsh",
-        name: "Crunch"
+    Q6_Nestle_Crunch: {
+        key: "Q6_Nestle_Crunch",
+        name: "Crunch",
+        img: "crunch.png",
+        imgcircle: "crunch-circle.png"
     },
     Q6_Peanut_M_M_s: {
         key: "Q6_Peanut_M_M_s",
@@ -200,6 +208,7 @@ var candyData = {
         key: "Q6_Peeps",
         name: "Peeps",
         img: "peeps.jpg",
+        imgcircle: "peeps-circle.png",
         id: "peeps"
     },
     Q6_Pixy_Stix: {
@@ -271,6 +280,7 @@ var candyData = {
         key: "Q6_Trail_Mix",
         name: "Trail Mix",
         img: "trailmix.jpg",
+        imgcircle: "trailmix-circle.png",
         id: "trailmix"
     },
     Q6_Twix: {
@@ -525,18 +535,21 @@ function drawBubbleChart(data) {
         .append('g')
         .attr('class', 'node')
         .attr('transform', function(d) {
-            return 'translate(' + (d.x + (diameter / 2.0) - (maxR * 2)) + ',' + d.y + ')';
+            return 'translate(' + (d.x + (diameter / 2.2) - (maxR * 2)) + ',' + d.y + ')';
         });
 
     node.append('circle')
         .attr('r', function(d){ return d.r; })
         .style("fill", function(d) {
-            var candy = d.data.candy;
-            if (candyData[candy].color) return candyData[candy].color;
-            return '#888';
+            return '#fff';
+            // var candy = d.data.candy;
+            // if (candyData[candy].color) return candyData[candy].color;
+            // return '#fff';
         });
 
     node.append('image')
+        .transition()
+        .duration(550)
         .attr('xlink:href', function(d) {
             var candy = d.data.candy;
             var imgCircle = candyData[candy].imgcircle;
