@@ -88,13 +88,15 @@ var candyData = {
     },
     Q6_Heath_Bar: {
         key: "Q6_Heath_Bar",
-        name: "Heath Bar"
+        name: "Heath Bar",
+        img: "heath.jpg",
+        imgcircle: "heath-circle.png"
     },
     Q6_Hershey_s_Dark_Chocolate: {
         key: "Q6_Hershey_s_Dark_Chocolate",
         name: "Hershey's Dark Chocolate",
-        img: "hersheys.jpg",
-        imgcircle: "hersheys-circle.png",
+        img: "hersheys-dark.jpg",
+        imgcircle: "hersheys-dark-circle.png",
         id: "hersheys"
     },
     Q6_Hershey_s_Kisses: {
@@ -172,7 +174,9 @@ var candyData = {
     },
     Q6_Milk_Duds: {
         key: "Q6_Milk_Duds",
-        name: "Milk Duds"
+        name: "Milk Duds",
+        img: "milkduds.jpg",
+        imgcircle: "milkduds-circle.png"
     },
     Q6_Milky_Way: {
         key: "Q6_Milky_Way",
@@ -184,11 +188,15 @@ var candyData = {
     },
     Q6_Mint_Kisses: {
         key: "Q6_Mint_Kisses",
-        name: "Mint Kisses"
+        name: "Mint Kisses",
+        img: "mint-kisses.jpg",
+        imgcircle: "mint-kisses-circle.png"
     },
     Q6_Mr_Goodbar: {
         key: "Q6_Mr_Goodbar",
-        name: "Mr. Goodbar"
+        name: "Mr. Goodbar",
+        img: "mrgoodbar.jpg",
+        imgcircle: "mrgoodbar-circle.png"
     },
     Q6_Nerds: {
         key: "Q6_Nerds",
@@ -228,7 +236,8 @@ var candyData = {
     },
     Q6_Reese_s_Pieces: {
         name: "Reese's Pieces",
-        img: "reeses.jpg",
+        img: "reeses-pieces.jpg",
+        imgcircle: "reeses-pieces-circle.png",
         id: "reesespieces"
     },
     Q6_Regular_M_Ms: {
