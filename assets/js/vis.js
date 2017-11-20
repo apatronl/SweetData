@@ -147,7 +147,9 @@ var candyData = {
     },
     Q6_Licorice_not_black: {
         key: "Q6_Licorice_not_black",
-        name: "Licorice (not black)"
+        name: "Licorice (not black)",
+        img: "licorice.jpg",
+        imgcircle: "licorice-circle.png"
     },
     Q6_Licorice_yes_black: {
         key: "Q6_Licorice_yes_black",
@@ -513,10 +515,11 @@ function onMapCategoryChanged() {
 function drawBubbleChart(data) {
     candyBubbleSVG.selectAll('.node').remove();
 
-    var diameter = parseInt(d3.select('div#candyDetailsContainer').style('width'), 10) / 1.7;
+    var w = parseInt(d3.select('div#candyDetailsContainer').style('width'), 10)*0.6;
+    var h = parseInt(d3.select('div#candyDetailsContainer').style('height'), 10);
 
     var bubble = d3.pack()
-        .size([diameter, diameter])
+        .size([w, w])
         .padding(1.5);
 
     var root = d3.hierarchy({children: data})
@@ -535,7 +538,7 @@ function drawBubbleChart(data) {
         .append('g')
         .attr('class', 'node')
         .attr('transform', function(d) {
-            return 'translate(' + (d.x + (diameter / 2.2) - (maxR * 2)) + ',' + d.y + ')';
+            return 'translate(' + (d.x + (w / 2.2) - (maxR * 2)) + ',' + d.y + ')';
         });
 
     node.append('circle')
@@ -547,7 +550,27 @@ function drawBubbleChart(data) {
             // return '#fff';
         });
 
-    node.append('image')
+    var tip = d3.tip()
+        .attr('class', 'd3-tip')
+        .offset([-6, 0])
+        .html(function(d) {
+            var name = candyData[d.data.candy].name;
+            return "<strong>" + name + "</strong>";
+         });
+
+    var image = node.append('image')
+        .on('mouseenter', tip.show)
+        .on('mouseover', function(d) {
+            candyBubbleSVG.selectAll('.node')
+                .attr('opacity', function(e) {
+                    return d.data.candy == e.data.candy ? 1 : 0.3;
+                });
+        })
+        .on('mouseleave', function() {
+            candyBubbleSVG.selectAll('.node')
+                .attr('opacity', 1);
+        })
+        .on('mouseout', tip.hide)
         .transition()
         .duration(550)
         .attr('xlink:href', function(d) {
@@ -560,4 +583,8 @@ function drawBubbleChart(data) {
         .attr("y", function(d) { return -d.r;})
         .attr("height", function(d) { return d.r * 2; })
         .attr("width", function(d) { return d.r * 2; });
+
+    image.call(tip);
+
+
 }
