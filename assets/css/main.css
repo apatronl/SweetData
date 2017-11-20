@@ -102,6 +102,11 @@
   left: 0;
 }
 
+.framed {
+    stroke: black;
+    stroke-width: 0.5px;
+    fill: none;
+}
 
 /*
 	Alpha by HTML5 UP

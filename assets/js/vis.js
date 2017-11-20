@@ -99,7 +99,9 @@ var candyData = {
     },
     Q6_Hershey_s_Kisses: {
         key: "Q6_Hershey_s_Kisses",
-        name: "Hershey's Kisses"
+        name: "Hershey's Kisses",
+        img: "kisses.jpg",
+        imgcircle: "kisses-circle.png"
     },
     Q6_Hershey_s_Milk_Chocolate: {
         key: "Q6_Hershey_s_Milk_Chocolate",
@@ -147,7 +149,7 @@ var candyData = {
     },
     Q6_Licorice_not_black: {
         key: "Q6_Licorice_not_black",
-        name: "Licorice (not black)",
+        name: "Licorice",
         img: "licorice.jpg",
         imgcircle: "licorice-circle.png"
     },
@@ -160,7 +162,9 @@ var candyData = {
     },
     Q6_Lollipops: {
         key: "Q6_Lollipops",
-        name: "Lollipops"
+        name: "Lollipops",
+        img: "lollipop.jpg",
+        imgcircle: "lollipop-circle.png"
     },
     Q6_Mike_and_Ike: {
         key: "Q6_Mike_and_Ike",
@@ -252,7 +256,9 @@ var candyData = {
         id: "snickers"
     },
     Q6_Sourpatch_Kids_i_e_abominations_of_nature: {
-        name: "Sourpatch Kids"
+        name: "Sour Patch Kids",
+        img: "sour-patch-kids.jpg",
+        imgcircle: "sour-patch-kids-circle.png"
     },
     Q6_Starburst: {
         name: "Starburst",
@@ -555,10 +561,11 @@ function drawBubbleChart(data) {
         .offset([-6, 0])
         .html(function(d) {
             var name = candyData[d.data.candy].name;
-            return "<strong>" + name + "</strong>";
+            return "<strong style='color:white'>" + name + "</strong>";
          });
 
     var image = node.append('image')
+        .attr('class', 'framed')
         .on('mouseenter', tip.show)
         .on('mouseover', function(d) {
             candyBubbleSVG.selectAll('.node')
@@ -586,5 +593,9 @@ function drawBubbleChart(data) {
 
     image.call(tip);
 
-
+    node.append('circle')
+    .transition()
+    .duration(550)
+        .attr('r', function(d){ return d.r; })
+        .attr('class', 'framed');
 }
