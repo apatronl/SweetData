@@ -10,6 +10,19 @@ var candyMapSVG = d3.select("div#candyMapContainer")
    //class to make it responsive
    .classed("svg-content-responsive", true);
 
+var candyBubbleSVG = d3.select('svg.candybubble');
+
+var candyBubbleSVG = d3.select("div#candyDetailsContainer")
+   .append('div')
+   .classed("svg-container-left", true) //container class to make it responsive
+   .append("svg")
+   //responsive SVG needs these 2 attributes and no width and height attr
+   .attr("preserveAspectRatio", "xMinYMin meet")
+   .attr("viewBox", "0 0 600 430")
+   //class to make it responsive
+   .classed("svg-content-responsive", true);
+// console.log(candyBubbleSVG);
+
 // var candyDetailsSVG = d3.select("div#candyDetailsContainer")
 //     .append('div')
 //     .classed("svg-container-right", true)
@@ -353,6 +366,8 @@ d3.csv('./data/candy.csv', function(error, dataset) {
         drawMap(dataByState);
 });
 
+// Map
+
 function drawMap(data) {
 
     var projection = d3.geoAlbersUsa()
@@ -437,8 +452,10 @@ function drawMap(data) {
                 d3.selectAll('.state-boundary')
                     .attr('opacity', 1);
             })
-            .on('click', function(d) {
+            .on('click', function(d, i) {
                 console.log(d.properties.name);
+                var stateName = d.properties.name;
+                drawBubbleChart(data[i].value['JOY']);
             });
         });
 }
@@ -457,12 +474,53 @@ function updateMap(category) {
         })
 }
 
-// Global helper functions
-
 function onMapCategoryChanged() {
     var select = d3.select('#categorySelect').node();
     // Get current value of select element
     var category = select.options[select.selectedIndex].value;
     // Update map with the selected feeling category
     updateMap(category);
+}
+
+// Bubble Chart
+
+function drawBubbleChart(data) {
+    candyBubbleSVG.selectAll('.node').remove();
+
+    var diameter = parseInt(d3.select('div#candyDetailsContainer').style('width'), 10) / 1.7;
+
+    var bubble = d3.pack()
+        .size([diameter, diameter])
+        .padding(1.5);
+
+    var root = d3.hierarchy({children: data})
+        .sum(function(d) { return d.value; })
+        .sort(function(a, b) { return b.value - a.value; });
+
+    bubble(root);
+
+    var maxR = d3.max(root.children, function(d) {
+        return d.r;
+    });
+    console.log(maxR);
+    var node = candyBubbleSVG.selectAll('.node')
+        .data(root.children)
+        .enter()
+        .append('g')
+        .attr('class', 'node')
+        .attr('transform', function(d) {
+            // return 'translate(' + d.x + ',' + d.y + ')';
+            return 'translate(' + (d.x + (diameter / 2.0) - (maxR * 2)) + ',' + d.y + ')';
+            // return 'translate(' + (d.x + (diameter / 2.7) - (d.r / 2.0)) + ',' + d.y + ')';
+        });
+
+    node.append('circle')
+        .attr('r', function(d){ return d.r; })
+        .style("fill", function(d) {
+            var candy = d.data.candy;
+            if (candyData[candy].color) return candyData[candy].color;
+            return '#888';
+        });
+
+    return;
 }
