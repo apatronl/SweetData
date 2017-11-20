@@ -93,6 +93,7 @@ var candyData = {
         key: "Q6_Hershey_s_Dark_Chocolate",
         name: "Hershey's Dark Chocolate",
         img: "hersheys.jpg",
+        imgcircle: "hersheys-circle.png",
         id: "hersheys"
     },
     Q6_Hershey_s_Kisses: {
@@ -103,6 +104,7 @@ var candyData = {
         key: "Q6_Hershey_s_Milk_Chocolate",
         name: "Hershey's Milk Chocolate",
         img: "hersheys.jpg",
+        imgcircle: "hersheys-circle.png",
         id: "hersheys"
     },
     Q6_Jolly_Rancher_bad_flavor: {
@@ -125,6 +127,7 @@ var candyData = {
         key: "Q6_Kit_Kat",
         name: "Kit Kat",
         img: "kitkat.jpg",
+        imgcircle: "kitkat-circle.png",
         id: "kitkat",
         color: "#e92630"
     },
@@ -164,6 +167,7 @@ var candyData = {
         key: "Q6_Milky_Way",
         name: "Milky Way",
         img: "milkyway.jpg",
+        imgcircle: "milkyway-circle.png",
         id: "milkyway",
         color: "#1d6b20"
     },
@@ -188,6 +192,7 @@ var candyData = {
         key: "Q6_Peanut_M_M_s",
         name: "Peanut M&M's",
         img: "peanut-mm.jpg",
+        imgcircle: "peanut-mm-circle.png",
         id: "peanutmm"
     },
     Q6_Peeps: {
@@ -202,6 +207,7 @@ var candyData = {
     Q6_Reese_s_Peanut_Butter_Cups: {
         name: "Reese's",
         img: "reeses.jpg",
+        imgcircle: "reeses-circle.png",
         id: "reeses"
     },
     Q6_Reese_s_Pieces: {
@@ -217,16 +223,19 @@ var candyData = {
     Q6_Rolos: {
         name: "Rolos",
         img: "rolo.png",
+        imgcircle: "rolo-circle.png",
         id: "rolo"
     },
     Q6_Skittles: {
         name: "Skittles",
         img: "skittles.jpg",
+        imgcircle: "skittles-circle.png",
         id: "skittles"
     },
     Q6_Snickers: {
         name: "Snickers",
         img: "snickers.jpg",
+        imgcircle: "snickers-circle.png",
         id: "snickers"
     },
     Q6_Sourpatch_Kids_i_e_abominations_of_nature: {
@@ -502,16 +511,14 @@ function drawBubbleChart(data) {
     var maxR = d3.max(root.children, function(d) {
         return d.r;
     });
-    console.log(maxR);
+
     var node = candyBubbleSVG.selectAll('.node')
         .data(root.children)
         .enter()
         .append('g')
         .attr('class', 'node')
         .attr('transform', function(d) {
-            // return 'translate(' + d.x + ',' + d.y + ')';
             return 'translate(' + (d.x + (diameter / 2.0) - (maxR * 2)) + ',' + d.y + ')';
-            // return 'translate(' + (d.x + (diameter / 2.7) - (d.r / 2.0)) + ',' + d.y + ')';
         });
 
     node.append('circle')
@@ -522,5 +529,13 @@ function drawBubbleChart(data) {
             return '#888';
         });
 
-    return;
+    node.append('image')
+        .attr('xlink:href', function(d) {
+            var candy = d.data.candy;
+            return 'img/' + candyData[candy].imgcircle;
+        })
+        .attr("x", function(d) { return -d.r;})
+        .attr("y", function(d) { return -d.r;})
+        .attr("height", function(d) { return d.r * 2; })
+        .attr("width", function(d) { return d.r * 2; });
 }
