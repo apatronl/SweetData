@@ -391,6 +391,17 @@ d3.csv('./data/candy.csv', function(error, dataset) {
     //     .attr("cx", function(d) { return d.x; })
     //     .attr("cy", function(d) { return d.y; })
     //     .call(drag);
+    var mapW = parseInt(d3.select('div#candyMapContainer').style('width'), 10);
+    mapTitle = candyMapSVG.append("g")
+        .append("text")
+        .attr("id", "keywordTitle")
+        .attr('text-anchor', 'middle')
+        .attr("transform", 'translate(' + (mapW / 2) + ', 25)')
+        .attr("text-anchor", "left")
+        .style("font-size", (mapW / 30) + "px")
+        .style("font-weight", "bold")
+        .text('');
+
     var bubbleChartW = parseInt(d3.select('div#candyDetailsContainer').style('width'), 10);
     bubbleChartTitle = candyBubbleSVG.append("g")
         .append("text")
@@ -486,10 +497,12 @@ function drawMap(data) {
                     .attr('opacity', function(e) {
                         return d.properties.name == e.properties.name ? 1 : 0.3;
                     });
+                mapTitle.text(d.properties.name);
             })
             .on('mouseout', function(d) {
                 d3.selectAll('.state-boundary')
                     .attr('opacity', 1);
+                mapTitle.text('');
             })
             .on('click', function(d, i) {
                 var stateName = d.properties.name;
