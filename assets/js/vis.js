@@ -531,7 +531,7 @@ function drawBubbleChart(data) {
     var h = parseInt(d3.select('div#candyDetailsContainer').style('height'), 10);
 
     var bubble = d3.pack()
-        .size([w, h - 35])
+        .size([w, w - 35])
         .padding(1.5);
 
     var root = d3.hierarchy({children: data})
@@ -539,8 +539,6 @@ function drawBubbleChart(data) {
         .sort(function(a, b) { return b.value - a.value; });
 
     bubble(root);
-
-    console.log(root.children);
 
     var maxR = d3.max(root.children, function(d) {
         return d.r;
@@ -565,9 +563,9 @@ function drawBubbleChart(data) {
     var tip = d3.tip()
         .attr('class', 'd3-tip')
         .offset([-6, 0])
-        .html(function(d) {
+        .html(function(d, i) {
             var name = candyData[d.data.candy].name;
-            return "<strong style='color:white'>" + name + "</strong>";
+            return "<strong style='color:white'>" + name + "</strong><br> Rank: " + (i + 1) + '<br>' + d.data.value + ' ' + selectedFeeling + ' votes';
          });
 
     var image = node.append('image')
