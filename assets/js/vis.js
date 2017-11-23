@@ -422,8 +422,8 @@ var selectedFeeling = 'JOY';
 function drawMap(data) {
 
     var projection = d3.geoAlbersUsa()
-    .scale(700)
-    .translate([300, 200]);
+        .scale(700)
+        .translate([300, 200]);
 
     // Define Path
     var path = d3.geoPath().projection(projection);
