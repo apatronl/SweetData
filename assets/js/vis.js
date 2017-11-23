@@ -77,7 +77,8 @@ var candyData = {
         key: "Q6_Heath_Bar",
         name: "Heath Bar",
         img: "heath.jpg",
-        imgcircle: "heath-circle.png"
+        imgcircle: "heath-circle.png",
+        id: "heathbar"
     },
     Q6_Hershey_s_Dark_Chocolate: {
         key: "Q6_Hershey_s_Dark_Chocolate",
@@ -90,7 +91,8 @@ var candyData = {
         key: "Q6_Hershey_s_Kisses",
         name: "Hershey's Kisses",
         img: "kisses.jpg",
-        imgcircle: "kisses-circle.png"
+        imgcircle: "kisses-circle.png",
+        id: "kisses"
     },
     Q6_Hershey_s_Milk_Chocolate: {
         key: "Q6_Hershey_s_Milk_Chocolate",
@@ -130,13 +132,17 @@ var candyData = {
     },
     Q6_LemonHeads: {
         key: "Q6_LemonHeads",
-        name: "LemonHeads"
+        name: "LemonHeads",
+        img: "lemonheads.jpg",
+        imgcircle: "lemonheads-circle.png",
+        id: "lemonheads"
     },
     Q6_Licorice_not_black: {
         key: "Q6_Licorice_not_black",
         name: "Licorice",
         img: "licorice.jpg",
-        imgcircle: "licorice-circle.png"
+        imgcircle: "licorice-circle.png",
+        id: "licorice"
     },
     Q6_Licorice_yes_black: {
         key: "Q6_Licorice_yes_black",
@@ -149,7 +155,8 @@ var candyData = {
         key: "Q6_Lollipops",
         name: "Lollipops",
         img: "lollipop.jpg",
-        imgcircle: "lollipop-circle.png"
+        imgcircle: "lollipop-circle.png",
+        id: "lollipop"
     },
     Q6_Mike_and_Ike: {
         key: "Q6_Mike_and_Ike",
@@ -159,7 +166,8 @@ var candyData = {
         key: "Q6_Milk_Duds",
         name: "Milk Duds",
         img: "milkduds.jpg",
-        imgcircle: "milkduds-circle.png"
+        imgcircle: "milkduds-circle.png",
+        id: "milkduds"
     },
     Q6_Milky_Way: {
         key: "Q6_Milky_Way",
@@ -173,26 +181,30 @@ var candyData = {
         key: "Q6_Mint_Kisses",
         name: "Mint Kisses",
         img: "mint-kisses.jpg",
-        imgcircle: "mint-kisses-circle.png"
+        imgcircle: "mint-kisses-circle.png",
+        id: "mintkisses"
     },
     Q6_Mr_Goodbar: {
         key: "Q6_Mr_Goodbar",
         name: "Mr. Goodbar",
         img: "mrgoodbar.jpg",
-        imgcircle: "mrgoodbar-circle.png"
+        imgcircle: "mrgoodbar-circle.png",
+        id: "mrgoodbar"
     },
     Q6_Nerds: {
         key: "Q6_Nerds",
         name: "Nerds",
         img: "nerds.jpg",
         imgcircle: "nerds-circle.png",
+        id: "nerds",
         color: "#8975b0"
     },
     Q6_Nestle_Crunch: {
         key: "Q6_Nestle_Crunch",
         name: "Crunch",
         img: "crunch.png",
-        imgcircle: "crunch-circle.png"
+        imgcircle: "crunch-circle.png",
+        id: "crunch"
     },
     Q6_Peanut_M_M_s: {
         key: "Q6_Peanut_M_M_s",
@@ -250,7 +262,8 @@ var candyData = {
     Q6_Sourpatch_Kids_i_e_abominations_of_nature: {
         name: "Sour Patch Kids",
         img: "sour-patch-kids.jpg",
-        imgcircle: "sour-patch-kids-circle.png"
+        imgcircle: "sour-patch-kids-circle.png",
+        id: "sourpatch"
     },
     Q6_Starburst: {
         name: "Starburst",
@@ -438,6 +451,7 @@ function drawMap(data) {
         for (var i = 0; i < data.length; i++) {
             // Grab State Name
            var dataState = data[i].key;
+
            // Grab data value for each feeling
            var joyValue = data[i].value['JOY'][0];
            var despairValue = data[i].value['DESPAIR'][0];
