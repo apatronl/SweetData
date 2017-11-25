@@ -221,7 +221,10 @@ var candyData = {
         id: "peeps"
     },
     Q6_Pixy_Stix: {
-        name: "Pixy Stix"
+        name: "Pixy Stix",
+        img: "pixystix.jpg",
+        imgcircle: "pixystix-circle.png",
+        id: "pixystix"
     },
     Q6_Reese_s_Peanut_Butter_Cups: {
         name: "Reese's",
@@ -284,7 +287,10 @@ var candyData = {
         id: "threemusketeers"
     },
     Q6_Tic_Tacs: {
-        name: "Tic Tacs"
+        name: "Tic Tacs",
+        img: "tictac.jpg",
+        imgcircle: "tictac-circle.png",
+        id: "tictac"
     },
     Q6_Tolberone_something_or_other: {
         name: "Toblerone",
