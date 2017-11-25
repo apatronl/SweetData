@@ -272,7 +272,10 @@ var candyData = {
         id: "starburst"
     },
     Q6_Swedish_Fish: {
-        name: "Swedish Fish"
+        name: "Swedish Fish",
+        img: "swedishfish.jpg",
+        imgcircle: "swedishfish-circle.png",
+        id: "swedishfish"
     },
     Q6_Three_Musketeers: {
         name: "3 Musketeers",
@@ -305,7 +308,10 @@ var candyData = {
     },
     Q6_Whatchamacallit_Bars: {
         key: "Q6_Whatchamacallit_Bars",
-        name: "Whatchamacallit Bars"
+        name: "Whatchamacallit Bars",
+        img: "whatchamacallit.jpg",
+        imgcircle: "whatchamacallit-circle.png",
+        id: "whatchamacallit"
     },
     Q6_York_Peppermint_Patties: {
         key: "Q6_York_Peppermint_Patties",
