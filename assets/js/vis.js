@@ -71,7 +71,10 @@ var candyData = {
     },
     Q6_Gummy_Bears_straight_up: {
         key: "Q6_Gummy_Bears_straight_up",
-        name: "Gummy Bears"
+        name: "Gummy Bears",
+        img: "gummybears.jpg",
+        imgcircle: "gummybears-circle.png",
+        id: "gummybears"
     },
     Q6_Heath_Bar: {
         key: "Q6_Heath_Bar",
@@ -160,7 +163,10 @@ var candyData = {
     },
     Q6_Mike_and_Ike: {
         key: "Q6_Mike_and_Ike",
-        name: "Mike and Ike"
+        name: "Mike and Ike",
+        img: "mikeandike.jpg",
+        imgcircle: "mikeandike-circle.png",
+        id: "mikeandike"
     },
     Q6_Milk_Duds: {
         key: "Q6_Milk_Duds",
