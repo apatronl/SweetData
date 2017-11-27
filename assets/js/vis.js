@@ -23,6 +23,7 @@ var candyBubbleSVG = d3.select('div#candyDetailsContainer')
 
 var keys = {country: 'Q4_COUNTRY', state: 'Q5_STATE_PROVINCE_COUNTY_ETC'};
 var feelings = {top_joy: 'JOY', meh: 'MEH', top_despair: 'DESPAIR'};
+selectedCandies = {1:'Butterfinger', 2:'Candy Corn', 3:'Chiclets', 4:'Dots'};
 var padding = {l:20, r:20, b:60, t:40};
 
 var candyData = {
@@ -445,7 +446,6 @@ d3.csv('./data/candy.csv', function(error, dataset) {
     drawMap(dataByState);
 
     // Bar Chart Code
-
     var barChartDomain = [];
 
     Object.keys(candyData).forEach(function(candy, i) {
@@ -685,11 +685,19 @@ function drawBubbleChart(data) {
     }
 
     function onBarSelectChanged() {
-         var select = d3.select('#candyBarSelect').node();
         // Get current value of select element
-        var candy = select.options[select.selectedIndex].value;
+        selectedCandy = candy;
+
+        for(i = 1; i < 5; i++) {
+            var select = d3.select('#candyBarSelect' + i).node();
+            var candy = select.options[select.selectedIndex].value;
+            // Don't redraw a bar that is already selected
+            if (candy !== selectedCandies[i]) {
+              selectedCandies[i] = candy;
+            }
+        }
+        drawBarChart();
         // console.log(select.options);
-        // console.log(candy);
         // Notes 11/26/17
         // pass number of dropdown bar selection to bar draw func
         // Based on number of dropdown decide where to draw a bar
