@@ -346,13 +346,18 @@ d3.csv('./data/candy.csv', function(error, dataset) {
     dataByCandy = [];
     Object.keys(candyData).forEach(function(candy, i) {
         candyDataDict = {};
-        candyDataDict[candy] = {joy: 0, meh: 0, despair: 0};
+        candyDataDict = {key: candy, joy: 0, meh: 0, despair: 0};
         dataset.forEach(function(d, j) {
             feeling = d[candy];
-            if (feeling) candyDataDict[candy][feeling.toLowerCase()] += 1;
+            if (feeling) candyDataDict[feeling.toLowerCase()] += 1;
         });
         dataByCandy[i] = candyDataDict;
     });
+
+    dataByCandy.sort(function(a, b) {
+        return b.joy - a.joy;
+    });
+    console.log(dataByCandy);
 
     dataByState = d3.nest()
         .key(function(d) {
