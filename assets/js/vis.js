@@ -1,4 +1,6 @@
 // Global variables
+var candyBarChartSVG = d3.select('svg.barChart');
+
 var candyMagnetSVG = d3.select('svg.candymagnet');
 
 var candyMapSVG = d3.select('div#candyMapContainer')
@@ -21,6 +23,7 @@ var candyBubbleSVG = d3.select('div#candyDetailsContainer')
 
 var keys = {country: 'Q4_COUNTRY', state: 'Q5_STATE_PROVINCE_COUNTY_ETC'};
 var feelings = {top_joy: 'JOY', meh: 'MEH', top_despair: 'DESPAIR'};
+var padding = {l:20, r:20, b:60, t:40};
 
 var candyData = {
     Q6_Butterfinger: {
@@ -334,8 +337,6 @@ d3.csv('./data/candy.csv', function(error, dataset) {
         dataByCandy[i] = candyDataDict;
     });
 
-    console.log(dataByCandy);
-
     dataByState = d3.nest()
         .key(function(d) {
             var country = d[keys.country];
@@ -382,8 +383,6 @@ d3.csv('./data/candy.csv', function(error, dataset) {
             return (a.key > b.key) ? 1 : ((b.key > a.key) ? -1 : 0);
         });
 
-        console.log(dataByState);
-
 
     // var drag = d3.drag()
     //     .on('drag', function(d, i) {
@@ -426,6 +425,34 @@ d3.csv('./data/candy.csv', function(error, dataset) {
         .text('Click on a state to learn more about it');
 
     drawMap(dataByState);
+
+    // Bar Chart Code
+
+    var barChartDomain = [];
+
+    Object.keys(candyData).forEach(function(candy, i) {
+        barChartDomain[i] = candyData[candy].name;
+    });
+
+
+    var barChartWidth = candyBarChartSVG.attr('width');
+    var barChartHeight = candyBarChartSVG.attr('height');
+
+console.log(barChartDomain);
+    var barChartXscale = d3.scaleBand()
+        .domain(barChartDomain)
+        .range([0,1000]);
+
+    var barChartXaxis = d3.axisBottom(barChartXscale).ticks(Object.keys(candyData).length);
+
+    candyBarChartSVG.append('g')
+        .attr('class', 'x_axis')
+        .attr("transform", "translate(" + padding.l + "," + (barChartHeight - padding.b)  + ")")
+        .text('BarChartXAxis')
+        .call(barChartXaxis)
+        .selectAll("text")
+        .attr("transform", "translate(0," + 0 + ")")
+        .attr("transform", "rotate(-90)");
 });
 
 var selectedFeeling = 'JOY';
@@ -631,3 +658,28 @@ function drawBubbleChart(data) {
         .attr('class', 'framed');
 
 }
+
+
+// Bar Chart
+
+    function drawBarChart() {
+
+    }
+
+    function onBarSelectChanged() {
+         var select = d3.select('#candyBarSelect').node();
+        // Get current value of select element
+        var candy = select.options[select.selectedIndex].value;
+        // console.log(select.options);
+        // console.log(candy);
+        // Notes 11/26/17
+        // pass number of dropdown bar selection to bar draw func
+        // Based on number of dropdown decide where to draw a bar
+        // Maybe hard code the positions?
+
+    }
+
+    function updateBarChart() {
+
+    }
+

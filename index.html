@@ -67,6 +67,85 @@
 			<!-- Main -->
 				<section id="main" class="container">
 
+<!-- START: Candy Bar Chart -->
+
+					<section class="box special">
+						<div class="custom-select">
+							<select id="candyBarSelect1" onchange="onBarSelectChanged()"> </select>
+							<select id="candyBarSelect2" onchange="onBarSelectChanged()"> </select>
+							<select id="candyBarSelect3" onchange="onBarSelectChanged()"> </select>
+							<select id="candyBarSelect4" onchange="onBarSelectChanged()"> </select>
+						</div>
+						<script type="text/javascript">
+							candyOptions = {
+								Q6_Butterfinger : "Butterfinger",
+							    Q6_Candy_Corn : "Candy Corn",
+							    Q6_Chiclets: "Chiclets",
+							    Q6_Dots : "Dots",
+							    Q6_Fuzzy_Peaches : "Fuzzy Peaches",
+							    Q6_Good_N_Plenty : "Good & Plenty",
+							    Q6_Gummy_Bears_straight_up : "Gummy Bears",
+							    Q6_Heath_Bar : "Heath Bar",
+							    Q6_Hershey_s_Dark_Chocolate : "Hershey's Dark Chocolate",
+							    Q6_Hershey_s_Kisses : "Hershey's Kisses",
+							    Q6_Hershey_s_Milk_Chocolate : "Hershey's Milk Chocolate",
+							    Q6_Jolly_Ranchers_good_flavor : "Jolly Rancher (Good Flavor)",
+							    Q6_Junior_Mints : "Junior Mints",
+							    Q6_Kit_Kat : "Kit Kat",
+							    Q6_LaffyTaffy : "Laffy Taffy",
+							    Q6_LemonHeads : "LemonHeads",
+							    Q6_Licorice_not_black : "Licorice",
+							    Q6_Licorice_yes_black : "Licorice (black)",
+							    Q6_Lollipops : "Lollipops",
+							    Q6_Mike_and_Ike : "Mike and Ike",
+							    Q6_Milk_Duds : "Milk Duds",
+							    Q6_Milky_Way : "Milky Way",
+							    Q6_Mint_Kisses : "Mint Kisses",
+							    Q6_Mr_Goodbar : "Mr. Goodbar",
+							    Q6_Nerds : "Nerds",
+							    Q6_Nestle_Crunch : "Crunch",
+							    Q6_Peanut_M_M_s : "Peanut M&M's",
+							    Q6_Peeps : "Peeps",
+							    Q6_Pixy_Stix : "Pixy Stix",
+							    Q6_Reese_s_Peanut_Butter_Cups : "Reese's",
+							    Q6_Reese_s_Pieces : "Reese's Pieces",
+							    Q6_Regular_M_Ms : "Milk Chocolate M&M's",
+							    Q6_Rolos : "Rolos",
+							    Q6_Skittles : "Skittles",
+							    Q6_Snickers : "Snickers",
+							    Q6_Sourpatch_Kids_i_e_abominations_of_nature : "Sour Patch Kids",
+							    Q6_Starburst : "Starburst",
+							    Q6_Swedish_Fish : "Swedish Fish",
+							    Q6_Three_Musketeers : "3 Musketeers",
+							    Q6_Tic_Tacs: "Tic Tacs",
+							    Q6_Tolberone_something_or_other : "Toblerone",
+							    Q6_Trail_Mix : "Trail Mix",
+							    Q6_Twix : "Twix",
+							    Q6_Whatchamacallit_Bars : "Whatchamacallit Bars",
+							    Q6_York_Peppermint_Patties : "York Peppermint Patties",
+							};
+							var candySelect1 = document.getElementById("candyBarSelect1");
+							var candySelect2 = document.getElementById("candyBarSelect2");
+							var candySelect3 = document.getElementById("candyBarSelect3");
+							var candySelect4 = document.getElementById("candyBarSelect4");
+
+							for(candyName in candyOptions) {
+								candySelect1.options[candySelect1.options.length] = new Option(candyOptions[candyName], candyName);
+								candySelect2.options[candySelect2.options.length] = new Option(candyOptions[candyName], candyName);
+								candySelect3.options[candySelect3.options.length] = new Option(candyOptions[candyName], candyName);
+								candySelect4.options[candySelect4.options.length] = new Option(candyOptions[candyName], candyName);
+							}
+						</script>
+
+						<header class="major">
+							<h2> Candy vs. Candy </h2>
+						</header>
+						<svg class="barChart" width="100%" height="400" style="border: 1px solid #888;" preserveAspectRatio="xMinYMin meet" class="svg-content-responsive">
+				        </svg>
+					</section>
+
+<!-- END: Candy Bar Chart -->
+
 					<section class="box special">
 
 						<header class="major">
@@ -76,6 +155,7 @@
 						<svg class="candymagnet" width="100%" height="400" style="border: 1px solid #888;" preserveAspectRatio="xMinYMin meet" class="svg-content-responsive">
 				        </svg>
 					</section>
+
 
 <!-- START: Candy Map -->
 					<section class="box special">
