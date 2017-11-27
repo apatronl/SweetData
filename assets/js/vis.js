@@ -459,7 +459,7 @@ d3.csv('./data/candy.csv', function(error, dataset) {
 console.log(barChartDomain);
     var barChartXscale = d3.scaleBand()
         .domain(barChartDomain)
-        .range([0,1000]);
+        .range([0,800]);
 
     var barChartXaxis = d3.axisBottom(barChartXscale).ticks(Object.keys(candyData).length);
 
