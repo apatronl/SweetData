@@ -1,6 +1,26 @@
 @import url("font-awesome.min.css");
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,300italic,400italic");
 
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.axis text {
+  font: 10px sans-serif;
+}
+
+.cells path {
+  fill: none;
+  pointer-events: all;
+}
+
+.cells :hover circle {
+  fill: red;
+}
+
 
 
 /* SVG resizability responsiveness */
@@ -26,6 +46,17 @@
 }
 
 .svg-container-bubble {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    /*height: 80%;*/
+    padding-bottom: 100%; /* aspect ratio */
+	/*padding-right: 3.5%;*/
+    vertical-align: top;
+    overflow: hidden;
+}
+
+.svg-container-beeswarm {
     display: inline-block;
     position: relative;
     width: 100%;

@@ -444,6 +444,8 @@ d3.csv('./data/candy.csv', function(error, dataset) {
         .text('Click on a state to learn more about it');
 
     drawMap(dataByState);
+    bubbleChartTitle.text('Top ' + selectedFeeling + ' for ' + dataByState[0].key);
+    drawBubbleChart(dataByState[0].value['JOY']);
 });
 
 var selectedFeeling = 'JOY';
