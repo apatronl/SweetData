@@ -74,7 +74,10 @@ var candyData = {
     },
     Q6_Gummy_Bears_straight_up: {
         key: "Q6_Gummy_Bears_straight_up",
-        name: "Gummy Bears"
+        name: "Gummy Bears",
+        img: "gummybears.jpg",
+        imgcircle: "gummybears-circle.png",
+        id: "gummybears"
     },
     Q6_Heath_Bar: {
         key: "Q6_Heath_Bar",
@@ -163,7 +166,10 @@ var candyData = {
     },
     Q6_Mike_and_Ike: {
         key: "Q6_Mike_and_Ike",
-        name: "Mike and Ike"
+        name: "Mike and Ike",
+        img: "mikeandike.jpg",
+        imgcircle: "mikeandike-circle.png",
+        id: "mikeandike"
     },
     Q6_Milk_Duds: {
         key: "Q6_Milk_Duds",
@@ -224,7 +230,10 @@ var candyData = {
         id: "peeps"
     },
     Q6_Pixy_Stix: {
-        name: "Pixy Stix"
+        name: "Pixy Stix",
+        img: "pixystix.jpg",
+        imgcircle: "pixystix-circle.png",
+        id: "pixystix"
     },
     Q6_Reese_s_Peanut_Butter_Cups: {
         name: "Reese's",
@@ -275,7 +284,10 @@ var candyData = {
         id: "starburst"
     },
     Q6_Swedish_Fish: {
-        name: "Swedish Fish"
+        name: "Swedish Fish",
+        img: "swedishfish.jpg",
+        imgcircle: "swedishfish-circle.png",
+        id: "swedishfish"
     },
     Q6_Three_Musketeers: {
         name: "3 Musketeers",
@@ -284,7 +296,10 @@ var candyData = {
         id: "threemusketeers"
     },
     Q6_Tic_Tacs: {
-        name: "Tic Tacs"
+        name: "Tic Tacs",
+        img: "tictac.jpg",
+        imgcircle: "tictac-circle.png",
+        id: "tictac"
     },
     Q6_Tolberone_something_or_other: {
         name: "Toblerone",
@@ -308,7 +323,10 @@ var candyData = {
     },
     Q6_Whatchamacallit_Bars: {
         key: "Q6_Whatchamacallit_Bars",
-        name: "Whatchamacallit Bars"
+        name: "Whatchamacallit Bars",
+        img: "whatchamacallit.jpg",
+        imgcircle: "whatchamacallit-circle.png",
+        id: "whatchamacallit"
     },
     Q6_York_Peppermint_Patties: {
         key: "Q6_York_Peppermint_Patties",
