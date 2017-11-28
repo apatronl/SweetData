@@ -10,6 +10,19 @@ var candyBarChartSVG = d3.select('div#barChartContainer')
    .attr('viewBox', '0 0 600 800')
    .classed('svg-content-responsive', true);
 
+barChartWidth = parseInt(d3.select('div#barChartContainer').style('width'), 10);
+barChartHeight = parseInt(d3.select('div#barChartContainer').style('height'), 10);
+genderBoxWidth = 150;
+genderBoxHeight = 200;
+
+var candyGenderBox = candyBarChartSVG.append('g')
+    .attr('class', 'genderDetails')
+    .attr('transform', 'translate(' + (barChartWidth - genderBoxWidth) + ',350)');
+
+    candyGenderBox.append('rect')
+    .attr('width', genderBoxWidth)
+    .attr('height', genderBoxHeight);
+
 var candyMagnetSVG = d3.select('svg.candymagnet');
 
 var candyMapSVG = d3.select('div#candyMapContainer')
@@ -22,7 +35,7 @@ var candyMapSVG = d3.select('div#candyMapContainer')
 
 var candyMapTopG = candyMapSVG.append('g')
     .attr('class', 'topCandy')
-    .attr('transform', 'translate(410, 100)');
+    .attr('transform', 'translate(410, 400)');
 candyMapTopG.append('rect')
     .attr('width', 150)
     .attr('height', 200);
@@ -691,8 +704,7 @@ function drawBubbleChart(data) {
         dataByCandy.sort(function(a, b) {
             return b.joy - a.joy;
         });
-        barChartWidth = parseInt(d3.select('div#barChartContainer').style('width'), 10);
-        barChartHeight = parseInt(d3.select('div#barChartContainer').style('height'), 10);
+
 
         domainMap = {};
         domainMap['JOY'] = d3.max(dataByCandy, function(d) {
@@ -803,13 +815,13 @@ function drawBubbleChart(data) {
             .transition(300)
             .attr('width', function(d) { return barChartXscale(d[filter.toLowerCase()]); })
             .attr('height', function(d) { return barHeight; })
-            .attr('fill', '#25aebb')
-            .append('text')
-            .attr('x', -20)
-            .attr('dy', '0.9em')
-            .text(function(d) {
-                return candyData[d.key].name;
-            });
+            .attr('fill', '#25aebb');
+            // .append('text')
+            // .attr('x', -20)
+            // .attr('dy', '0.9em')
+            // .text(function(d) {
+            //     return candyData[d.key].name;
+            // });
 
         // bars.exit().remove();
     }
