@@ -158,6 +158,19 @@
     text-align: left;
 }
 
+svg text {
+    font-family: Sans-Serif;
+    font-size: 12px;
+    cursor: default;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+}
+
+svg text::selection {
+    background: none;
+}
 
 /*
 	Alpha by HTML5 UP

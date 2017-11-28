@@ -375,21 +375,53 @@ d3.csv('./data/candy.csv', function(error, dataset) {
     dataByCandy = [];
     Object.keys(candyData).forEach(function(candy, i) {
         candyDataDict = {};
-        candyDataDict = {key: candy, joy: 0, meh: 0, despair: 0, Female: 0, Male: 0, 'I\'d rather not say': 0, Other: 0};
+        candyDataDict = {
+            key: candy,
+            joy: 0,
+            meh: 0,
+            despair: 0,
+
+            // joy by gender
+            joy_Female: 0,
+            joy_Male: 0,
+            'joy_I\'d rather not say': 0,
+            joy_Other: 0,
+
+            // despair by gender
+            despair_Female: 0,
+            despair_Male: 0,
+            'despair_I\'d rather not say': 0,
+            despair_Other: 0
+        };
         dataset.forEach(function(d, j) {
-            gender = d['Q2_GENDER'];
-            if (gender) candyDataDict[gender] += 1;
             feeling = d[candy];
-            if (feeling) candyDataDict[feeling.toLowerCase()] += 1;
+            if (feeling) {
+                candyDataDict[feeling.toLowerCase()] += 1;
+                gender = d['Q2_GENDER'];
+                if (gender && feeling != 'MEH') {
+                    genderKey = feeling.toLowerCase() + '_' + gender;
+                    candyDataDict[genderKey] += 1;
+                }
+            }
         });
-        candyDataDict['total_votes'] = candyDataDict.Male + candyDataDict.Female + candyDataDict['I\'d rather not say'] + candyDataDict.Other;
-        candyDataDict['avg_female'] = candyDataDict.Female / candyDataDict['total_votes'];
-        candyDataDict['avg_male'] = candyDataDict.Male / candyDataDict['total_votes'];
-        candyDataDict['avg_not_say'] = candyDataDict['I\'d rather not say'] / candyDataDict['total_votes'];
-        candyDataDict['avg_other'] = candyDataDict.Other / candyDataDict['total_votes'];
+        // Joy averages by gender
+        candyDataDict['joy_avg_Female'] = candyDataDict.joy_Female / candyDataDict.joy;
+        candyDataDict['joy_avg_Male'] = candyDataDict.joy_Male / candyDataDict.joy;
+        candyDataDict['joy_avg_Other'] = candyDataDict.joy_Other / candyDataDict.joy;
+        candyDataDict['joy_avg_I\'d rather not say'] = candyDataDict['joy_I\'d rather not say'] / candyDataDict.joy;
+
+        // Despair averages by gender
+        candyDataDict['despair_avg_Female'] = candyDataDict.despair_Female / candyDataDict.despair;
+        candyDataDict['despair_avg_Male'] = candyDataDict.despair_Male / candyDataDict.despair;
+        candyDataDict['despair_avg_Other'] = candyDataDict.despair_Other / candyDataDict.despair;
+        candyDataDict['despair_avg_I\'d rather not say'] = candyDataDict['despair_I\'d rather not say'] / candyDataDict.despair;
+        // candyDataDict['avg_female'] = candyDataDict.Female / candyDataDict['total_votes'];
+        // candyDataDict['avg_male'] = candyDataDict.Male / candyDataDict['total_votes'];
+        // candyDataDict['avg_not_say'] = candyDataDict['I\'d rather not say'] / candyDataDict['total_votes'];
+        // candyDataDict['avg_other'] = candyDataDict.Other / candyDataDict['total_votes'];
         dataByCandy[i] = candyDataDict;
     });
-
+    console.log(dataByCandy);
     // dataByCandy.sort(function(a, b) {
     //     return a.joy - b.joy;
     // });
@@ -768,12 +800,13 @@ function drawBubbleChart(data) {
         yAxisG.transition(250).call(barChartYaxis);
 
 
-        var barHeight = 10;
+        // var barHeight = 10;
+        var barHeight = (barChartHeight - 155)/Object.keys(candyData).length;
         var barBand = (barChartHeight - padding.b)/Object.keys(candyData).length;
 
         var barTip = d3.tip()
             .attr('class', 'd3-tip')
-            .offset([20, 0])
+            .offset([20, 100])
             .html(function(d, i) {
                 console.log(d.key);
                 var name = candyData[d.key].name;
@@ -782,7 +815,8 @@ function drawBubbleChart(data) {
                     + "</strong><br> Male: " + d.Male + '<br>'
                     + "</strong><br> Not say: " + d["I\'d rather not say"] + '<br>';
              });
-         candyBarChartSVG.call(barTip);
+
+        candyBarChartSVG.call(barTip);
 
         var bars = candyBarChartSVG.selectAll('.bar')
             .data(dataByCandy, function(d) {
@@ -794,7 +828,7 @@ function drawBubbleChart(data) {
             .attr('class', 'barG');
         // bars.merge(barsEnter);
 
-        barsEnter
+        var bar = barsEnter
             .append('rect')
             .attr('class', 'bar')
             .on('mouseenter', barTip.show)
@@ -808,11 +842,12 @@ function drawBubbleChart(data) {
                 candyBarChartSVG.selectAll('.bar')
                 .attr('opacity', 1);
             })
-            .on('mouseout', barTip.hide)
-            .attr('transform', function(d, i){
+            .on('mouseout', barTip.hide);
+
+        bar.attr('transform', function(d, i){
                 return 'translate('+[1.6*padding.l, i * barBand]+')';
             })
-            .transition(300)
+            .transition().duration(400)
             .attr('width', function(d) { return barChartXscale(d[filter.toLowerCase()]); })
             .attr('height', function(d) { return barHeight; })
             .attr('fill', '#25aebb');
