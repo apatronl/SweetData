@@ -87,10 +87,10 @@
 
 					<section class="box special">
 						<div class="custom-select">
-							<select id="candyBarSelect1" onchange="onBarSelectChanged()"> </select>
-							<select id="candyBarSelect2" onchange="onBarSelectChanged()"> </select>
-							<select id="candyBarSelect3" onchange="onBarSelectChanged()"> </select>
-							<select id="candyBarSelect4" onchange="onBarSelectChanged()"> </select>
+							<select id="candyFeelingSelect" onchange="onBarSelectChanged()">
+								<option selected value="JOY">Joy</option>
+								<option value="DESPAIR">Despair</option>
+							</select>
 						</div>
 						<script type="text/javascript">
 							candyOptions = {
@@ -140,24 +140,21 @@
 							    Q6_Whatchamacallit_Bars : "Whatchamacallit Bars",
 							    Q6_York_Peppermint_Patties : "York Peppermint Patties",
 							};
-							var candySelect1 = document.getElementById("candyBarSelect1");
-							var candySelect2 = document.getElementById("candyBarSelect2");
-							var candySelect3 = document.getElementById("candyBarSelect3");
-							var candySelect4 = document.getElementById("candyBarSelect4");
+							var feelingSelect = document.getElementById("candyFeelingSelect");
 
-							for(candyName in candyOptions) {
-								candySelect1.options[candySelect1.options.length] = new Option(candyOptions[candyName], candyName);
-								candySelect2.options[candySelect2.options.length] = new Option(candyOptions[candyName], candyName);
-								candySelect3.options[candySelect3.options.length] = new Option(candyOptions[candyName], candyName);
-								candySelect4.options[candySelect4.options.length] = new Option(candyOptions[candyName], candyName);
-							}
+							// for(candyName in candyOptions) {
+							// 	feelingSelect.options[feelingSelect.options.length] = new Option(candyOptions[candyName], candyName);
+							// }
 						</script>
 
 						<header class="major">
 							<h2> Candy vs. Candy </h2>
 						</header>
-						<svg class="barChart" width="100%" height="400" style="border: 1px solid #888;" preserveAspectRatio="xMinYMin meet" class="svg-content-responsive">
-				        </svg>
+
+						<div class="container" id="barChartContainer" width='100%'>
+						</div>
+						<hr>
+
 					</section>
 
 <!-- END: Candy Bar Chart -->
