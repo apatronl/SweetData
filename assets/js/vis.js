@@ -758,6 +758,18 @@ function drawBubbleChart(data) {
         var barHeight = 10;
         var barBand = (barChartHeight - padding.b)/Object.keys(candyData).length;
 
+        var barTip = d3.tip()
+            .attr('class', 'd3-tip')
+            .offset([20, 0])
+            .html(function(d, i) {
+                console.log(d.key);
+                var name = candyData[d.key].name;
+                return "<strong style='color:white'>"  + name
+                    + "</strong><br> Female: " + d.Female + '<br>'
+                    + "</strong><br> Male: " + d.Male + '<br>'
+                    + "</strong><br> Not say: " + d["I\'d rather not say"] + '<br>';
+             });
+         candyBarChartSVG.call(barTip);
 
         var bars = candyBarChartSVG.selectAll('.bar')
             .data(dataByCandy);
@@ -770,6 +782,7 @@ function drawBubbleChart(data) {
         barsEnter
             .append('rect')
             .attr('class', 'bar')
+            .on('mouseenter', barTip.show)
             .on('mouseover', function(d) {
                 console.log(d);
             })
