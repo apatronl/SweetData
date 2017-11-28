@@ -3,9 +3,10 @@
 
 var candyBarChartSVG = d3.select('div#barChartContainer')
    .append('div')
-   .classed('svg-container-bubble', true)
+   .classed('svg-container-barchart', true)
    .append('svg')
    .attr('preserveAspectRatio', 'xMinYMin meet')
+   .attr('height', '120%')
    .attr('viewBox', '0 0 600 800')
    .classed('svg-content-responsive', true);
 
@@ -38,7 +39,7 @@ var candyBubbleSVG = d3.select('div#candyDetailsContainer')
 var keys = {country: 'Q4_COUNTRY', state: 'Q5_STATE_PROVINCE_COUNTY_ETC'};
 var feelings = {top_joy: 'JOY', meh: 'MEH', top_despair: 'DESPAIR'};
 selectedCandies = {1:'Butterfinger', 2:'Candy Corn', 3:'Chiclets', 4:'Dots'};
-var padding = {l:100, r:100, b:80, t:10};
+var padding = {l:100, r:200, b:20, t:10};
 
 var candyData = {
     Q6_Butterfinger: {
@@ -711,13 +712,13 @@ function drawBubbleChart(data) {
         barChartRange = [];
 
         barChartYscale = d3.scaleBand()
-            .range([0, barChartHeight - 1.2]);
+            .range([0, barChartHeight - 1.2 - padding.b]);
 
         barChartYaxis = d3.axisLeft(barChartYscale).ticks(Object.keys(candyData).length).tickSizeOuter(0);
 
         xAxisG = candyBarChartSVG.append('g')
             .attr('class', 'x_axis')
-            .attr("transform", "translate(" + 1.6*padding.l + "," + (barChartHeight )  + ")")
+            .attr("transform", "translate(" + 1.6*padding.l + "," + (barChartHeight - padding.b)  + ")")
             .text('BarChartXAxis');
 
         yAxisG = candyBarChartSVG.append('g')
@@ -755,7 +756,7 @@ function drawBubbleChart(data) {
 
 
         var barHeight = 10;
-        var barBand = barChartHeight/Object.keys(candyData).length;
+        var barBand = (barChartHeight - padding.b)/Object.keys(candyData).length;
 
 
         var bars = candyBarChartSVG.selectAll('.bar')
