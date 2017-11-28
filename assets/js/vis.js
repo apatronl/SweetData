@@ -708,7 +708,7 @@ function drawBubbleChart(data) {
         barChartRange = [];
 
         barChartYscale = d3.scaleBand()
-            .rangeRound([padding.b, barChartHeight - padding.b]);
+            .range([0, barChartHeight]);
 
         barChartYaxis = d3.axisLeft(barChartYscale).ticks(Object.keys(candyData).length);
 
@@ -772,9 +772,7 @@ function drawBubbleChart(data) {
             .attr('width', function(d) {console.log(barChartXscale(d.joy));return barChartXscale(d.joy);})
             .attr('height', function(d) {return barHeight;})
             .attr('x',  1.6*padding.l)
-            .attr('y', function(d) {
-                return i*barChartYscale(candyData[d.key].name);
-            })
+            .attr('y', barHeight)
             .append('text')
             .attr('x', -20)
             .attr('dy', '0.9em')
