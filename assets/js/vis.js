@@ -1,5 +1,13 @@
 // Global variables
-var candyBarChartSVG = d3.select('svg.barChart');
+// var candyBarChartSVG = d3.select('svg.barChart');
+
+var candyBarChartSVG = d3.select('div#barChartContainer')
+   .append('div')
+   .classed('svg-container-bubble', true)
+   .append('svg')
+   .attr('preserveAspectRatio', 'xMinYMin meet')
+   .attr('viewBox', '0 0 600 800')
+   .classed('svg-content-responsive', true);
 
 var candyMagnetSVG = d3.select('svg.candymagnet');
 
@@ -30,7 +38,7 @@ var candyBubbleSVG = d3.select('div#candyDetailsContainer')
 var keys = {country: 'Q4_COUNTRY', state: 'Q5_STATE_PROVINCE_COUNTY_ETC'};
 var feelings = {top_joy: 'JOY', meh: 'MEH', top_despair: 'DESPAIR'};
 selectedCandies = {1:'Butterfinger', 2:'Candy Corn', 3:'Chiclets', 4:'Dots'};
-var padding = {l:20, r:20, b:60, t:40};
+var padding = {l:100, r:100, b:80, t:10};
 
 var candyData = {
     Q6_Butterfinger: {
@@ -368,10 +376,10 @@ d3.csv('./data/candy.csv', function(error, dataset) {
         dataByCandy[i] = candyDataDict;
     });
 
-    dataByCandy.sort(function(a, b) {
-        return b.joy - a.joy;
-    });
-    console.log(dataByCandy);
+    // dataByCandy.sort(function(a, b) {
+    //     return a.joy - b.joy;
+    // });
+    // console.log(dataByCandy);
 
     dataByState = d3.nest()
         .key(function(d) {
@@ -464,35 +472,11 @@ d3.csv('./data/candy.csv', function(error, dataset) {
     bubbleChartTitle.text('Top ' + selectedFeeling + ' for ' + dataByState[0].key);
     drawBubbleChart(dataByState[0].value['JOY']);
 
-    // Bar Chart Code
-    var barChartDomain = [];
-
-    Object.keys(candyData).forEach(function(candy, i) {
-        barChartDomain[i] = candyData[candy].name;
-    });
-
-
-    var barChartWidth = candyBarChartSVG.attr('width');
-    var barChartHeight = candyBarChartSVG.attr('height');
-
-console.log(barChartDomain);
-    var barChartXscale = d3.scaleBand()
-        .domain(barChartDomain)
-        .range([0,800]);
-
-    var barChartXaxis = d3.axisBottom(barChartXscale).ticks(Object.keys(candyData).length);
-
-    candyBarChartSVG.append('g')
-        .attr('class', 'x_axis')
-        .attr("transform", "translate(" + padding.l + "," + (barChartHeight - padding.b)  + ")")
-        .text('BarChartXAxis')
-        .call(barChartXaxis)
-        .selectAll("text")
-        .attr("transform", "translate(0," + 0 + ")")
-        .attr("transform", "rotate(-90)");
+   drawBarChart();
 });
 
 var selectedFeeling = 'JOY';
+var barSelectedFeeling = 'JOY';
 
 // Map
 
@@ -703,29 +687,119 @@ function drawBubbleChart(data) {
 
     function drawBarChart() {
 
+        dataByCandy.sort(function(a, b) {
+            return b.joy - a.joy;
+        });
+        barChartWidth = parseInt(d3.select('div#barChartContainer').style('width'), 10);
+        barChartHeight = parseInt(d3.select('div#barChartContainer').style('height'), 10);
+
+        domainMap = {};
+        domainMap['JOY'] = d3.max(dataByCandy, function(d) {
+            return d.joy;
+        });
+        domainMap['DESPAIR'] = d3.max(dataByCandy, function(d) {
+            return d.despair;
+        });
+
+
+
+        barChartXscale = d3.scaleLinear()
+            .range([0, barChartWidth]);
+
+        barChartXaxis = d3.axisBottom(barChartXscale).ticks(13);
+
+        barChartRange = [];
+
+        barChartYscale = d3.scaleBand()
+            .range([0, barChartHeight]);
+
+        barChartYaxis = d3.axisLeft(barChartYscale).ticks(Object.keys(candyData).length);
+
+        xAxisG = candyBarChartSVG.append('g')
+            .attr('class', 'x_axis')
+            .attr("transform", "translate(" + 1.6*padding.l + "," + (barChartHeight - padding.b)  + ")")
+            .text('BarChartXAxis');
+
+        yAxisG = candyBarChartSVG.append('g')
+            .attr('class', 'y_axis')
+            .attr("transform", "translate(" + 1.5*padding.l + "," + -200 +")")
+            .text('BarChartYAxis');
+
+        updateBarChart('JOY');
+    }
+
+
+    function updateBarChart(filter) {
+        console.log(filter);
+        if (filter === 'JOY') {
+            dataByCandy.sort(function(a, b) {
+                return b.joy - a.joy;
+            });
+        }
+
+        if (filter === 'DESPAIR') {
+            var despairSortedCandy = dataByCandy.sort(function(a, b) {
+                return b.despair - a.despair;
+            });
+        }
+
+        Object.keys(candyData).forEach(function(candy, i) {
+            barChartRange[i] = candyData[candy].name;
+        });
+
+        barChartXscale.domain([0,domainMap[filter]]);
+        barChartYscale.domain(barChartRange);
+
+        xAxisG.call(barChartXaxis);
+        yAxisG.call(barChartYaxis);
+
+
+        var barHeight = 10;
+        var barBand = barChartHeight/Object.keys(candyData).length;
+
+
+        var bars = candyBarChartSVG.selectAll('.bar')
+            .data(dataByCandy);
+
+        var barsEnter = bars.enter()
+            .append('g')
+            .attr('class', 'barG');
+
+
+        barsEnter
+            .append('rect')
+            .attr('class', 'bar')
+            .attr('transform', function(d,i){
+                return 'translate('+[0, (i * barBand) - padding.b]+')';
+            })
+            .attr('width', function(d) {console.log(barChartXscale(d.joy));return barChartXscale(d.joy);})
+            .attr('height', function(d) {return barHeight;})
+            .attr('x',  1.6*padding.l)
+            .attr('y', barHeight)
+            .append('text')
+            .attr('x', -20)
+            .attr('dy', '0.9em')
+            .text(function(d){
+                return candyData[d.key].name;
+            });
+
+        bars.exit().remove();
     }
 
     function onBarSelectChanged() {
         // Get current value of select element
-        selectedCandy = candy;
+        var select = d3.select('#candyFeelingSelect').node();
+        feeling = select.options[select.selectedIndex].value;
+        barSelectedFeeling = feeling;
+        updateBarChart(barSelectedFeeling);
 
-        for(i = 1; i < 5; i++) {
-            var select = d3.select('#candyBarSelect' + i).node();
-            var candy = select.options[select.selectedIndex].value;
-            // Don't redraw a bar that is already selected
-            if (candy !== selectedCandies[i]) {
-              selectedCandies[i] = candy;
-            }
-        }
-        drawBarChart();
-        // console.log(select.options);
-        // Notes 11/26/17
-        // pass number of dropdown bar selection to bar draw func
-        // Based on number of dropdown decide where to draw a bar
-        // Maybe hard code the positions?
-
+        // for(i = 1; i < 5; i++) {
+        //     var select = d3.select('#candyFeelingSelect' + i).node();
+        //     var candy = select.options[select.selectedIndex].value;
+        //     // Don't redraw a bar that is already selected
+        //     if (candy !== selectedCandies[i]) {
+        //       selectedCandies[i] = candy;
+        //     }
+        // }
     }
 
-    function updateBarChart() {
-
-    }
