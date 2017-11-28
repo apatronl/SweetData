@@ -751,8 +751,8 @@ function drawBubbleChart(data) {
         barChartXscale.domain([0, domainMap[filter]]);
         barChartYscale.domain(barChartRange);
 
-        xAxisG.call(barChartXaxis);
-        yAxisG.call(barChartYaxis);
+        xAxisG.transition(250).call(barChartXaxis);
+        yAxisG.transition(250).call(barChartYaxis);
 
 
         var barHeight = 10;
