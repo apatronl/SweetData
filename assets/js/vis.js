@@ -19,6 +19,13 @@ var candyMapSVG = d3.select('div#candyMapContainer')
    .attr('viewBox', "0 0 600 430")
    .classed('svg-content-responsive', true);
 
+var candyMapTopG = candyMapSVG.append('g')
+    .attr('class', 'topCandy')
+    .attr('transform', 'translate(410, 100)');
+candyMapTopG.append('rect')
+    .attr('width', 150)
+    .attr('height', 200);
+
 var candyBubbleSVG = d3.select('div#candyDetailsContainer')
    .append('div')
    .classed('svg-container-bubble', true)
@@ -350,15 +357,21 @@ d3.csv('./data/candy.csv', function(error, dataset) {
         console.error(error);
         return;
     }
-
     dataByCandy = [];
     Object.keys(candyData).forEach(function(candy, i) {
         candyDataDict = {};
-        candyDataDict = {key: candy, joy: 0, meh: 0, despair: 0};
+        candyDataDict = {key: candy, joy: 0, meh: 0, despair: 0, Female: 0, Male: 0, 'I\'d rather not say': 0, Other: 0};
         dataset.forEach(function(d, j) {
+            gender = d['Q2_GENDER'];
+            if (gender) candyDataDict[gender] += 1;
             feeling = d[candy];
             if (feeling) candyDataDict[feeling.toLowerCase()] += 1;
         });
+        candyDataDict['total_votes'] = candyDataDict.Male + candyDataDict.Female + candyDataDict['I\'d rather not say'] + candyDataDict.Other;
+        candyDataDict['avg_female'] = candyDataDict.Female / candyDataDict['total_votes'];
+        candyDataDict['avg_male'] = candyDataDict.Male / candyDataDict['total_votes'];
+        candyDataDict['avg_not_say'] = candyDataDict['I\'d rather not say'] / candyDataDict['total_votes'];
+        candyDataDict['avg_other'] = candyDataDict.Other / candyDataDict['total_votes'];
         dataByCandy[i] = candyDataDict;
     });
 
@@ -469,8 +482,8 @@ var barSelectedFeeling = 'JOY';
 function drawMap(data) {
 
     var projection = d3.geoAlbersUsa()
-        .scale(700)
-        .translate([300, 200]);
+        .scale(500)
+        .translate([200, 200]);
 
     // Define Path
     var path = d3.geoPath().projection(projection);
