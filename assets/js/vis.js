@@ -779,7 +779,7 @@ function drawBubbleChart(data) {
             .append('text')
             .attr('x', -20)
             .attr('dy', '0.9em')
-            .text(function(d){
+            .text(function(d) {
                 return candyData[d.key].name;
             });
 
@@ -802,4 +802,3 @@ function drawBubbleChart(data) {
         //     }
         // }
     }
-
