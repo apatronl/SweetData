@@ -784,7 +784,10 @@ function drawBubbleChart(data) {
             .attr('class', 'bar')
             .on('mouseenter', barTip.show)
             .on('mouseover', function(d) {
-                console.log(d);
+                candyBarChartSVG.selectAll('.bar')
+                .attr('opacity', function(e) {
+                    return d.key == e.key ? 1 : 0.3;
+                });
             })
             .attr('transform', function(d, i){
                 return 'translate('+[1.6*padding.l, i * barBand]+')';
