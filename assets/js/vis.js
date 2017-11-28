@@ -743,11 +743,11 @@ function drawBubbleChart(data) {
             });
         }
 
-        Object.keys(candyData).forEach(function(candy, i) {
-            barChartRange[i] = candyData[candy].name;
+        dataByCandy.forEach(function(d, i) {
+            barChartRange[i] = candyData[d.key].name;
         });
 
-        barChartXscale.domain([0,domainMap[filter]]);
+        barChartXscale.domain([0, domainMap[filter]]);
         barChartYscale.domain(barChartRange);
 
         xAxisG.call(barChartXaxis);
@@ -769,6 +769,9 @@ function drawBubbleChart(data) {
         barsEnter
             .append('rect')
             .attr('class', 'bar')
+            .on('mouseover', function(d) {
+                console.log(d);
+            })
             .attr('transform', function(d,i){
                 return 'translate('+[0, (i * barBand) - padding.b +20]+')';
             })
