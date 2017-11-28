@@ -789,6 +789,11 @@ function drawBubbleChart(data) {
                     return d.key == e.key ? 1 : 0.3;
                 });
             })
+            .on('mouseleave', function() {
+                candyBarChartSVG.selectAll('.bar')
+                .attr('opacity', 1);
+            })
+            .on('mouseout', barTip.hide)
             .attr('transform', function(d, i){
                 return 'translate('+[1.6*padding.l, i * barBand]+')';
             })
