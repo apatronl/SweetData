@@ -794,6 +794,7 @@ function drawBubbleChart(data) {
             })
             .attr('width', function(d) {return barChartXscale(d.joy);})
             .attr('height', function(d) {return barHeight;})
+            .attr('fill', '#25aebb')
             // .attr('x',  1.6*padding.l)
             // .attr('y', barHeight)
             .append('text')
