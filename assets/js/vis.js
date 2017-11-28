@@ -11,6 +11,11 @@ var candyMapSVG = d3.select('div#candyMapContainer')
    .attr('viewBox', "0 0 600 430")
    .classed('svg-content-responsive', true);
 
+candyMapSVG.append('rect')
+    .attr('width', 150)
+    .attr('height', 200)
+    .attr('transform', 'translate(410, 100)');
+
 var candyBubbleSVG = d3.select('div#candyDetailsContainer')
    .append('div')
    .classed('svg-container-bubble', true)
@@ -491,8 +496,8 @@ var selectedFeeling = 'JOY';
 function drawMap(data) {
 
     var projection = d3.geoAlbersUsa()
-        .scale(700)
-        .translate([300, 200]);
+        .scale(500)
+        .translate([200, 200]);
 
     // Define Path
     var path = d3.geoPath().projection(projection);
