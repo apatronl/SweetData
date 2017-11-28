@@ -782,7 +782,7 @@ function drawBubbleChart(data) {
             .attr('class', 'barG');
         // bars.merge(barsEnter);
 
-        barsEnter
+        var bar = barsEnter
             .append('rect')
             .attr('class', 'bar')
             .on('mouseenter', barTip.show)
@@ -796,15 +796,17 @@ function drawBubbleChart(data) {
                 candyBarChartSVG.selectAll('.bar')
                 .attr('opacity', 1);
             })
-            .on('mouseout', barTip.hide)
-            .attr('transform', function(d, i){
+            .on('mouseout', barTip.hide);
+
+        bar.attr('transform', function(d, i){
                 return 'translate('+[1.6*padding.l, i * barBand]+')';
             })
-            .transition(300)
+            .transition().duration(400)
             .attr('width', function(d) { return barChartXscale(d[filter.toLowerCase()]); })
             .attr('height', function(d) { return barHeight; })
-            .attr('fill', '#25aebb')
-            .append('text')
+            .attr('fill', '#25aebb');
+
+        bar.append('text')
             .attr('x', -20)
             .attr('dy', '0.9em')
             .text(function(d) {
