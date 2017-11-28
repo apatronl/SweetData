@@ -11,10 +11,12 @@ var candyMapSVG = d3.select('div#candyMapContainer')
    .attr('viewBox', "0 0 600 430")
    .classed('svg-content-responsive', true);
 
-candyMapSVG.append('rect')
-    .attr('width', 150)
-    .attr('height', 200)
+var candyMapTopG = candyMapSVG.append('g')
+    .attr('class', 'topCandy')
     .attr('transform', 'translate(410, 100)');
+candyMapTopG.append('rect')
+    .attr('width', 150)
+    .attr('height', 200);
 
 var candyBubbleSVG = d3.select('div#candyDetailsContainer')
    .append('div')
