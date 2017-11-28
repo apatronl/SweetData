@@ -342,15 +342,21 @@ d3.csv('./data/candy.csv', function(error, dataset) {
         console.error(error);
         return;
     }
-
     dataByCandy = [];
     Object.keys(candyData).forEach(function(candy, i) {
         candyDataDict = {};
-        candyDataDict = {key: candy, joy: 0, meh: 0, despair: 0};
+        candyDataDict = {key: candy, joy: 0, meh: 0, despair: 0, Female: 0, Male: 0, 'I\'d rather not say': 0, Other: 0};
         dataset.forEach(function(d, j) {
+            gender = d['Q2_GENDER'];
+            if (gender) candyDataDict[gender] += 1;
             feeling = d[candy];
             if (feeling) candyDataDict[feeling.toLowerCase()] += 1;
         });
+        candyDataDict['total_votes'] = candyDataDict.Male + candyDataDict.Female + candyDataDict['I\'d rather not say'] + candyDataDict.Other;
+        candyDataDict['avg_female'] = candyDataDict.Female / candyDataDict['total_votes'];
+        candyDataDict['avg_male'] = candyDataDict.Male / candyDataDict['total_votes'];
+        candyDataDict['avg_not_say'] = candyDataDict['I\'d rather not say'] / candyDataDict['total_votes'];
+        candyDataDict['avg_other'] = candyDataDict.Other / candyDataDict['total_votes'];
         dataByCandy[i] = candyDataDict;
     });
 
