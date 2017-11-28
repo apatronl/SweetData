@@ -731,7 +731,8 @@ function drawBubbleChart(data) {
 
 
     function updateBarChart(filter) {
-        console.log(dataByCandy);
+        candyBarChartSVG.selectAll('.bar').remove();
+
         if (filter === 'JOY') {
             dataByCandy.sort(function(a, b) {
                 return b.joy - a.joy;
@@ -739,7 +740,7 @@ function drawBubbleChart(data) {
         }
 
         if (filter === 'DESPAIR') {
-            var despairSortedCandy = dataByCandy.sort(function(a, b) {
+            dataByCandy.sort(function(a, b) {
                 return b.despair - a.despair;
             });
         }
@@ -772,12 +773,14 @@ function drawBubbleChart(data) {
          candyBarChartSVG.call(barTip);
 
         var bars = candyBarChartSVG.selectAll('.bar')
-            .data(dataByCandy);
+            .data(dataByCandy, function(d) {
+                return d.key;
+            });
 
         var barsEnter = bars.enter()
             .append('g')
             .attr('class', 'barG');
-
+        // bars.merge(barsEnter);
 
         barsEnter
             .append('rect')
@@ -797,11 +800,10 @@ function drawBubbleChart(data) {
             .attr('transform', function(d, i){
                 return 'translate('+[1.6*padding.l, i * barBand]+')';
             })
-            .attr('width', function(d) {return barChartXscale(d.joy);})
-            .attr('height', function(d) {return barHeight;})
+            .transition(300)
+            .attr('width', function(d) { return barChartXscale(d[filter.toLowerCase()]); })
+            .attr('height', function(d) { return barHeight; })
             .attr('fill', '#25aebb')
-            // .attr('x',  1.6*padding.l)
-            // .attr('y', barHeight)
             .append('text')
             .attr('x', -20)
             .attr('dy', '0.9em')
@@ -809,7 +811,7 @@ function drawBubbleChart(data) {
                 return candyData[d.key].name;
             });
 
-        bars.exit().remove();
+        // bars.exit().remove();
     }
 
     function onBarSelectChanged() {
