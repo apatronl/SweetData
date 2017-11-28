@@ -756,12 +756,13 @@ function drawBubbleChart(data) {
         yAxisG.transition(250).call(barChartYaxis);
 
 
-        var barHeight = 10;
+        // var barHeight = 10;
+        var barHeight = (barChartHeight - 155)/Object.keys(candyData).length;
         var barBand = (barChartHeight - padding.b)/Object.keys(candyData).length;
 
         var barTip = d3.tip()
             .attr('class', 'd3-tip')
-            .offset([20, 0])
+            .offset([20, 100])
             .html(function(d, i) {
                 console.log(d.key);
                 var name = candyData[d.key].name;
