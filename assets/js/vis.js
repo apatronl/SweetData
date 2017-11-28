@@ -708,18 +708,18 @@ function drawBubbleChart(data) {
         barChartRange = [];
 
         barChartYscale = d3.scaleBand()
-            .range([0, barChartHeight]);
+            .range([0, barChartHeight - padding.b]);
 
         barChartYaxis = d3.axisLeft(barChartYscale).ticks(Object.keys(candyData).length);
 
         xAxisG = candyBarChartSVG.append('g')
             .attr('class', 'x_axis')
-            .attr("transform", "translate(" + 1.6*padding.l + "," + (barChartHeight - padding.b)  + ")")
+            .attr("transform", "translate(" + 1.6*padding.l + "," + (barChartHeight - (padding.b/2))  + ")")
             .text('BarChartXAxis');
 
         yAxisG = candyBarChartSVG.append('g')
             .attr('class', 'y_axis')
-            .attr("transform", "translate(" + 1.5*padding.l + "," + -200 +")")
+            .attr("transform", "translate(" + 1.5*padding.l + "," + 0 +")")
             .text('BarChartYAxis');
 
         updateBarChart('JOY');
@@ -727,7 +727,7 @@ function drawBubbleChart(data) {
 
 
     function updateBarChart(filter) {
-        console.log(filter);
+        console.log(dataByCandy);
         if (filter === 'JOY') {
             dataByCandy.sort(function(a, b) {
                 return b.joy - a.joy;
@@ -767,9 +767,9 @@ function drawBubbleChart(data) {
             .append('rect')
             .attr('class', 'bar')
             .attr('transform', function(d,i){
-                return 'translate('+[0, (i * barBand) - padding.b]+')';
+                return 'translate('+[0, (i * barBand) - padding.b +20]+')';
             })
-            .attr('width', function(d) {console.log(barChartXscale(d.joy));return barChartXscale(d.joy);})
+            .attr('width', function(d) {return barChartXscale(d.joy);})
             .attr('height', function(d) {return barHeight;})
             .attr('x',  1.6*padding.l)
             .attr('y', barHeight)
