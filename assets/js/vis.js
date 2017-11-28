@@ -17,6 +17,7 @@ var candyMapTopG = candyMapSVG.append('g')
 candyMapTopG.append('rect')
     .attr('width', 150)
     .attr('height', 200);
+var candyMapTopCandyText = candyMapTopG.append('text');
 
 var candyBubbleSVG = d3.select('div#candyDetailsContainer')
    .append('div')
@@ -575,11 +576,13 @@ function drawMap(data) {
                         return d.properties.name == e.properties.name ? 1 : 0.3;
                     });
                 mapTitle.text(d.properties.name);
+                candyMapTopCandyText.text(d.properties.name);
             })
             .on('mouseout', function(d) {
                 d3.selectAll('.state-boundary')
                     .attr('opacity', 1);
                 mapTitle.text('');
+                candyMapTopCandyText.text('');
             })
             .on('click', function(d, i) {
                 var stateName = d.properties.name;
