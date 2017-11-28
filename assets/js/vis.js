@@ -704,20 +704,20 @@ function drawBubbleChart(data) {
 
 
         barChartXscale = d3.scaleLinear()
-            .range([0, barChartWidth]);
+            .range([0, barChartWidth - padding.r]);
 
         barChartXaxis = d3.axisBottom(barChartXscale).ticks(13);
 
         barChartRange = [];
 
         barChartYscale = d3.scaleBand()
-            .range([0, barChartHeight - padding.b]);
+            .range([0, barChartHeight - 1.2]);
 
-        barChartYaxis = d3.axisLeft(barChartYscale).ticks(Object.keys(candyData).length);
+        barChartYaxis = d3.axisLeft(barChartYscale).ticks(Object.keys(candyData).length).tickSizeOuter(0);
 
         xAxisG = candyBarChartSVG.append('g')
             .attr('class', 'x_axis')
-            .attr("transform", "translate(" + 1.6*padding.l + "," + (barChartHeight - (padding.b/2))  + ")")
+            .attr("transform", "translate(" + 1.6*padding.l + "," + (barChartHeight )  + ")")
             .text('BarChartXAxis');
 
         yAxisG = candyBarChartSVG.append('g')
@@ -772,13 +772,13 @@ function drawBubbleChart(data) {
             .on('mouseover', function(d) {
                 console.log(d);
             })
-            .attr('transform', function(d,i){
-                return 'translate('+[0, (i * barBand) - padding.b +20]+')';
+            .attr('transform', function(d, i){
+                return 'translate('+[1.6*padding.l, i * barBand]+')';
             })
             .attr('width', function(d) {return barChartXscale(d.joy);})
             .attr('height', function(d) {return barHeight;})
-            .attr('x',  1.6*padding.l)
-            .attr('y', barHeight)
+            // .attr('x',  1.6*padding.l)
+            // .attr('y', barHeight)
             .append('text')
             .attr('x', -20)
             .attr('dy', '0.9em')
