@@ -1009,6 +1009,8 @@ function drawBubbleChart(data) {
     }
 
     function drawPieChart(feeling, candy) {
+            candyGenderBox.selectAll('.path').remove();
+
             var pieChartData = [];
 
             var pieRadius = 100;
@@ -1042,7 +1044,7 @@ function drawBubbleChart(data) {
                     );
                 }
 
-                 var path = candyGenderBox.selectAll('path')
+                 var path = candyGenderBox.selectAll('.path')
                     .data(genderPie(pieChartData))
                     .enter()
                     .append('path')
