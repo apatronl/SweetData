@@ -1010,20 +1010,23 @@ function drawBubbleChart(data) {
 
     function drawPieChart(feeling, candy) {
             candyGenderBox.selectAll('.path').remove();
+            //candyGenderBox.selectAll('.arc_text').remove();
+
 
             var pieChartData = [];
 
             var pieRadius = 100;
 
             var color = d3.scaleOrdinal(['#e0f3db', '#a8ddb5', '#43a2ca']);
+            // var color = { ""}
 
-                var arc = d3.arc()
+                var path = d3.arc()
                     .innerRadius(0)
                     .outerRadius(pieRadius);
 
-                var arcLabel = d3.arc()
+                var pathLabel = d3.arc()
                       .innerRadius(0)
-                      .outerRadius(pieRadius - 20);
+                      .outerRadius(3*pieRadius);
 
                 var genderPie = d3.pie()
                     .value(function(d) {return d.value;})
@@ -1044,32 +1047,20 @@ function drawBubbleChart(data) {
                     );
                 }
 
-                 var path = candyGenderBox.selectAll('.path')
+                 var arcs = candyGenderBox.selectAll('.arc')
                     .data(genderPie(pieChartData))
                     .enter()
-                    .append('path')
+                    .append('g')
                     .attr('class', 'arc')
-                    .attr('d', arc)
-                    .attr('fill', function(d) {return color(d.data.key);});
+
+                    arcs.append('path')
+                        .attr('d', path)
+                        .attr('fill', function(d) {return color(d.data.key);});
 
 
-                // var paths = candyGenderBox
-                //     .selectAll('path')
-                //     .data(genderPie(pieChartData))
+                arcs.append("text")
+                    .attr('transform', function(d) {return "translate(" + pathLabel.centroid(d) + ")";})
+                    .attr('dy', '0.35em')
+                    .text(function(d) {return d.data.key;});
 
-                // var pathsEnter = paths.enter()
-                //     .append('g')
-                //     .attr('class', 'pathG');
-
-                // var path = pathsEnter
-                //     .append('path')
-                //     .attr('class', 'arc');
-
-                //     path.attr('d', arc)
-                //         .attr('fill', function(d) {color(d.data.key);});
-
-                // path.append("text")
-                //     .attr('transform', function(d) {return "translate(" + arcLabel.centroid(d) + ")";})
-                //     .attr('dy', '0.35em')
-                //     .text(function(d) {return d.data.key;});
     }

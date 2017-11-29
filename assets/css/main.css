@@ -25,6 +25,10 @@
 	fill:none;
 }
 
+.arc text {
+	fill:black;
+}
+
 
 
 /* SVG resizability responsiveness */
