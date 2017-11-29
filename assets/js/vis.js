@@ -7,7 +7,7 @@ var candyBarChartSVG = d3.select('div#barChartContainer')
    .append('svg')
    .attr('preserveAspectRatio', 'xMinYMin meet')
    .attr('height', '120%')
-   .attr('viewBox', '0 0 600 800')
+   .attr('viewBox', '0 0 800 800')
    .classed('svg-content-responsive', true);
 
 barChartWidth = parseInt(d3.select('div#barChartContainer').style('width'), 10);
@@ -15,9 +15,9 @@ barChartHeight = parseInt(d3.select('div#barChartContainer').style('height'), 10
 genderBoxWidth = 150;
 genderBoxHeight = 200;
 
-var candyGenderBox = candyBarChartSVG.append('g')
-    .attr('class', 'genderDetails')
-    .attr('transform', 'translate(' + (barChartWidth - genderBoxWidth) + ',350)');
+candyGenderBox = candyBarChartSVG.append('g')
+    .attr('class', 'gender_details')
+    .attr('transform', 'translate(' + [(barChartWidth - genderBoxWidth/2), 2.5*genderBoxHeight ]+ ')');
 
     candyGenderBox.append('rect')
     .attr('width', genderBoxWidth)
@@ -52,7 +52,7 @@ var candyBubbleSVG = d3.select('div#candyDetailsContainer')
 var keys = {country: 'Q4_COUNTRY', state: 'Q5_STATE_PROVINCE_COUNTY_ETC'};
 var feelings = {top_joy: 'JOY', meh: 'MEH', top_despair: 'DESPAIR'};
 selectedCandies = {1:'Butterfinger', 2:'Candy Corn', 3:'Chiclets', 4:'Dots'};
-var padding = {l:100, r:200, b:20, t:10};
+var padding = {l:100, r:100, b:20, t:10};
 
 var candyData = {
     Q6_Butterfinger: {
@@ -61,7 +61,9 @@ var candyData = {
         img: "butterfinger.png",
         imgcircle: "butterfinger-circle.png",
         id: "butterfinger",
-        color: "#fce032"
+        color: "#fce032",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Candy_Corn: {
         key: "Q6_Candy_Corn",
@@ -69,7 +71,9 @@ var candyData = {
         img: "candycorn.jpg",
         imgcircle: "candycorn-circle.png",
         id: "candycorn",
-        color: "#e6401b"
+        color: "#e6401b",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Chiclets: {
         key: "Q6_Chiclets",
@@ -77,7 +81,9 @@ var candyData = {
         img: "chiclets.jpg",
         imgcircle: "chiclets-circle.png",
         id: "chiclets",
-        color: "#fbed53"
+        color: "#fbed53",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Dots: {
         key: "Q6_Dots",
@@ -85,70 +91,90 @@ var candyData = {
         img: "dots.jpg",
         imgcircle: "dots-circle.png",
         id: "dots",
-        color: "#f9e233"
+        color: "#f9e233",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Fuzzy_Peaches: {
         key: "Q6_Fuzzy_Peaches",
         name: "Fuzzy Peaches",
         img: "fuzzypeaches.jpg",
         imgcircle: "fuzzypeaches-circle.png",
-        id: "fuzzypeaches"
+        id: "fuzzypeaches",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Good_N_Plenty: {
         key: "Q6_Good_N_Plenty",
         name: "Good & Plenty",
         img: "goodnplenty.jpg",
         imgcircle: "goodnplenty-circle.png",
-        id: "goodnplenty"
+        id: "goodnplenty",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Gummy_Bears_straight_up: {
         key: "Q6_Gummy_Bears_straight_up",
         name: "Gummy Bears",
         img: "gummybears.jpg",
         imgcircle: "gummybears-circle.png",
-        id: "gummybears"
+        id: "gummybears",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Heath_Bar: {
         key: "Q6_Heath_Bar",
         name: "Heath Bar",
         img: "heath.jpg",
         imgcircle: "heath-circle.png",
-        id: "heathbar"
+        id: "heathbar",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Hershey_s_Dark_Chocolate: {
         key: "Q6_Hershey_s_Dark_Chocolate",
         name: "Hershey's Dark Chocolate",
         img: "hersheys-dark.jpg",
         imgcircle: "hersheys-dark-circle.png",
-        id: "hersheys"
+        id: "hersheys",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Hershey_s_Kisses: {
         key: "Q6_Hershey_s_Kisses",
         name: "Hershey's Kisses",
         img: "kisses.jpg",
         imgcircle: "kisses-circle.png",
-        id: "kisses"
+        id: "kisses",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Hershey_s_Milk_Chocolate: {
         key: "Q6_Hershey_s_Milk_Chocolate",
         name: "Hershey's Milk Chocolate",
         img: "hersheys.jpg",
         imgcircle: "hersheys-circle.png",
-        id: "hersheys"
+        id: "hersheys",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Jolly_Ranchers_good_flavor: {
         key: "Q6_Jolly_Ranchers_good_flavor",
         name: "Jolly Rancher (Good Flavor)",
         img: "jollyrancher.jpg",
         imgcircle: "jollyrancher-circle.png",
-        id: "jollyrancher"
+        id: "jollyrancher",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Junior_Mints: {
         key: "Q6_Junior_Mints",
         name: "Junior Mints",
         img: "juniormints.jpg",
         imgcircle: "juniormints-circle.png",
-        id: "juniormints"
+        id: "juniormints",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Kit_Kat: {
         key: "Q6_Kit_Kat",
@@ -156,56 +182,72 @@ var candyData = {
         img: "kitkat.jpg",
         imgcircle: "kitkat-circle.png",
         id: "kitkat",
-        color: "#e92630"
+        color: "#e92630",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_LaffyTaffy: {
         key: "Q6_LaffyTaffy",
         name: "Laffy Taffy",
         img: "laffytaffy.png",
         imgcircle: "laffytaffy-circle.png",
-        id: "laffytaffy"
+        id: "laffytaffy",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_LemonHeads: {
         key: "Q6_LemonHeads",
         name: "LemonHeads",
         img: "lemonheads.jpg",
         imgcircle: "lemonheads-circle.png",
-        id: "lemonheads"
+        id: "lemonheads",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Licorice_not_black: {
         key: "Q6_Licorice_not_black",
         name: "Licorice",
         img: "licorice.jpg",
         imgcircle: "licorice-circle.png",
-        id: "licorice"
+        id: "licorice",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Licorice_yes_black: {
         key: "Q6_Licorice_yes_black",
         name: "Licorice (black)",
         img: "blacklicorice.jpg",
         imgcircle: "blacklicorice-circle.png",
-        id: "blacklicorice"
+        id: "blacklicorice",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Lollipops: {
         key: "Q6_Lollipops",
         name: "Lollipops",
         img: "lollipop.jpg",
         imgcircle: "lollipop-circle.png",
-        id: "lollipop"
+        id: "lollipop",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Mike_and_Ike: {
         key: "Q6_Mike_and_Ike",
         name: "Mike and Ike",
         img: "mikeandike.jpg",
         imgcircle: "mikeandike-circle.png",
-        id: "mikeandike"
+        id: "mikeandike",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Milk_Duds: {
         key: "Q6_Milk_Duds",
         name: "Milk Duds",
         img: "milkduds.jpg",
         imgcircle: "milkduds-circle.png",
-        id: "milkduds"
+        id: "milkduds",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Milky_Way: {
         key: "Q6_Milky_Way",
@@ -213,21 +255,27 @@ var candyData = {
         img: "milkyway.jpg",
         imgcircle: "milkyway-circle.png",
         id: "milkyway",
-        color: "#1d6b20"
+        color: "#1d6b20",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Mint_Kisses: {
         key: "Q6_Mint_Kisses",
         name: "Mint Kisses",
         img: "mint-kisses.jpg",
         imgcircle: "mint-kisses-circle.png",
-        id: "mintkisses"
+        id: "mintkisses",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Mr_Goodbar: {
         key: "Q6_Mr_Goodbar",
         name: "Mr. Goodbar",
         img: "mrgoodbar.jpg",
         imgcircle: "mrgoodbar-circle.png",
-        id: "mrgoodbar"
+        id: "mrgoodbar",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Nerds: {
         key: "Q6_Nerds",
@@ -235,134 +283,176 @@ var candyData = {
         img: "nerds.jpg",
         imgcircle: "nerds-circle.png",
         id: "nerds",
-        color: "#8975b0"
+        color: "#8975b0",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Nestle_Crunch: {
         key: "Q6_Nestle_Crunch",
         name: "Crunch",
         img: "crunch.png",
         imgcircle: "crunch-circle.png",
-        id: "crunch"
+        id: "crunch",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Peanut_M_M_s: {
         key: "Q6_Peanut_M_M_s",
         name: "Peanut M&M's",
         img: "peanut-mm.jpg",
         imgcircle: "peanut-mm-circle.png",
-        id: "peanutmm"
+        id: "peanutmm",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Peeps: {
         key: "Q6_Peeps",
         name: "Peeps",
         img: "peeps.jpg",
         imgcircle: "peeps-circle.png",
-        id: "peeps"
+        id: "peeps",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Pixy_Stix: {
         name: "Pixy Stix",
         img: "pixystix.jpg",
         imgcircle: "pixystix-circle.png",
-        id: "pixystix"
+        id: "pixystix",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Reese_s_Peanut_Butter_Cups: {
         name: "Reese's",
         img: "reeses.jpg",
         imgcircle: "reeses-circle.png",
-        id: "reeses"
+        id: "reeses",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Reese_s_Pieces: {
         name: "Reese's Pieces",
         img: "reeses-pieces.jpg",
         imgcircle: "reeses-pieces-circle.png",
-        id: "reesespieces"
+        id: "reesespieces",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Regular_M_Ms: {
         name: "Milk Chocolate M&M's",
         img: "mm.jpg",
         imgcircle: "mm-circle.png",
-        id: "mm"
+        id: "mm",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Rolos: {
         name: "Rolos",
         img: "rolo.png",
         imgcircle: "rolo-circle.png",
-        id: "rolo"
+        id: "rolo",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Skittles: {
         name: "Skittles",
         img: "skittles.jpg",
         imgcircle: "skittles-circle.png",
-        id: "skittles"
+        id: "skittles",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Snickers: {
         name: "Snickers",
         img: "snickers.jpg",
         imgcircle: "snickers-circle.png",
-        id: "snickers"
+        id: "snickers",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Sourpatch_Kids_i_e_abominations_of_nature: {
         name: "Sour Patch Kids",
         img: "sour-patch-kids.jpg",
         imgcircle: "sour-patch-kids-circle.png",
-        id: "sourpatch"
+        id: "sourpatch",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Starburst: {
         name: "Starburst",
         img: "starburst.jpg",
         imgcircle: "starburst-circle.png",
-        id: "starburst"
+        id: "starburst",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Swedish_Fish: {
         name: "Swedish Fish",
         img: "swedishfish.jpg",
         imgcircle: "swedishfish-circle.png",
-        id: "swedishfish"
+        id: "swedishfish",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Three_Musketeers: {
         name: "3 Musketeers",
         img: "threemusketeers.jpg",
         imgcircle: "threemusketeers-circle.png",
-        id: "threemusketeers"
+        id: "threemusketeers",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Tic_Tacs: {
         name: "Tic Tacs",
         img: "tictac.jpg",
         imgcircle: "tictac-circle.png",
-        id: "tictac"
+        id: "tictac",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Tolberone_something_or_other: {
         name: "Toblerone",
         img: "toblerone.png",
         imgcircle: "toblerone-circle.png",
-        id: "toblerone"
+        id: "toblerone",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Trail_Mix: {
         key: "Q6_Trail_Mix",
         name: "Trail Mix",
         img: "trailmix.jpg",
         imgcircle: "trailmix-circle.png",
-        id: "trailmix"
+        id: "trailmix",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Twix: {
         key: "Q6_Twix",
         name: "Twix",
         img: "twix.jpg",
         imgcircle: "twix-circle.png",
-        id: "twix"
+        id: "twix",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_Whatchamacallit_Bars: {
         key: "Q6_Whatchamacallit_Bars",
         name: "Whatchamacallit Bars",
         img: "whatchamacallit.jpg",
         imgcircle: "whatchamacallit-circle.png",
-        id: "whatchamacallit"
+        id: "whatchamacallit",
+        joy_by_gender: [],
+        despair_by_gender:[]
     },
     Q6_York_Peppermint_Patties: {
         key: "Q6_York_Peppermint_Patties",
         name: "York Peppermint Patties",
         img: "york-peppermint-patties.jpg",
         imgcircle: "york-peppermint-patties-circle.png",
-        id: "york"
+        id: "york",
+        joy_by_gender: [],
+        despair_by_gender:[]
     }
 };
 
@@ -404,24 +494,44 @@ d3.csv('./data/candy.csv', function(error, dataset) {
                 }
             }
         });
+
+        joyCandyDict = {};
+        despairCandyDict = {};
+
         // Joy averages by gender
-        candyDataDict['joy_avg_Female'] = candyDataDict.joy_Female / candyDataDict.joy;
-        candyDataDict['joy_avg_Male'] = candyDataDict.joy_Male / candyDataDict.joy;
-        candyDataDict['joy_avg_Other'] = candyDataDict.joy_Other / candyDataDict.joy;
-        candyDataDict['joy_avg_I\'d rather not say'] = candyDataDict['joy_I\'d rather not say'] / candyDataDict.joy;
+
+
+        // candyDataDict['joy_avg_Female'] = candyDataDict.joy_Female / candyDataDict.joy;
+        // candyDataDict['joy_avg_Male'] = candyDataDict.joy_Male / candyDataDict.joy;
+        // candyDataDict['joy_avg_Other'] = candyDataDict.joy_Other / candyDataDict.joy;
+        // candyDataDict['joy_avg_I\'d rather not say'] = candyDataDict['joy_I\'d rather not say'] / candyDataDict.joy;
+
+        joyCandyDict['joy_avg_Female'] = (candyDataDict.joy_Female / candyDataDict.joy)*100;
+        joyCandyDict['joy_avg_Male'] = (candyDataDict.joy_Male / candyDataDict.joy)*100;
+        joyCandyDict['joy_avg_Other'] = (candyDataDict.joy_Other / candyDataDict.joy)*100;
+        joyCandyDict['joy_avg_I\'d rather not say'] = (candyDataDict['joy_I\'d rather not say'] / candyDataDict.joy)*100;
+
 
         // Despair averages by gender
-        candyDataDict['despair_avg_Female'] = candyDataDict.despair_Female / candyDataDict.despair;
-        candyDataDict['despair_avg_Male'] = candyDataDict.despair_Male / candyDataDict.despair;
-        candyDataDict['despair_avg_Other'] = candyDataDict.despair_Other / candyDataDict.despair;
-        candyDataDict['despair_avg_I\'d rather not say'] = candyDataDict['despair_I\'d rather not say'] / candyDataDict.despair;
+
+        // candyDataDict['despair_avg_Female'] = candyDataDict.despair_Female / candyDataDict.despair;
+        // candyDataDict['despair_avg_Male'] = candyDataDict.despair_Male / candyDataDict.despair;
+        // candyDataDict['despair_avg_Other'] = candyDataDict.despair_Other / candyDataDict.despair;
+        // candyDataDict['despair_avg_I\'d rather not say'] = candyDataDict['despair_I\'d rather not say'] / candyDataDict.despair;
+
+        despairCandyDict['despair_avg_Female'] = (candyDataDict.despair_Female / candyDataDict.despair) *100;
+        despairCandyDict['despair_avg_Male'] = (candyDataDict.despair_Male / candyDataDict.despair)*100;
+        despairCandyDict['despair_avg_Other'] = (candyDataDict.despair_Other / candyDataDict.despair)*100;
+        despairCandyDict['despair_avg_I\'d rather not say'] = (candyDataDict['despair_I\'d rather not say'] / candyDataDict.despair)*100;
+
         // candyDataDict['avg_female'] = candyDataDict.Female / candyDataDict['total_votes'];
         // candyDataDict['avg_male'] = candyDataDict.Male / candyDataDict['total_votes'];
         // candyDataDict['avg_not_say'] = candyDataDict['I\'d rather not say'] / candyDataDict['total_votes'];
         // candyDataDict['avg_other'] = candyDataDict.Other / candyDataDict['total_votes'];
         dataByCandy[i] = candyDataDict;
+        candyData[candy].joy_by_gender[0] = joyCandyDict;
+        candyData[candy].despair_by_gender[0] = despairCandyDict;
     });
-    console.log(dataByCandy);
     // dataByCandy.sort(function(a, b) {
     //     return a.joy - b.joy;
     // });
@@ -776,7 +886,7 @@ function drawBubbleChart(data) {
 
     function updateBarChart(filter) {
         candyBarChartSVG.selectAll('.bar').remove();
-
+        //console.log(dataByCandy);
         if (filter === 'JOY') {
             dataByCandy.sort(function(a, b) {
                 return b.joy - a.joy;
@@ -808,7 +918,6 @@ function drawBubbleChart(data) {
             .attr('class', 'd3-tip')
             .offset([20, 100])
             .html(function(d, i) {
-                console.log(d.key);
                 var name = candyData[d.key].name;
                 return "<strong style='color:white'>"  + name
                     + "</strong><br> Female: " + d.Female + '<br>'
@@ -837,6 +946,9 @@ function drawBubbleChart(data) {
                 .attr('opacity', function(e) {
                     return d.key == e.key ? 1 : 0.3;
                 });
+                // Gender Pie Chart
+                drawPieChart(filter, d.key);
+
             })
             .on('mouseleave', function() {
                 candyBarChartSVG.selectAll('.bar')
@@ -844,12 +956,19 @@ function drawBubbleChart(data) {
             })
             .on('mouseout', barTip.hide);
 
+        // bar.attr('transform', function(d, i){
+        //         return 'translate('+[1.6*padding.l, i * barBand]+')';
+        //     })
+        //     .transition().duration(400)
+        //     .attr('width', function(d) { return barChartXscale(d[filter.toLowerCase()]); })
+        //     .attr('height', function(d) { return barHeight; })
+        //     .attr('fill', '#25aebb');
         bar.attr('transform', function(d, i){
                 return 'translate('+[1.6*padding.l, i * barBand]+')';
             })
             .transition().duration(400)
             .attr('width', function(d) { return barChartXscale(d[filter.toLowerCase()]); })
-            .attr('height', function(d) { return barHeight; })
+            .attr('height', () => barHeight )
             .attr('fill', '#25aebb');
             // .append('text')
             // .attr('x', -20)
@@ -876,4 +995,71 @@ function drawBubbleChart(data) {
         //       selectedCandies[i] = candy;
         //     }
         // }
+    }
+
+    function drawPieChart(feeling, candy) {
+            var pieChartData = [];
+
+            var pieRadius = 100;
+
+            var color = d3.scaleOrdinal(['#e0f3db', '#a8ddb5', '#43a2ca']);
+
+                var arc = d3.arc()
+                    .innerRadius(0)
+                    .outerRadius(pieRadius);
+
+                var arcLabel = d3.arc()
+                      .innerRadius(0)
+                      .outerRadius(pieRadius - 20);
+
+                var genderPie = d3.pie()
+                    .value(function(d) {return d.value;})
+                    .sort(null);
+
+                if (feeling === 'JOY') {
+                   joyByGender = candyData[candy].joy_by_gender[0];
+                   genderKeys = Object.keys(joyByGender);
+                   genderKeys.forEach(
+                        (key, i)=> (pieChartData[i] = {'key' : key, 'value' : joyByGender[key]})
+                    );
+                }
+                if (feeling === 'DESPAIR') {
+                    despairByGender = candyData[candy].despair_by_gender[0];
+                    genderKeys = Object.keys(despairByGender);
+                    genderKeys.forEach(
+                        (key, i)=> (pieChartData[i] = {'key' : key, 'value' : despairByGender[key] })
+                    );
+                }
+
+                console.log(candy);
+                console.log(pieChartData);
+
+                var paths = candyGenderBox
+                    .selectAll('path')
+                    .data(genderPie(pieChartData))
+
+                    // .enter()
+                    // .append('path')
+                    // .attr('class', 'arc')
+                    // .attr('d', arc)
+                    // .attr('fill', (d) => color(d.data.key));
+
+                var pathsEnter = paths.enter()
+                    .append('g')
+                    .attr('class', 'pathG');
+
+                var path = pathsEnter
+                    .append('path')
+                    .attr('class', 'arc');
+
+                path.attr('d', arc)
+                    .transition().duration(400)
+                    .attr('fill', function(d) {console.log(d.data.key); color(d.data.key);} );
+
+                path.append("text")
+                    .attr('transform', function(d) {return "translate(" + arcLabel.centroid(d) + ")";})
+                    .attr('dy', '0.35em')
+                    .text(function(d) {return d.data.key;});
+
+
     }

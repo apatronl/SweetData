@@ -21,6 +21,10 @@
   fill: red;
 }
 
+.gender_details {
+	fill:none;
+}
+
 
 
 /* SVG resizability responsiveness */
