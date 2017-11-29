@@ -10,6 +10,8 @@ var candyBarChartSVG = d3.select('div#barChartContainer')
    .attr('viewBox', '0 0 800 800')
    .classed('svg-content-responsive', true);
 
+var padding = {l:100, r:100, b:20, t:10};
+
 barChartWidth = parseInt(d3.select('div#barChartContainer').style('width'), 10);
 barChartHeight = parseInt(d3.select('div#barChartContainer').style('height'), 10);
 genderBoxWidth = 150;
@@ -17,9 +19,11 @@ genderBoxHeight = 200;
 
 candyGenderBox = candyBarChartSVG.append('g')
     .attr('class', 'gender_details')
-    .attr('transform', 'translate(' + [(barChartWidth - genderBoxWidth/2), 2.5*genderBoxHeight ]+ ')');
+    .attr('transform', 'translate(' + [(barChartWidth - genderBoxWidth/2), genderBoxHeight]+ ')');
 
     candyGenderBox.append('rect')
+    // .attr('x', barChartWidth - genderBoxWidth)
+    // .attr('y', barChartHeight - padding.b)
     .attr('width', genderBoxWidth)
     .attr('height', genderBoxHeight);
 
@@ -35,13 +39,8 @@ var candyMapSVG = d3.select('div#candyMapContainer')
 
 // Top candy box shown on map hovering by state
 var candyMapTopG = candyMapSVG.append('g')
-<<<<<<< HEAD
-    .attr('class', 'topCandy')
-    .attr('transform', 'translate(410, 400)');
-=======
     .attr('class', 'topCandyG')
     .attr('transform', 'translate(410, 100)');
->>>>>>> 6780ff9c2a15fafa000cce1a87e803d6c8d8c668
 candyMapTopG.append('rect')
     .attr('width', 150)
     .attr('height', 200)
@@ -70,7 +69,6 @@ var candyBubbleSVG = d3.select('div#candyDetailsContainer')
 var keys = {country: 'Q4_COUNTRY', state: 'Q5_STATE_PROVINCE_COUNTY_ETC'};
 var feelings = {top_joy: 'JOY', meh: 'MEH', top_despair: 'DESPAIR'};
 selectedCandies = {1:'Butterfinger', 2:'Candy Corn', 3:'Chiclets', 4:'Dots'};
-var padding = {l:100, r:100, b:20, t:10};
 
 var candyData = {
     Q6_Butterfinger: {
@@ -713,7 +711,6 @@ function drawMap(data) {
                 candyMapTopCandyText.text(d.properties.name);
                 drawMapTopCandy(data[i].value[selectedFeeling]);
                 candyMapTopCandyFeelingText.text('Top ' + selectedFeeling + ' candy');
-                console.log(d);
             })
             .on('mouseout', function(d) {
                 d3.selectAll('.state-boundary')
@@ -1045,35 +1042,32 @@ function drawBubbleChart(data) {
                     );
                 }
 
-                console.log(candy);
-                console.log(pieChartData);
-
-                var paths = candyGenderBox
-                    .selectAll('path')
+                 var path = candyGenderBox.selectAll('path')
                     .data(genderPie(pieChartData))
-
-                    // .enter()
-                    // .append('path')
-                    // .attr('class', 'arc')
-                    // .attr('d', arc)
-                    // .attr('fill', (d) => color(d.data.key));
-
-                var pathsEnter = paths.enter()
-                    .append('g')
-                    .attr('class', 'pathG');
-
-                var path = pathsEnter
+                    .enter()
                     .append('path')
-                    .attr('class', 'arc');
-
-                path.attr('d', arc)
-                    .transition().duration(400)
-                    .attr('fill', function(d) {console.log(d.data.key); color(d.data.key);} );
-
-                path.append("text")
-                    .attr('transform', function(d) {return "translate(" + arcLabel.centroid(d) + ")";})
-                    .attr('dy', '0.35em')
-                    .text(function(d) {return d.data.key;});
+                    .attr('class', 'arc')
+                    .attr('d', arc)
+                    .attr('fill', function(d) {return color(d.data.key);});
 
 
+                // var paths = candyGenderBox
+                //     .selectAll('path')
+                //     .data(genderPie(pieChartData))
+
+                // var pathsEnter = paths.enter()
+                //     .append('g')
+                //     .attr('class', 'pathG');
+
+                // var path = pathsEnter
+                //     .append('path')
+                //     .attr('class', 'arc');
+
+                //     path.attr('d', arc)
+                //         .attr('fill', function(d) {color(d.data.key);});
+
+                // path.append("text")
+                //     .attr('transform', function(d) {return "translate(" + arcLabel.centroid(d) + ")";})
+                //     .attr('dy', '0.35em')
+                //     .text(function(d) {return d.data.key;});
     }
