@@ -7,10 +7,10 @@ var candyBarChartSVG = d3.select('div#barChartContainer')
    .append('svg')
    .attr('preserveAspectRatio', 'xMinYMin meet')
    .attr('height', '120%')
-   .attr('viewBox', '0 0 800 800')
+   .attr('viewBox', '0 0 1000 800')
    .classed('svg-content-responsive', true);
 
-var padding = {l:100, r:100, b:20, t:10};
+var padding = {l:100, r:200, b:20, t:10};
 
 barChartWidth = parseInt(d3.select('div#barChartContainer').style('width'), 10);
 barChartHeight = parseInt(d3.select('div#barChartContainer').style('height'), 10);
@@ -19,11 +19,9 @@ genderBoxHeight = 200;
 
 candyGenderBox = candyBarChartSVG.append('g')
     .attr('class', 'gender_details')
-    .attr('transform', 'translate(' + [(barChartWidth - genderBoxWidth/2), barChartHeight - padding.r - 55]+ ')');
+    .attr('transform', 'translate(' + [barChartWidth - (genderBoxWidth/2) - 20, barChartHeight - padding.r - 55]+ ')');
 
     candyGenderBox.append('rect')
-    // .attr('x', barChartWidth - genderBoxWidth)
-    // .attr('y', barChartHeight - padding.b)
     .attr('width', genderBoxWidth)
     .attr('height', genderBoxHeight);
 
@@ -931,9 +929,7 @@ function drawBubbleChart(data) {
             .html(function(d, i) {
                 var name = candyData[d.key].name;
                 return "<strong style='color:white'>"  + name
-                    + "</strong><br> Female: " + d.Female + '<br>'
-                    + "</strong><br> Male: " + d.Male + '<br>'
-                    + "</strong><br> Not say: " + d["I\'d rather not say"] + '<br>';
+                    + "</strong><br>"+ filter +" : " + d[filter.toLowerCase()] + '<br>';
              });
 
         candyBarChartSVG.call(barTip);
@@ -1009,8 +1005,9 @@ function drawBubbleChart(data) {
     }
 
     function drawPieChart(feeling, candy) {
-            candyGenderBox.selectAll('.path').remove();
+            candyGenderBox.selectAll('.arc').remove();
             //candyGenderBox.selectAll('.arc_text').remove();
+
 
 
             var pieChartData = [];
@@ -1018,7 +1015,14 @@ function drawBubbleChart(data) {
             var pieRadius = 100;
 
             var color = d3.scaleOrdinal(['#e0f3db', '#a8ddb5', '#43a2ca']);
-            // var color = { ""}
+            var color = {
+                    "Female":"#ffc0cb",
+                    "Male": "#0000ff",
+                    "I'd rather not say" : "#ffff00",
+                    "Other" : "#808080"
+                };
+
+            var labels = {}
 
                 var path = d3.arc()
                     .innerRadius(0)
@@ -1036,17 +1040,37 @@ function drawBubbleChart(data) {
                    joyByGender = candyData[candy].joy_by_gender[0];
                    genderKeys = Object.keys(joyByGender);
                    genderKeys.forEach(
-                        (key, i) => (pieChartData[i] = {'key' : key, 'value' : joyByGender[key]})
+                     function(key,i) {
+                            key_arr = key.split("_");
+                            gender = key_arr[key_arr.length - 1];
+                            return pieChartData[i] = {
+                                'key' : key,
+                                'value' : joyByGender[key],
+                                'gender' : gender,
+                                'color' : color[gender]
+
+                            };
+                        }
                     );
                 }
                 if (feeling === 'DESPAIR') {
                     despairByGender = candyData[candy].despair_by_gender[0];
                     genderKeys = Object.keys(despairByGender);
                     genderKeys.forEach(
-                        (key, i) => (pieChartData[i] = {'key' : key, 'value' : despairByGender[key] })
+                           function(key,i) {
+                            key_arr = key.split("_");
+                            gender = key_arr[key_arr.length - 1];
+                            return pieChartData[i] = {
+                                'key' : key,
+                                'value' : despairByGender[key],
+                                'gender' : gender,
+                                'color' : color[gender]
+                            };
+                        }
                     );
                 }
 
+                 console.log(pieChartData);
                  var arcs = candyGenderBox.selectAll('.arc')
                     .data(genderPie(pieChartData))
                     .enter()
@@ -1055,12 +1079,12 @@ function drawBubbleChart(data) {
 
                     arcs.append('path')
                         .attr('d', path)
-                        .attr('fill', function(d) {return color(d.data.key);});
+                        .attr('fill', function(d) {return d.data.color;});
 
 
                 arcs.append("text")
                     .attr('transform', function(d) {return "translate(" + pathLabel.centroid(d) + ")";})
                     .attr('dy', '0.35em')
-                    .text(function(d) {return d.data.key;});
+                    .text(function(d) {return d.data.gender;});
 
     }
