@@ -19,7 +19,7 @@ genderBoxHeight = 200;
 
 candyGenderBox = candyBarChartSVG.append('g')
     .attr('class', 'gender_details')
-    .attr('transform', 'translate(' + [(barChartWidth - genderBoxWidth/2), genderBoxHeight]+ ')');
+    .attr('transform', 'translate(' + [(barChartWidth - genderBoxWidth/2), barChartHeight - padding.r - 55]+ ')');
 
     candyGenderBox.append('rect')
     // .attr('x', barChartWidth - genderBoxWidth)
@@ -1036,14 +1036,14 @@ function drawBubbleChart(data) {
                    joyByGender = candyData[candy].joy_by_gender[0];
                    genderKeys = Object.keys(joyByGender);
                    genderKeys.forEach(
-                        (key, i)=> (pieChartData[i] = {'key' : key, 'value' : joyByGender[key]})
+                        (key, i) => (pieChartData[i] = {'key' : key, 'value' : joyByGender[key]})
                     );
                 }
                 if (feeling === 'DESPAIR') {
                     despairByGender = candyData[candy].despair_by_gender[0];
                     genderKeys = Object.keys(despairByGender);
                     genderKeys.forEach(
-                        (key, i)=> (pieChartData[i] = {'key' : key, 'value' : despairByGender[key] })
+                        (key, i) => (pieChartData[i] = {'key' : key, 'value' : despairByGender[key] })
                     );
                 }
 
