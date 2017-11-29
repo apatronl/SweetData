@@ -965,7 +965,8 @@ function drawBubbleChart(data) {
             })
             .on('mouseleave', function() {
                 candyBarChartSVG.selectAll('.bar')
-                .attr('opacity', 1);
+                    .attr('opacity', 1);
+                candyGenderBox.selectAll('.arc').remove();
             })
             .on('mouseout', barTip.hide);
 
