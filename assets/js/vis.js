@@ -66,6 +66,12 @@ var candyBubbleSVG = d3.select('div#candyDetailsContainer')
 
 var keys = {country: 'Q4_COUNTRY', state: 'Q5_STATE_PROVINCE_COUNTY_ETC'};
 var feelings = {top_joy: 'JOY', meh: 'MEH', top_despair: 'DESPAIR'};
+var genderToColor = {
+        "Female":"#fcbded",
+        "Male": "#bde8fc",
+        "I'd rather not say" : "#bdfcbe",
+        "Other" : "#fcf2bd"
+    };
 selectedCandies = {1:'Butterfinger', 2:'Candy Corn', 3:'Chiclets', 4:'Dots'};
 
 var candyData = {
@@ -1014,14 +1020,6 @@ function drawBubbleChart(data) {
 
             var pieRadius = 100;
 
-            var color = d3.scaleOrdinal(['#e0f3db', '#a8ddb5', '#43a2ca']);
-            var color = {
-                    "Female":"#ffc0cb",
-                    "Male": "#0000ff",
-                    "I'd rather not say" : "#ffff00",
-                    "Other" : "#808080"
-                };
-
             var labels = {}
 
                 var path = d3.arc()
@@ -1047,8 +1045,7 @@ function drawBubbleChart(data) {
                                 'key' : key,
                                 'value' : joyByGender[key],
                                 'gender' : gender,
-                                'color' : color[gender]
-
+                                'color' : genderToColor[gender]
                             };
                         }
                     );
@@ -1064,7 +1061,7 @@ function drawBubbleChart(data) {
                                 'key' : key,
                                 'value' : despairByGender[key],
                                 'gender' : gender,
-                                'color' : color[gender]
+                                'color' : genderToColor[gender]
                             };
                         }
                     );
