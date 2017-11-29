@@ -33,13 +33,31 @@ var candyMapSVG = d3.select('div#candyMapContainer')
    .attr('viewBox', "0 0 600 430")
    .classed('svg-content-responsive', true);
 
+// Top candy box shown on map hovering by state
 var candyMapTopG = candyMapSVG.append('g')
+<<<<<<< HEAD
     .attr('class', 'topCandy')
     .attr('transform', 'translate(410, 400)');
+=======
+    .attr('class', 'topCandyG')
+    .attr('transform', 'translate(410, 100)');
+>>>>>>> 6780ff9c2a15fafa000cce1a87e803d6c8d8c668
 candyMapTopG.append('rect')
     .attr('width', 150)
-    .attr('height', 200);
-var candyMapTopCandyText = candyMapTopG.append('text');
+    .attr('height', 200)
+    .attr('class', 'topCandy');
+var candyMapTopCandyText = candyMapTopG.append('text')
+    .attr('class', 'topCandyTitle')
+    .attr('text-anchor', 'middle')
+    .attr('transform', 'translate(' + [75, 25] + ')');
+var candyMapTopCandyFeelingText = candyMapTopG.append('text')
+    .attr('text-anchor', 'middle')
+    .attr('transform', 'translate(' + [75, 160] + ')')
+    .text('Top JOY Candy');
+var candyMapTopCandyNameText = candyMapTopG.append('text')
+    .attr('text-anchor', 'middle')
+    .attr('transform', 'translate(' + [75, 180] + ')')
+    .text('Reese\'s Pieces');
 
 var candyBubbleSVG = d3.select('div#candyDetailsContainer')
    .append('div')
@@ -462,6 +480,8 @@ d3.csv('./data/candy.csv', function(error, dataset) {
         console.error(error);
         return;
     }
+
+    // Data organized by candy
     dataByCandy = [];
     Object.keys(candyData).forEach(function(candy, i) {
         candyDataDict = {};
@@ -537,6 +557,8 @@ d3.csv('./data/candy.csv', function(error, dataset) {
     // });
     // console.log(dataByCandy);
 
+    console.log(dataByCandy);
+    // Data organized by US states
     dataByState = d3.nest()
         .key(function(d) {
             var country = d[keys.country];
@@ -583,36 +605,7 @@ d3.csv('./data/candy.csv', function(error, dataset) {
             return (a.key > b.key) ? 1 : ((b.key > a.key) ? -1 : 0);
         });
 
-
-    // var drag = d3.drag()
-    //     .on('drag', function(d, i) {
-    //         var currMagnet = d3.select(this);
-    //     //    d.x = currMagnet.x
-    //         d.x += d3.event.dx;
-    //         d.y += d3.event.dy;
-    //         currMagnet.attr('cx', d.x)
-    //             .attr('cy', d.y);
-    //     });
-    // var magnet = candyMagnetSVG.append('g')
-    //     .attr('class', 'magnet')
-    //     .selectAll('circle')
-    //     .data([{x: 700, y: 400}])
-    //     .enter()
-    //     .append('circle')
-    //     .attr('r', 40)
-    //     .attr("cx", function(d) { return d.x; })
-    //     .attr("cy", function(d) { return d.y; })
-    //     .call(drag);
     var mapW = parseInt(d3.select('div#candyMapContainer').style('width'), 10);
-    mapTitle = candyMapSVG.append("g")
-        .append("text")
-        .attr("id", "keywordTitle")
-        .attr('text-anchor', 'middle')
-        .attr("transform", 'translate(' + (mapW / 2) + ', 25)')
-        .attr("text-anchor", "left")
-        .style("font-size", (mapW / 30) + "px")
-        .style("font-weight", "bold")
-        .text('');
 
     var bubbleChartW = parseInt(d3.select('div#candyDetailsContainer').style('width'), 10);
     bubbleChartTitle = candyBubbleSVG.append("g")
@@ -625,7 +618,9 @@ d3.csv('./data/candy.csv', function(error, dataset) {
         .text('Click on a state to learn more about it');
 
     drawMap(dataByState);
-    bubbleChartTitle.text('Top ' + selectedFeeling + ' for ' + dataByState[0].key);
+    candyMapTopCandyText.text(dataByState[0].key);
+    drawMapTopCandy(dataByState[0].value['JOY']);
+    bubbleChartTitle.text('Level of ' + selectedFeeling + ' per Candy in ' + dataByState[0].key);
     drawBubbleChart(dataByState[0].value['JOY']);
 
    drawBarChart();
@@ -639,7 +634,7 @@ var barSelectedFeeling = 'JOY';
 function drawMap(data) {
 
     var projection = d3.geoAlbersUsa()
-        .scale(500)
+        .scale(530)
         .translate([200, 200]);
 
     // Define Path
@@ -710,19 +705,20 @@ function drawMap(data) {
                 }
                 return '#888';
             })
-            .on('mouseover', function(d) {
+            .on('mouseover', function(d, i) {
                 d3.selectAll('.state-boundary')
                     .attr('opacity', function(e) {
                         return d.properties.name == e.properties.name ? 1 : 0.3;
                     });
-                mapTitle.text(d.properties.name);
                 candyMapTopCandyText.text(d.properties.name);
+                drawMapTopCandy(data[i].value[selectedFeeling]);
+                candyMapTopCandyFeelingText.text('Top ' + selectedFeeling + ' candy');
+                console.log(d);
             })
             .on('mouseout', function(d) {
                 d3.selectAll('.state-boundary')
                     .attr('opacity', 1);
-                mapTitle.text('');
-                candyMapTopCandyText.text('');
+                // candyMapTopCandyText.text('');
             })
             .on('click', function(d, i) {
                 var stateName = d.properties.name;
@@ -744,6 +740,24 @@ function updateMap(category) {
             }
             return '#888';
         })
+}
+
+function drawMapTopCandy(stateData) {
+    candyMapTopG.selectAll('.topCandyC').remove();
+    console.log(stateData);
+    candyMapTopCandyNameText.text(candyData[stateData[0].candy].name);
+    candyMapTopG.append('image')
+        .attr('class', 'topCandyC')
+        .attr('xlink:href', function() {
+            var candy = stateData[0].candy;
+            var imgCircle = candyData[candy].imgcircle;
+            if (!imgCircle) return null;
+            return 'img/' + imgCircle;
+        })
+        .attr('x', function(d) { return 25; })
+        .attr('y', function(d) { return 35; })
+        .attr('height', function(d) { return 100; })
+        .attr('width', function(d) { return 100; });
 }
 
 function onMapCategoryChanged() {

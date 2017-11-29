@@ -176,6 +176,17 @@ svg text::selection {
     background: none;
 }
 
+.topCandy {
+    fill: #fff;
+    fill-opacity: 0.7;
+    stroke: #888;
+}
+
+.topCandyTitle {
+    font-size: 14px;
+    font-weight: bold;
+}
+
 /*
 	Alpha by HTML5 UP
 	html5up.net | @ajlkn
