@@ -1,5 +1,4 @@
 // Global variables
-// var candyBarChartSVG = d3.select('svg.barChart');
 
 var candyBarChartSVG = d3.select('div#barChartContainer')
    .append('div')
@@ -7,10 +6,11 @@ var candyBarChartSVG = d3.select('div#barChartContainer')
    .append('svg')
    .attr('preserveAspectRatio', 'xMinYMin meet')
    .attr('height', '120%')
-   .attr('viewBox', '0 0 1000 800')
+   .attr('width', '120%')
+   .attr('viewBox', '0 0 1000 1000')
    .classed('svg-content-responsive', true);
 
-var padding = {l:100, r:200, b:20, t:10};
+var padding = {l:150, r:200, b:20, t:10};
 
 barChartWidth = parseInt(d3.select('div#barChartContainer').style('width'), 10);
 barChartHeight = parseInt(d3.select('div#barChartContainer').style('height'), 10);
@@ -19,7 +19,7 @@ genderBoxHeight = 200;
 
 candyGenderBox = candyBarChartSVG.append('g')
     .attr('class', 'gender_details')
-    .attr('transform', 'translate(' + [barChartWidth - (genderBoxWidth) - 20, barChartHeight - padding.r + 20]+ ')');
+    .attr('transform', 'translate(' + [barChartWidth - (genderBoxWidth/2), barChartHeight - padding.r + 20]+ ')');
     candyGenderBox.append('rect')
     .attr('width', genderBoxWidth)
     .attr('height', genderBoxHeight);
@@ -901,7 +901,6 @@ function drawBubbleChart(data) {
 
     function updateBarChart(filter) {
         candyBarChartSVG.selectAll('.bar').remove();
-        //console.log(dataByCandy);
         if (filter === 'JOY') {
             dataByCandy.sort(function(a, b) {
                 return b.joy - a.joy;
@@ -925,7 +924,6 @@ function drawBubbleChart(data) {
         yAxisG.transition(250).call(barChartYaxis);
 
 
-        // var barHeight = 10;
         var barHeight = (barChartHeight - 155)/Object.keys(candyData).length;
         var barBand = (barChartHeight - padding.b)/Object.keys(candyData).length;
 
@@ -948,7 +946,6 @@ function drawBubbleChart(data) {
         var barsEnter = bars.enter()
             .append('g')
             .attr('class', 'barG');
-        // bars.merge(barsEnter);
 
         var bar = barsEnter
             .append('rect')
@@ -959,7 +956,6 @@ function drawBubbleChart(data) {
                 .attr('opacity', function(e) {
                     return d.key == e.key ? 1 : 0.3;
                 });
-                // Gender Pie Chart
                 drawPieChart(filter, d.key);
 
             })
@@ -970,28 +966,28 @@ function drawBubbleChart(data) {
             })
             .on('mouseout', barTip.hide);
 
-        // bar.attr('transform', function(d, i){
-        //         return 'translate('+[1.6*padding.l, i * barBand]+')';
-        //     })
-        //     .transition().duration(400)
-        //     .attr('width', function(d) { return barChartXscale(d[filter.toLowerCase()]); })
-        //     .attr('height', function(d) { return barHeight; })
-        //     .attr('fill', '#25aebb');
         bar.attr('transform', function(d, i){
-                return 'translate('+[1.6*padding.l, i * barBand]+')';
+                return 'translate('+[1.6*padding.l, (i * barBand)]+')';
             })
             .transition().duration(400)
             .attr('width', function(d) { return barChartXscale(d[filter.toLowerCase()]); })
             .attr('height', () => barHeight )
             .attr('fill', '#25aebb');
-            // .append('text')
-            // .attr('x', -20)
-            // .attr('dy', '0.9em')
-            // .text(function(d) {
-            //     return candyData[d.key].name;
-            // });
 
-        // bars.exit().remove();
+        // xAxis Label
+        candyBarChartSVG.append('text')
+            .attr('class', 'bar_chart_axis_label')
+            .attr('x', 0.67*barChartWidth)
+            .attr('y', barChartHeight + padding.t + 20)
+            .text('VOTES');
+
+        // yAxis Label
+        candyBarChartSVG.append('text')
+            .attr('class', 'bar_chart_axis_label')
+            .attr('x', 0)
+            .attr('y', barChartHeight/2)
+            .text('CANDY');
+
     }
 
     function onBarSelectChanged() {
