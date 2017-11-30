@@ -19,7 +19,7 @@ genderBoxHeight = 200;
 
 candyGenderBox = candyBarChartSVG.append('g')
     .attr('class', 'gender_details')
-    .attr('transform', 'translate(' + [barChartWidth - (genderBoxWidth), barChartHeight - padding.r - 55]+ ')');
+    .attr('transform', 'translate(' + [barChartWidth - (genderBoxWidth), barChartHeight - padding.r]+ ')');
 
     candyGenderBox.append('rect')
     .attr('width', genderBoxWidth)
