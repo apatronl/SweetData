@@ -29,6 +29,12 @@
 	fill:black;
 }
 
+polyline {
+    opacity: .3;
+    stroke: black;
+    stroke-width: 2px;
+    fill: black;
+}
 
 
 /* SVG resizability responsiveness */

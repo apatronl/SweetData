@@ -19,7 +19,7 @@ genderBoxHeight = 200;
 
 candyGenderBox = candyBarChartSVG.append('g')
     .attr('class', 'gender_details')
-    .attr('transform', 'translate(' + [barChartWidth - (genderBoxWidth/2) - 20, barChartHeight - padding.r - 55]+ ')');
+    .attr('transform', 'translate(' + [barChartWidth - (genderBoxWidth) - 20, barChartHeight - padding.r + 20]+ ')');
 
     candyGenderBox.append('rect')
     .attr('width', genderBoxWidth)
@@ -559,7 +559,7 @@ d3.csv('./data/candy.csv', function(error, dataset) {
     // });
     // console.log(dataByCandy);
 
-    console.log(dataByCandy);
+    // console.log(dataByCandy);
     // Data organized by US states
     dataByState = d3.nest()
         .key(function(d) {
@@ -745,7 +745,7 @@ function updateMap(category) {
 
 function drawMapTopCandy(stateData) {
     candyMapTopG.selectAll('.topCandyC').remove();
-    console.log(stateData);
+    // console.log(stateData);
     candyMapTopCandyNameText.text(candyData[stateData[0].candy].name);
     candyMapTopG.append('image')
         .attr('class', 'topCandyC')
@@ -1012,9 +1012,6 @@ function drawBubbleChart(data) {
 
     function drawPieChart(feeling, candy) {
             candyGenderBox.selectAll('.arc').remove();
-            //candyGenderBox.selectAll('.arc_text').remove();
-
-
 
             var pieChartData = [];
 
@@ -1028,7 +1025,7 @@ function drawBubbleChart(data) {
 
                 var pathLabel = d3.arc()
                       .innerRadius(0)
-                      .outerRadius(3*pieRadius);
+                      .outerRadius(2.5*pieRadius);
 
                 var genderPie = d3.pie()
                     .value(function(d) {return d.value;})
@@ -1067,7 +1064,7 @@ function drawBubbleChart(data) {
                     );
                 }
 
-                 console.log(pieChartData);
+                 // console.log(pieChartData);
                  var arcs = candyGenderBox.selectAll('.arc')
                     .data(genderPie(pieChartData))
                     .enter()
@@ -1078,10 +1075,42 @@ function drawBubbleChart(data) {
                         .attr('d', path)
                         .attr('fill', function(d) {return d.data.color;});
 
-
                 arcs.append("text")
-                    .attr('transform', function(d) {return "translate(" + pathLabel.centroid(d) + ")";})
-                    .attr('dy', '0.35em')
-                    .text(function(d) {return d.data.gender;});
+                    .attr('class', 'label')
+                    .attr('transform', function(d) {
+                        var pos = pathLabel.centroid(d);
+                        if (d.data.gender === "Male") {
+                            pos[0] = pos[0] - 40;
+                        }
+                        if (d.data.gender === "Other") {
+                           pos[0] = pos[0] - 50;
+                       }
 
+                        if (d.data.gender === "Female") {
+                           pos[0] = pos[0] - 20;
+                       }
+                        return "translate(" + pos + ")";
+                    })
+                    .attr('dy', '0.35em')
+                    .attr("dx", ".35em")
+                    .text(function(d) {return d.data.gender + ' ' + Math.round(d.data.value, 1) + '%';});
+
+
+            // var polyline = candyGenderBox.select(".lines")
+            //     .selectAll("polyline")
+            //     .data(genderPie(pieChartData), function(d) {return d.data.key;});
+
+            // polyline.enter()
+            //     .append("polyline")
+            //     .attr("points", function(d, j) {
+            //         var offset = midAngle(d) < Math.PI ? 0 : 10;
+            //         var label = d3.select('#l-' + j);
+            //         var transform = getTransformation(label.attr("transform"));
+            //         var pos = pathLabel.centroid(d);
+            //         pos[0] = transform.translateX + offset;
+            //         pos[1] = transform.translateY;
+            //         var mid = pathLabel.centroid(d);
+            //         mid[1] = transform.translateY;
+            //         return [pathLabel.centroid(d), mid, pos];
+            //     });
     }
