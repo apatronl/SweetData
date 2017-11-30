@@ -20,7 +20,6 @@ genderBoxHeight = 200;
 candyGenderBox = candyBarChartSVG.append('g')
     .attr('class', 'gender_details')
     .attr('transform', 'translate(' + [barChartWidth - (genderBoxWidth) - 20, barChartHeight - padding.r + 20]+ ')');
-
     candyGenderBox.append('rect')
     .attr('width', genderBoxWidth)
     .attr('height', genderBoxHeight);
@@ -554,6 +553,7 @@ d3.csv('./data/candy.csv', function(error, dataset) {
         candyData[candy].joy_by_gender[0] = joyCandyDict;
         candyData[candy].despair_by_gender[0] = despairCandyDict;
     });
+
     // dataByCandy.sort(function(a, b) {
     //     return a.joy - b.joy;
     // });
@@ -965,7 +965,8 @@ function drawBubbleChart(data) {
             })
             .on('mouseleave', function() {
                 candyBarChartSVG.selectAll('.bar')
-                .attr('opacity', 1);
+                    .attr('opacity', 1);
+                candyGenderBox.selectAll('.arc').remove();
             })
             .on('mouseout', barTip.hide);
 
