@@ -17,14 +17,6 @@ barChartHeight = parseInt(d3.select('div#barChartContainer').style('height'), 10
 genderBoxWidth = 150;
 genderBoxHeight = 200;
 
-candyGenderBox = candyBarChartSVG.append('g')
-    .attr('class', 'gender_details')
-    .attr('transform', 'translate(' + [barChartWidth - (genderBoxWidth) - 20, barChartHeight - padding.r + 20]+ ')');
-
-candyGenderBox.append('rect')
-    .attr('width', genderBoxWidth)
-    .attr('height', genderBoxHeight);
-
 var candyMagnetSVG = d3.select('svg.candymagnet');
 
 var candyMapSVG = d3.select('div#candyMapContainer')
@@ -968,6 +960,7 @@ function drawBubbleChart(data) {
                 candyBarChartSVG.selectAll('.bar')
                     .attr('opacity', 1);
                 candyGenderBox.selectAll('.arc').remove();
+                candyGenderBox.selectAll('.gender_details').remove();
             })
             .on('mouseout', barTip.hide);
 
@@ -993,6 +986,15 @@ function drawBubbleChart(data) {
             // });
 
         // bars.exit().remove();
+        // candyGenderBox.selectAll('.gender_details').remove();
+
+        candyGenderBox = candyBarChartSVG.append('g')
+            .attr('class', 'gender_details')
+            .attr('transform', 'translate(' + [barChartWidth - (genderBoxWidth) - 20, barChartHeight - padding.r + 50]+ ')');
+
+        candyGenderBox.append('rect')
+            .attr('width', genderBoxWidth)
+            .attr('height', genderBoxHeight);
     }
 
     function onBarSelectChanged() {
@@ -1017,7 +1019,7 @@ function drawBubbleChart(data) {
 
             var pieChartData = [];
 
-            var pieRadius = 100;
+            var pieRadius = 65;
 
             var labels = {}
 
