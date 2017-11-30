@@ -963,6 +963,7 @@ function drawBubbleChart(data) {
                 candyBarChartSVG.selectAll('.bar')
                     .attr('opacity', 1);
                 candyGenderBox.selectAll('.arc').remove();
+                candyGenderBox.selectAll('.gender_details').remove();
             })
             .on('mouseout', barTip.hide);
 
@@ -987,7 +988,6 @@ function drawBubbleChart(data) {
             .attr('x', 0)
             .attr('y', barChartHeight/2)
             .text('CANDY');
-
     }
 
     function onBarSelectChanged() {
@@ -1012,7 +1012,7 @@ function drawBubbleChart(data) {
 
             var pieChartData = [];
 
-            var pieRadius = 100;
+            var pieRadius = 65;
 
             var labels = {}
 
