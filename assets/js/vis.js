@@ -1001,14 +1001,14 @@ function drawBarChart() {
             .attr('class', 'bar_chart_axis_label')
             .attr('x', 0.67*barChartWidth)
             .attr('y', barChartHeight + padding.t + 20)
-            .text('VOTES');
+            .text('Votes');
 
         // yAxis Label
         candyBarChartSVG.append('text')
             .attr('class', 'bar_chart_axis_label')
             .attr('x', 0)
             .attr('y', barChartHeight/2)
-            .text('CANDY');
+            .text('Candy');
     }
 
     function onBarSelectChanged() {
@@ -1153,12 +1153,12 @@ function drawRankLineGraph() {
 
     lineGraphSVG.append('g')
         .attr('class', 'x axis')
-        .attr('transform', 'translate(25,' + (lineGraphHeight - padding.b + 10) + ')')
+        .attr('transform', 'translate(50,' + (lineGraphHeight - padding.b + 10) + ')')
         .call(xAxis);
 
     lineGraphSVG.append('g')
         .attr('class', 'y axis')
-        .attr('transform', 'translate(25,' + 10 + ')')
+        .attr('transform', 'translate(50,' + 10 + ')')
         .call(yAxis);
 
     var lineInterpolate = d3.line()
@@ -1175,11 +1175,12 @@ function drawRankLineGraph() {
         .attr('d', lineInterpolate)
         .style('stroke', function(d) {
             return d[0].color;
-        });
+        })
+        .attr('transform', 'translate(25, 0)');
     graphG.append('text')
         .attr('transform', function(d) {
             console.log(d);
-            return 'translate(' + [xScale(d.data[3].year) + 10, yScale(d.data[3].rank)] + ')';
+            return 'translate(' + [xScale(d.data[3].year) + 35, yScale(d.data[3].rank)] + ')';
         })
         .attr('dy', '.35em')
 		.attr('text-anchor', 'start')
@@ -1187,4 +1188,16 @@ function drawRankLineGraph() {
             console.log(d.data[0].key);
             return candyData[d.data[0].key].name;
         });
+
+    graphG.append('text')
+        .attr('text-anchor', 'middle')
+        .attr('class', 'bar_chart_axis_label')
+        .attr('transform', 'translate(' + [lineGraphWidth/2, lineGraphHeight - padding.b + 35] + ')')
+        .text('Year');
+
+    graphG.append('text')
+        .attr('text-anchor', 'middle')
+        .attr('class', 'bar_chart_axis_label')
+        .attr('transform', 'translate(' + [0, (lineGraphHeight - padding.b + 35)/2] + ') rotate(270)')
+        .text('Rank');
 }
