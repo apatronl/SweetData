@@ -17,8 +17,6 @@ barChartHeight = parseInt(d3.select('div#barChartContainer').style('height'), 10
 genderBoxWidth = 150;
 genderBoxHeight = 200;
 
-var candyMagnetSVG = d3.select('svg.candymagnet');
-
 var candyMapSVG = d3.select('div#candyMapContainer')
    .append('div')
    .classed('svg-container-left', true)
@@ -55,6 +53,21 @@ var candyBubbleSVG = d3.select('div#candyDetailsContainer')
    .attr('preserveAspectRatio', 'xMinYMin meet')
    .attr('viewBox', '0 0 600 600')
    .classed('svg-content-responsive', true);
+
+var lineGraphSVG = d3.select('div#rankLineGraphContainer')
+    .append('div')
+    .classed('svg-container-bubble', true)
+    .append('svg')
+    .attr('preserveAspectRatio', 'xMinYMin meet')
+    .attr('viewBox', '0 0 600 430')
+    .classed('svg-content-responsive', true);
+
+    var lineGraphG = lineGraphSVG.append('g')
+        .attr('transform', 'translate(410, 100)');
+
+    lineGraphG.append('rect')
+        .attr('width', 150)
+        .attr('height', 200);
 
 var keys = {country: 'Q4_COUNTRY', state: 'Q5_STATE_PROVINCE_COUNTY_ETC'};
 var feelings = {top_joy: 'JOY', meh: 'MEH', top_despair: 'DESPAIR'};
@@ -849,47 +862,43 @@ function drawBubbleChart(data) {
 
 // Bar Chart
 
-    function drawBarChart() {
+function drawBarChart() {
+    dataByCandy.sort(function(a, b) {
+        return b.joy - a.joy;
+    });
 
-        dataByCandy.sort(function(a, b) {
-            return b.joy - a.joy;
-        });
+    domainMap = {};
+    domainMap['JOY'] = d3.max(dataByCandy, function(d) {
+        return d.joy;
+    });
+    domainMap['DESPAIR'] = d3.max(dataByCandy, function(d) {
+        return d.despair;
+    });
 
+    barChartXscale = d3.scaleLinear()
+        .range([0, barChartWidth - padding.r]);
 
-        domainMap = {};
-        domainMap['JOY'] = d3.max(dataByCandy, function(d) {
-            return d.joy;
-        });
-        domainMap['DESPAIR'] = d3.max(dataByCandy, function(d) {
-            return d.despair;
-        });
+    barChartXaxis = d3.axisBottom(barChartXscale).ticks(13);
 
+    barChartRange = [];
 
+    barChartYscale = d3.scaleBand()
+        .range([0, barChartHeight - 1.2 - padding.b]);
 
-        barChartXscale = d3.scaleLinear()
-            .range([0, barChartWidth - padding.r]);
+    barChartYaxis = d3.axisLeft(barChartYscale).ticks(Object.keys(candyData).length).tickSizeOuter(0);
 
-        barChartXaxis = d3.axisBottom(barChartXscale).ticks(13);
+    xAxisG = candyBarChartSVG.append('g')
+        .attr('class', 'x_axis')
+        .attr("transform", "translate(" + 1.6*padding.l + "," + (barChartHeight - padding.b)  + ")")
+        .text('BarChartXAxis');
 
-        barChartRange = [];
+    yAxisG = candyBarChartSVG.append('g')
+        .attr('class', 'y_axis')
+        .attr("transform", "translate(" + 1.5*padding.l + "," + 0 +")")
+        .text('BarChartYAxis');
 
-        barChartYscale = d3.scaleBand()
-            .range([0, barChartHeight - 1.2 - padding.b]);
-
-        barChartYaxis = d3.axisLeft(barChartYscale).ticks(Object.keys(candyData).length).tickSizeOuter(0);
-
-        xAxisG = candyBarChartSVG.append('g')
-            .attr('class', 'x_axis')
-            .attr("transform", "translate(" + 1.6*padding.l + "," + (barChartHeight - padding.b)  + ")")
-            .text('BarChartXAxis');
-
-        yAxisG = candyBarChartSVG.append('g')
-            .attr('class', 'y_axis')
-            .attr("transform", "translate(" + 1.5*padding.l + "," + 0 +")")
-            .text('BarChartYAxis');
-
-        updateBarChart('JOY');
-    }
+    updateBarChart('JOY');
+}
 
 
     function updateBarChart(filter) {
@@ -1118,3 +1127,39 @@ function drawBubbleChart(data) {
             //         return [pathLabel.centroid(d), mid, pos];
             //     });
     }
+
+var candyRankData = [
+    { key: 'Q6_Reese_s_Peanut_Butter_Cups',
+      data: [{year: 2014, rank: 1},
+             {year: 2015, rank: 1},
+             {year: 2016, rank: 2},
+             {year: 2017, rank: 1}]
+    },
+    { key: 'Q6_Kit_Kat',
+      data: [{year: 2014, rank: 2},
+             {year: 2015, rank: 2},
+             {year: 2016, rank: 1},
+             {year: 2017, rank: 2}]
+    },
+    { key: 'Q6_Twix',
+      data: [{year: 2014, rank: 4},
+             {year: 2015, rank: 3},
+             {year: 2016, rank: 3},
+             {year: 2017, rank: 3}]
+    },
+    { key: 'Q6_Snickers',
+      data: [{year: 2014, rank: 5},
+             {year: 2015, rank: 4},
+             {year: 2016, rank: 4},
+             {year: 2017, rank: 4}]
+    },
+    { key: 'Q6_Tolberone_something_or_other',
+      data: [{year: 2014, rank: 10},
+             {year: 2015, rank: 11},
+             {year: 2016, rank: 5},
+             {year: 2017, rank: 5}]
+    }
+];
+function drawRankLineGraph() {
+
+}
