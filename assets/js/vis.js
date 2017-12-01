@@ -73,45 +73,36 @@ var lineGraphSVG = d3.select('div#rankLineGraphContainer')
 
 var candyRankData = [
     {
-      data: [{year: 2014, rank: 1, key: 'Q6_Reese_s_Peanut_Butter_Cups'},
+      data: [{year: 2014, rank: 1, key: 'Q6_Reese_s_Peanut_Butter_Cups', color: '#fc541f'},
              {year: 2015, rank: 1},
              {year: 2016, rank: 2},
              {year: 2017, rank: 1}]
     },
     {
-      data: [{year: 2014, rank: 2, key: 'Q6_Kit_Kat'},
+      data: [{year: 2014, rank: 2, key: 'Q6_Kit_Kat', color: '#e80b18'},
              {year: 2015, rank: 2},
              {year: 2016, rank: 1},
              {year: 2017, rank: 2}]
     },
     {
-      data: [{year: 2014, rank: 4, key: 'Q6_Twix'},
+      data: [{year: 2014, rank: 4, key: 'Q6_Twix', color: '#e7ab27'},
              {year: 2015, rank: 3},
              {year: 2016, rank: 3},
              {year: 2017, rank: 3}]
     },
     {
-      data: [{year: 2014, rank: 5, key: 'Q6_Snickers'},
+      data: [{year: 2014, rank: 5, key: 'Q6_Snickers', color: '#48241c'},
              {year: 2015, rank: 4},
              {year: 2016, rank: 4},
              {year: 2017, rank: 4}]
     },
     {
-      data: [{year: 2014, rank: 10, key: 'Q6_Tolberone_something_or_other'},
+      data: [{year: 2014, rank: 10, key: 'Q6_Tolberone_something_or_other', color: '#f0cf7f'},
              {year: 2015, rank: 11},
              {year: 2016, rank: 5},
              {year: 2017, rank: 5}]
     }
 ];
-
-drawRankLineGraph();
-
-    // var lineGraphG = lineGraphSVG.append('g')
-    //     .attr('transform', 'translate(410, 100)');
-    //
-    // lineGraphG.append('rect')
-    //     .attr('width', 150)
-    //     .attr('height', 200);
 
 var keys = {country: 'Q4_COUNTRY', state: 'Q5_STATE_PROVINCE_COUNTY_ETC'};
 var feelings = {top_joy: 'JOY', meh: 'MEH', top_despair: 'DESPAIR'};
@@ -570,13 +561,6 @@ d3.csv('./data/candy.csv', function(error, dataset) {
         despairCandyDict = {};
 
         // Joy averages by gender
-
-
-        // candyDataDict['joy_avg_Female'] = candyDataDict.joy_Female / candyDataDict.joy;
-        // candyDataDict['joy_avg_Male'] = candyDataDict.joy_Male / candyDataDict.joy;
-        // candyDataDict['joy_avg_Other'] = candyDataDict.joy_Other / candyDataDict.joy;
-        // candyDataDict['joy_avg_I\'d rather not say'] = candyDataDict['joy_I\'d rather not say'] / candyDataDict.joy;
-
         joyCandyDict['joy_avg_Female'] = (candyDataDict.joy_Female / candyDataDict.joy)*100;
         joyCandyDict['joy_avg_Male'] = (candyDataDict.joy_Male / candyDataDict.joy)*100;
         joyCandyDict['joy_avg_Other'] = (candyDataDict.joy_Other / candyDataDict.joy)*100;
@@ -584,32 +568,16 @@ d3.csv('./data/candy.csv', function(error, dataset) {
 
 
         // Despair averages by gender
-
-        // candyDataDict['despair_avg_Female'] = candyDataDict.despair_Female / candyDataDict.despair;
-        // candyDataDict['despair_avg_Male'] = candyDataDict.despair_Male / candyDataDict.despair;
-        // candyDataDict['despair_avg_Other'] = candyDataDict.despair_Other / candyDataDict.despair;
-        // candyDataDict['despair_avg_I\'d rather not say'] = candyDataDict['despair_I\'d rather not say'] / candyDataDict.despair;
-
         despairCandyDict['despair_avg_Female'] = (candyDataDict.despair_Female / candyDataDict.despair) *100;
         despairCandyDict['despair_avg_Male'] = (candyDataDict.despair_Male / candyDataDict.despair)*100;
         despairCandyDict['despair_avg_Other'] = (candyDataDict.despair_Other / candyDataDict.despair)*100;
         despairCandyDict['despair_avg_I\'d rather not say'] = (candyDataDict['despair_I\'d rather not say'] / candyDataDict.despair)*100;
 
-        // candyDataDict['avg_female'] = candyDataDict.Female / candyDataDict['total_votes'];
-        // candyDataDict['avg_male'] = candyDataDict.Male / candyDataDict['total_votes'];
-        // candyDataDict['avg_not_say'] = candyDataDict['I\'d rather not say'] / candyDataDict['total_votes'];
-        // candyDataDict['avg_other'] = candyDataDict.Other / candyDataDict['total_votes'];
         dataByCandy[i] = candyDataDict;
         candyData[candy].joy_by_gender[0] = joyCandyDict;
         candyData[candy].despair_by_gender[0] = despairCandyDict;
     });
 
-    // dataByCandy.sort(function(a, b) {
-    //     return a.joy - b.joy;
-    // });
-    // console.log(dataByCandy);
-
-    // console.log(dataByCandy);
     // Data organized by US states
     dataByState = d3.nest()
         .key(function(d) {
@@ -669,13 +637,20 @@ d3.csv('./data/candy.csv', function(error, dataset) {
         .style("font-weight", "bold")
         .text('Click on a state to learn more about it');
 
+    // Draw initial map
     drawMap(dataByState);
     candyMapTopCandyText.text(dataByState[0].key);
     drawMapTopCandy(dataByState[0].value['JOY']);
+
+    // Draw initial bubble chart
     bubbleChartTitle.text('Level of ' + selectedFeeling + ' per Candy in ' + dataByState[0].key);
     drawBubbleChart(dataByState[0].value['JOY']);
 
-   drawBarChart();
+    // Draw initial bar chart
+    drawBarChart();
+
+    // Draw initial line graph
+    drawRankLineGraph();
 });
 
 var selectedFeeling = 'JOY';
@@ -1166,7 +1141,7 @@ function drawRankLineGraph() {
     var xScale = d3.scaleLinear().domain([2014, 2017]).range([0, lineGraphWidth - 50]);
     var yScale = d3.scaleLinear().domain([0, 12]).range([0, lineGraphHeight - padding.b]);
 
-    var xAxis = d3.axisBottom(xScale).ticks(4);
+    var xAxis = d3.axisBottom(xScale).ticks(4).tickFormat(d3.format('d'));;
     var yAxis = d3.axisLeft(yScale).ticks(12);
 
     var graphG = lineGraphSVG.selectAll('.lineG')
@@ -1192,12 +1167,24 @@ function drawRankLineGraph() {
 
     graphG.selectAll('.line-graph')
         .data(function(d) {
-            console.log(d.data);
             return [d.data];
         })
         .enter()
         .append('path')
         .attr('class', 'line-graph')
         .attr('d', lineInterpolate)
-        .style('stroke', '#888');
+        .style('stroke', function(d) {
+            return d[0].color;
+        });
+    graphG.append('text')
+        .attr('transform', function(d) {
+            console.log(d);
+            return 'translate(' + [xScale(d.data[3].year) + 10, yScale(d.data[3].rank)] + ')';
+        })
+        .attr('dy', '.35em')
+		.attr('text-anchor', 'start')
+        .text(function(d) {
+            console.log(d.data[0].key);
+            return candyData[d.data[0].key].name;
+        });
 }
