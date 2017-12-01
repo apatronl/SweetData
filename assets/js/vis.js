@@ -63,18 +63,55 @@ var candyBubbleSVG = d3.select('div#candyDetailsContainer')
 
 var lineGraphSVG = d3.select('div#rankLineGraphContainer')
     .append('div')
-    .classed('svg-container-bubble', true)
+    .classed('svg-container-linegraph', true)
     .append('svg')
     .attr('preserveAspectRatio', 'xMinYMin meet')
-    .attr('viewBox', '0 0 600 430')
+    .attr('height', '120%')
+    .attr('width', '120%')
+    .attr('viewBox', '0 0 800 900')
     .classed('svg-content-responsive', true);
 
-    var lineGraphG = lineGraphSVG.append('g')
-        .attr('transform', 'translate(410, 100)');
+var candyRankData = [
+    {
+      data: [{year: 2014, rank: 1, key: 'Q6_Reese_s_Peanut_Butter_Cups'},
+             {year: 2015, rank: 1},
+             {year: 2016, rank: 2},
+             {year: 2017, rank: 1}]
+    },
+    {
+      data: [{year: 2014, rank: 2, key: 'Q6_Kit_Kat'},
+             {year: 2015, rank: 2},
+             {year: 2016, rank: 1},
+             {year: 2017, rank: 2}]
+    },
+    {
+      data: [{year: 2014, rank: 4, key: 'Q6_Twix'},
+             {year: 2015, rank: 3},
+             {year: 2016, rank: 3},
+             {year: 2017, rank: 3}]
+    },
+    {
+      data: [{year: 2014, rank: 5, key: 'Q6_Snickers'},
+             {year: 2015, rank: 4},
+             {year: 2016, rank: 4},
+             {year: 2017, rank: 4}]
+    },
+    {
+      data: [{year: 2014, rank: 10, key: 'Q6_Tolberone_something_or_other'},
+             {year: 2015, rank: 11},
+             {year: 2016, rank: 5},
+             {year: 2017, rank: 5}]
+    }
+];
 
-    lineGraphG.append('rect')
-        .attr('width', 150)
-        .attr('height', 200);
+drawRankLineGraph();
+
+    // var lineGraphG = lineGraphSVG.append('g')
+    //     .attr('transform', 'translate(410, 100)');
+    //
+    // lineGraphG.append('rect')
+    //     .attr('width', 150)
+    //     .attr('height', 200);
 
 var keys = {country: 'Q4_COUNTRY', state: 'Q5_STATE_PROVINCE_COUNTY_ETC'};
 var feelings = {top_joy: 'JOY', meh: 'MEH', top_despair: 'DESPAIR'};
@@ -1121,38 +1158,46 @@ function drawBarChart() {
             //     });
     }
 
-var candyRankData = [
-    { key: 'Q6_Reese_s_Peanut_Butter_Cups',
-      data: [{year: 2014, rank: 1},
-             {year: 2015, rank: 1},
-             {year: 2016, rank: 2},
-             {year: 2017, rank: 1}]
-    },
-    { key: 'Q6_Kit_Kat',
-      data: [{year: 2014, rank: 2},
-             {year: 2015, rank: 2},
-             {year: 2016, rank: 1},
-             {year: 2017, rank: 2}]
-    },
-    { key: 'Q6_Twix',
-      data: [{year: 2014, rank: 4},
-             {year: 2015, rank: 3},
-             {year: 2016, rank: 3},
-             {year: 2017, rank: 3}]
-    },
-    { key: 'Q6_Snickers',
-      data: [{year: 2014, rank: 5},
-             {year: 2015, rank: 4},
-             {year: 2016, rank: 4},
-             {year: 2017, rank: 4}]
-    },
-    { key: 'Q6_Tolberone_something_or_other',
-      data: [{year: 2014, rank: 10},
-             {year: 2015, rank: 11},
-             {year: 2016, rank: 5},
-             {year: 2017, rank: 5}]
-    }
-];
 function drawRankLineGraph() {
+    var lineGraphWidth = parseInt(d3.select('div#rankLineGraphContainer').style('width'), 10);
+    var lineGraphHeight = parseInt(d3.select('div#rankLineGraphContainer').style('height'), 10);
 
+    // var dateDomain = [new Date(2014, 0), new Date(2017, 2)];
+    var xScale = d3.scaleLinear().domain([2014, 2017]).range([0, lineGraphWidth - 50]);
+    var yScale = d3.scaleLinear().domain([0, 12]).range([0, lineGraphHeight - padding.b]);
+
+    var xAxis = d3.axisBottom(xScale).ticks(4);
+    var yAxis = d3.axisLeft(yScale).ticks(12);
+
+    var graphG = lineGraphSVG.selectAll('.lineG')
+        .data(candyRankData)
+        .enter()
+        .append('g')
+        .attr('class', 'lineG')
+        .attr('transform', 'translate(25, 10)');
+
+    lineGraphSVG.append('g')
+        .attr('class', 'x axis')
+        .attr('transform', 'translate(25,' + (lineGraphHeight - padding.b + 10) + ')')
+        .call(xAxis);
+
+    lineGraphSVG.append('g')
+        .attr('class', 'y axis')
+        .attr('transform', 'translate(25,' + 10 + ')')
+        .call(yAxis);
+
+    var lineInterpolate = d3.line()
+        .x(function(d) { return xScale(d.year); })
+        .y(function(d) { return yScale(d.rank); });
+
+    graphG.selectAll('.line-graph')
+        .data(function(d) {
+            console.log(d.data);
+            return [d.data];
+        })
+        .enter()
+        .append('path')
+        .attr('class', 'line-graph')
+        .attr('d', lineInterpolate)
+        .style('stroke', '#888');
 }
