@@ -29,6 +29,11 @@
 	fill:black;
 }
 
+.bar_chart_axis_label {
+	fill:black;
+	font-weight: bold;
+}
+
 polyline {
     opacity: .3;
     stroke: black;
