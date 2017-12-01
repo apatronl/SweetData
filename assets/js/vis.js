@@ -58,7 +58,7 @@ joyFilter.append('text')
     .attr('dy', '1.3em')
     .text('Joy');
 
-var joyFilter = filterG.append('g')
+var despairFilter = filterG.append('g')
     .attr('class', 'filter')
     .attr('value', 'top_despair')
     .attr('transform', 'translate(73)')
@@ -68,12 +68,12 @@ var joyFilter = filterG.append('g')
         clicked.classed('selected', true);
         onMapCategoryChanged(d3.select(this).attr('value'));
     });
-joyFilter.append('rect')
+despairFilter.append('rect')
     .attr('height', 20)
     .attr('width', 65)
     .attr('rx', 3)
     .attr('ry', 3);
-joyFilter.append('text')
+despairFilter.append('text')
     .attr('x', 4)
     .attr('dy', '1.3em')
     .text('Despair');
