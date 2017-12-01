@@ -32,6 +32,52 @@ var candyMapSVG = d3.select('div#candyMapContainer')
    .attr('viewBox', "0 0 600 430")
    .classed('svg-content-responsive', true);
 
+// Add candy map filters
+var filterG = candyMapSVG.append('g')
+    .attr('transform', 'translate(10,20)');
+filterG.append('text')
+    .attr('dy', '-0.3em')
+    .text('Filters:');
+
+var joyFilter = filterG.append('g')
+    .attr('class', 'filter selected')
+    .attr('value', 'top_joy')
+    .on('click', function() {
+        d3.select('.filter.selected').classed('selected', false);
+        var clicked = d3.select(this);
+        clicked.classed('selected', true);
+        onMapCategoryChanged(d3.select(this).attr('value'));
+    });
+joyFilter.append('rect')
+    .attr('height', 20)
+    .attr('width', 65)
+    .attr('rx', 3)
+    .attr('ry', 3);
+joyFilter.append('text')
+    .attr('x', 4)
+    .attr('dy', '1.3em')
+    .text('Joy');
+
+var joyFilter = filterG.append('g')
+    .attr('class', 'filter')
+    .attr('value', 'top_despair')
+    .attr('transform', 'translate(73)')
+    .on('click', function() {
+        d3.select('.filter.selected').classed('selected', false);
+        var clicked = d3.select(this);
+        clicked.classed('selected', true);
+        onMapCategoryChanged(d3.select(this).attr('value'));
+    });
+joyFilter.append('rect')
+    .attr('height', 20)
+    .attr('width', 65)
+    .attr('rx', 3)
+    .attr('ry', 3);
+joyFilter.append('text')
+    .attr('x', 4)
+    .attr('dy', '1.3em')
+    .text('Despair');
+
 // Top candy box shown on map hovering by state
 var candyMapTopG = candyMapSVG.append('g')
     .attr('class', 'topCandyG')
@@ -786,12 +832,8 @@ function drawMapTopCandy(stateData) {
         .attr('width', function(d) { return 100; });
 }
 
-function onMapCategoryChanged() {
-    var select = d3.select('#categorySelect').node();
-    // Get current value of select element
-    var category = select.options[select.selectedIndex].value;
+function onMapCategoryChanged(category) {
     selectedFeeling = feelings[category];
-    // Update map with the selected feeling category
     updateMap(category);
 }
 
