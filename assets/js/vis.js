@@ -31,6 +31,9 @@ genderVoteBox = candyBarChartSVG.append('g')
     .attr('width', genderBoxWidth)
     .attr('height', genderBoxHeight);
 
+
+
+
 var candyMagnetSVG = d3.select('svg.candymagnet');
 
 var candyMapSVG = d3.select('div#candyMapContainer')
@@ -173,6 +176,7 @@ stackBarColors = {
     'meh' : '#FDC086',
     'despair' : '#386cb0'
 };
+
 selectedCandies = {1:'Butterfinger', 2:'Candy Corn', 3:'Chiclets', 4:'Dots'};
 
 var candyData = {
@@ -1104,7 +1108,7 @@ function drawBubbleChart(data) {
             .transition().duration(400)
             .attr('width', function(d) { return barChartXscale(d[filter.toLowerCase()]); })
             .attr('height', () => barHeight )
-            .attr('fill', '#25aebb');
+            .attr('fill', stackBarColors[filter.toLowerCase()]);
         }
 
 
