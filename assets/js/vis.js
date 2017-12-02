@@ -618,7 +618,6 @@ d3.csv('./data/candy.csv', function(error, dataset) {
             if (feeling) {
                 candyDataDict[feeling.toLowerCase()] += 1;
                 gender = d['Q2_GENDER'];
-                genderVoteKeys[gender] = genderVoteKeys[gender] + 1;
                 if (gender && feeling != 'MEH') {
                     genderKey = feeling.toLowerCase() + '_' + gender;
                     candyDataDict[genderKey] += 1;
@@ -645,7 +644,12 @@ d3.csv('./data/candy.csv', function(error, dataset) {
         candyData[candy].joy_by_gender[0] = joyCandyDict;
         candyData[candy].despair_by_gender[0] = despairCandyDict;
     });
-        console.log(genderVoteKeys);
+    dataset.forEach(function(d, j) {
+        gender = d['Q2_GENDER'];
+        if (gender) {
+            genderVoteKeys[gender] += 1;
+        }
+    });
 
     // Data organized by US states
     dataByState = d3.nest()
@@ -947,7 +951,6 @@ function drawBubbleChart(data) {
 // Bar Chart
 
     function drawBarChart() {
-        console.log(dataByCandy);
         dataByCandy.sort(function(a, b) {
             return b.joy - a.joy;
         });
@@ -1004,11 +1007,12 @@ function drawBubbleChart(data) {
         .attr('y', barChartHeight/2)
         .text('Candy');
 
+    var total = genderVoteKeys['Male'] + genderVoteKeys['Female'] + genderVoteKeys['Other'] + genderVoteKeys['I\'d rather not say'];
     genderVoteBox.append('text')
             .attr('class', 'genderVotesTitle')
             .attr('x', 17)
             .attr('y', 20)
-            .text('Total Votes');
+            .text('Total Votes: ' + total);
 
     Object.keys(genderVoteKeys).forEach(function(key, i) {
         if (key) {
@@ -1284,7 +1288,6 @@ function drawRankLineGraph() {
         .attr('transform', 'translate(25, 0)');
     graphG.append('text')
         .attr('transform', function(d) {
-            console.log(d);
             return 'translate(' + [xScale(d.data[3].year) + 35, yScale(d.data[3].rank)] + ')';
         })
         .attr('dy', '.35em')
