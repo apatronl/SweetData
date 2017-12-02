@@ -990,22 +990,52 @@ function drawBubbleChart(data) {
         .attr("transform", "translate(" + 1.5*padding.l + "," + 0 +")")
         .text('BarChartYAxis');
 
-        updateBarChart('ALL');
+    // xAxis Label
+    candyBarChartSVG.append('text')
+        .attr('class', 'bar_chart_axis_label')
+        .attr('x', 0.67*barChartWidth)
+        .attr('y', barChartHeight + padding.t + 20)
+        .text('Votes');
+
+    // yAxis Label
+    candyBarChartSVG.append('text')
+        .attr('class', 'bar_chart_axis_label')
+        .attr('x', 0)
+        .attr('y', barChartHeight/2)
+        .text('Candy');
+
+    genderVoteBox.append('text')
+            .attr('class', 'genderVotesTitle')
+            .attr('x', 17)
+            .attr('y', 20)
+            .text('Total Votes');
+
+    Object.keys(genderVoteKeys).forEach(function(key, i) {
+        if (key) {
+        genderVoteBox.append('text')
+            .attr('class', 'genderVotes')
+            .attr('x', 20)
+            .attr('y', 40 + (20*i))
+            .text(key + ': ' + genderVoteKeys[key]);
+        }
+    });
+
+    updateBarChart('ALL');
+}
+
+
+
+function updateBarChart(filter) {
+    candyBarChartSVG.selectAll('.bar').remove();
+    if (filter === 'ALL') {
+         barChartXaxis.ticks(16);
     }
-
-
-
-    function updateBarChart(filter) {
-        candyBarChartSVG.selectAll('.bar').remove();
-        if (filter === 'ALL') {
-             barChartXaxis.ticks(16);
-        }
-        if (filter === 'JOY') {
-            dataByCandy.sort(function(a, b) {
-                return b.joy - a.joy;
-            });
-            barChartXaxis.ticks(13);
-        }
+    if (filter === 'JOY') {
+        dataByCandy.sort(function(a, b) {
+            return b.joy - a.joy;
+        });
+        barChartXaxis.ticks(13);
+    }
 
         if (filter === 'DESPAIR') {
             dataByCandy.sort(function(a, b) {
@@ -1040,7 +1070,7 @@ function drawBubbleChart(data) {
             var layers = stack(dataByCandy);
             dataByCandy.sort(function(a, b) {
                 return b.joy - a.joy;
-            })
+            });
 
         var bars = candyBarChartSVG.selectAll(".bar")
             .data(layers)
@@ -1106,138 +1136,107 @@ function drawBubbleChart(data) {
             .attr('height', () => barHeight )
             .attr('fill', '#25aebb');
         }
+}
 
+function onBarSelectChanged() {
+    // Get current value of select element
+    var select = d3.select('#candyFeelingSelect').node();
+    feeling = select.options[select.selectedIndex].value;
+    barSelectedFeeling = feeling;
+    updateBarChart(barSelectedFeeling);
 
-        // xAxis Label
-        candyBarChartSVG.append('text')
-            .attr('class', 'bar_chart_axis_label')
-            .attr('x', 0.67*barChartWidth)
-            .attr('y', barChartHeight + padding.t + 20)
-            .text('Votes');
+    if (barSelectedFeeling === 'JOY') {
+            updateMap('top_joy');
+    }
+    if (barSelectedFeeling === 'DESPAIR') {
+         updateMap('top_despair');
+    }
+}
 
-        // yAxis Label
-        candyBarChartSVG.append('text')
-            .attr('class', 'bar_chart_axis_label')
-            .attr('x', 0)
-            .attr('y', barChartHeight/2)
-            .text('CANDY');
+function drawPieChart(feeling, candy) {
+        candyGenderBox.selectAll('.arc').remove();
 
-        genderVoteBox.append('text')
-                .attr('class', 'genderVotesTitle')
-                .attr('x', 17)
-                .attr('y', 20)
-                .text('Total Votes');
+        var pieChartData = [];
 
-        Object.keys(genderVoteKeys).forEach(function(key, i) {
-            if (key) {
-            genderVoteBox.append('text')
-                .attr('class', 'genderVotes')
-                .attr('x', 20)
-                .attr('y', 40 + (20*i))
-                .text(key + ': ' + genderVoteKeys[key]);
+        var pieRadius = 65;
+
+        var labels = {}
+
+            var path = d3.arc()
+                .innerRadius(0)
+                .outerRadius(pieRadius);
+
+            var pathLabel = d3.arc()
+                  .innerRadius(0)
+                  .outerRadius(2.5*pieRadius);
+
+            var genderPie = d3.pie()
+                .value(function(d) {return d.value;})
+                .sort(null);
+
+            if (feeling === 'JOY') {
+               joyByGender = candyData[candy].joy_by_gender[0];
+               genderKeys = Object.keys(joyByGender);
+               genderKeys.forEach(
+                 function(key,i) {
+                        key_arr = key.split("_");
+                        gender = key_arr[key_arr.length - 1];
+                        return pieChartData[i] = {
+                            'key' : key,
+                            'value' : joyByGender[key],
+                            'gender' : gender,
+                            'color' : genderToColor[gender]
+                        };
+                    }
+                );
             }
-        });
-    }
+            if (feeling === 'DESPAIR') {
+                despairByGender = candyData[candy].despair_by_gender[0];
+                genderKeys = Object.keys(despairByGender);
+                genderKeys.forEach(
+                       function(key,i) {
+                        key_arr = key.split("_");
+                        gender = key_arr[key_arr.length - 1];
+                        return pieChartData[i] = {
+                            'key' : key,
+                            'value' : despairByGender[key],
+                            'gender' : gender,
+                            'color' : genderToColor[gender]
+                        };
+                    }
+                );
+            }
 
-    function onBarSelectChanged() {
-        // Get current value of select element
-        var select = d3.select('#candyFeelingSelect').node();
-        feeling = select.options[select.selectedIndex].value;
-        barSelectedFeeling = feeling;
-        updateBarChart(barSelectedFeeling);
+             var arcs = candyGenderBox.selectAll('.arc')
+                .data(genderPie(pieChartData))
+                .enter()
+                .append('g')
+                .attr('class', 'arc')
 
-        if (barSelectedFeeling === 'JOY') {
-                updateMap('top_joy');
-        }
-        if (barSelectedFeeling === 'DESPAIR') {
-             updateMap('top_despair');
-        }
-    }
+                arcs.append('path')
+                    .attr('d', path)
+                    .attr('fill', function(d) {return d.data.color;});
 
-    function drawPieChart(feeling, candy) {
-            candyGenderBox.selectAll('.arc').remove();
+            arcs.append("text")
+                .attr('class', 'label')
+                .attr('transform', function(d) {
+                    var pos = pathLabel.centroid(d);
+                    if (d.data.gender === "Male") {
+                        pos[0] = pos[0] - 40;
+                    }
+                    if (d.data.gender === "Other") {
+                       pos[0] = pos[0] - 50;
+                   }
 
-            var pieChartData = [];
-
-            var pieRadius = 65;
-
-            var labels = {}
-
-                var path = d3.arc()
-                    .innerRadius(0)
-                    .outerRadius(pieRadius);
-
-                var pathLabel = d3.arc()
-                      .innerRadius(0)
-                      .outerRadius(2.5*pieRadius);
-
-                var genderPie = d3.pie()
-                    .value(function(d) {return d.value;})
-                    .sort(null);
-
-                if (feeling === 'JOY') {
-                   joyByGender = candyData[candy].joy_by_gender[0];
-                   genderKeys = Object.keys(joyByGender);
-                   genderKeys.forEach(
-                     function(key,i) {
-                            key_arr = key.split("_");
-                            gender = key_arr[key_arr.length - 1];
-                            return pieChartData[i] = {
-                                'key' : key,
-                                'value' : joyByGender[key],
-                                'gender' : gender,
-                                'color' : genderToColor[gender]
-                            };
-                        }
-                    );
-                }
-                if (feeling === 'DESPAIR') {
-                    despairByGender = candyData[candy].despair_by_gender[0];
-                    genderKeys = Object.keys(despairByGender);
-                    genderKeys.forEach(
-                           function(key,i) {
-                            key_arr = key.split("_");
-                            gender = key_arr[key_arr.length - 1];
-                            return pieChartData[i] = {
-                                'key' : key,
-                                'value' : despairByGender[key],
-                                'gender' : gender,
-                                'color' : genderToColor[gender]
-                            };
-                        }
-                    );
-                }
-
-                 var arcs = candyGenderBox.selectAll('.arc')
-                    .data(genderPie(pieChartData))
-                    .enter()
-                    .append('g')
-                    .attr('class', 'arc')
-
-                    arcs.append('path')
-                        .attr('d', path)
-                        .attr('fill', function(d) {return d.data.color;});
-
-                arcs.append("text")
-                    .attr('class', 'label')
-                    .attr('transform', function(d) {
-                        var pos = pathLabel.centroid(d);
-                        if (d.data.gender === "Male") {
-                            pos[0] = pos[0] - 40;
-                        }
-                        if (d.data.gender === "Other") {
-                           pos[0] = pos[0] - 50;
-                       }
-
-                        if (d.data.gender === "Female") {
-                           pos[0] = pos[0] - 20;
-                       }
-                        return "translate(" + pos + ")";
-                    })
-                    .attr('dy', '0.35em')
-                    .attr("dx", ".35em")
-                    .text(function(d) {return d.data.gender + ' ' + Math.round(d.data.value, 1) + '%';});
-    }
+                    if (d.data.gender === "Female") {
+                       pos[0] = pos[0] - 20;
+                   }
+                    return "translate(" + pos + ")";
+                })
+                .attr('dy', '0.35em')
+                .attr("dx", ".35em")
+                .text(function(d) {return d.data.gender + ' ' + Math.round(d.data.value, 1) + '%';});
+}
 
 function drawRankLineGraph() {
     var lineGraphWidth = parseInt(d3.select('div#rankLineGraphContainer').style('width'), 10);
