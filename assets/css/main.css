@@ -25,6 +25,17 @@
 	fill:none;
 }
 
+.genderVotes {
+	 fill:black;
+}
+
+.genderVotesTitle {
+	 fill:black;
+	 font-weight: bold;
+
+}
+
+
 .arc text {
 	fill:black;
 }
