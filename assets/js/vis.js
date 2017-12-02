@@ -31,6 +31,13 @@ genderVoteBox = candyBarChartSVG.append('g')
     .attr('width', genderBoxWidth)
     .attr('height', genderBoxHeight);
 
+colorLegendBox = candyBarChartSVG.append('g')
+    .attr('class', 'gender_details')
+    .attr('transform', 'translate(' + [2*barChartWidth/3, barChartHeight + 50]+ ')');
+colorLegendBox.append('rect')
+    .attr('width', genderBoxWidth)
+    .attr('height', genderBoxHeight);
+
 var candyMagnetSVG = d3.select('svg.candymagnet');
 
 var candyMapSVG = d3.select('div#candyMapContainer')
@@ -1023,7 +1030,37 @@ function drawBubbleChart(data) {
             .text(key + ': ' + genderVoteKeys[key]);
         }
     });
+    // colorLegendBox.append('rect')
+    //         .attr('class', 'genderVotesTitle')
+    //         .attr('x', 17)
+    //         .attr('y', 20)
+    //         .text('Total Votes: ' + total);
 
+    colorLegendBox.append('rect')
+        .attr('width', 20)
+        .attr('height', 20)
+        .attr('fill', stackBarColors.joy)
+        .attr('transform', 'translate(0, 5)');
+    colorLegendBox.append('text')
+                .attr('class', 'genderVotesTitle')
+                .text('Joy');
+    colorLegendBox.append('rect')
+                    .attr('width', 20)
+                    .attr('height', 20)
+                    .attr('fill', stackBarColors.meh)
+                    .attr('transform', 'translate(30, 5)');
+    colorLegendBox.append('text')
+                .attr('class', 'genderVotesTitle')
+                .text('Meh').attr('transform', 'translate(30, 0)');;
+                            colorLegendBox.append('rect')
+                                .attr('width', 20)
+                                .attr('height', 20)
+                                .attr('transform', 'translate(60, 5)')
+                                .attr('fill', stackBarColors.despair);
+                            colorLegendBox.append('text')
+                                        .attr('class', 'genderVotesTitle')
+                                        .attr('transform', 'translate(60, 0)')
+                                        .text('Despair');
     updateBarChart('ALL');
 }
 
