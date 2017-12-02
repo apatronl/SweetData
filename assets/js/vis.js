@@ -169,7 +169,7 @@ genderToColor = {
     };
 
 stackBarColors = {
-    'joy' : '#FFFF99',
+    'joy' : '#f4ee33',
     'meh' : '#FDC086',
     'despair' : '#386cb0'
 };
