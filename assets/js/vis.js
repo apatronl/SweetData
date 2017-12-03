@@ -1187,12 +1187,12 @@ function onBarSelectChanged() {
     barSelectedFeeling = feeling;
     updateBarChart(barSelectedFeeling);
 
-    if (barSelectedFeeling === 'JOY') {
-            updateMap('top_joy');
-    }
-    if (barSelectedFeeling === 'DESPAIR') {
-         updateMap('top_despair');
-    }
+    // if (barSelectedFeeling === 'JOY') {
+    //         updateMap('top_joy');
+    // }
+    // if (barSelectedFeeling === 'DESPAIR') {
+    //      updateMap('top_despair');
+    // }
 }
 
 function drawPieChart(feeling, candy) {
