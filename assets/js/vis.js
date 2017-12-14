@@ -829,7 +829,7 @@ function drawMap(data) {
             })
             .on('click', function(d, i) {
                 var stateName = d.properties.name;
-                bubbleChartTitle.text('Top ' + selectedFeeling + ' for ' + d.properties.name);
+                bubbleChartTitle.text('Level of ' + selectedFeeling + ' per Candy in ' + d.properties.name);
                 drawBubbleChart(data[i].value[selectedFeeling]);
             });
         });
