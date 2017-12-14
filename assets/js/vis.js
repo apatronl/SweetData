@@ -870,6 +870,10 @@ function drawMapTopCandy(stateData) {
 function onMapCategoryChanged(category) {
     selectedFeeling = feelings[category];
     updateMap(category);
+
+    // Update bubble chart
+    bubbleChartTitle.text('Level of ' + selectedFeeling + ' per Candy in ' + dataByState[0].key);
+    drawBubbleChart(dataByState[0].value[selectedFeeling]);
 }
 
 // Bubble Chart
